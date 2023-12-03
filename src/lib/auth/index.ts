@@ -1,16 +1,13 @@
-import Google from "@auth/core/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth, { NextAuthConfig } from "next-auth";
-import GitHub from "next-auth/providers/github";
-import { prisma } from "@/lib/client/prisma";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
-export const authConfig = { providers: [GitHub, Google] };
+import NextAuth, { NextAuthConfig } from "next-auth";
+import { authConfig } from "@/lib/auth/config";
+import { drizzle } from "@/lib/client/drizzle";
 
 const authOptions: NextAuthConfig = {
-  adapter: PrismaAdapter(prisma),
+  adapter: DrizzleAdapter(drizzle),
   session: { strategy: "jwt" },
   pages: {
-    signIn: "/",
     error: "/auth/error",
   },
   callbacks: {
@@ -29,4 +26,6 @@ const authOptions: NextAuthConfig = {
 export const {
   handlers: { GET, POST },
   auth,
+  signIn,
+  signOut,
 } = NextAuth(authOptions);

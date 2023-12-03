@@ -1,7 +1,5 @@
-"use client";
-
 import { LogOutIcon } from "lucide-react";
-import { signIn, signOut } from "next-auth/react";
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +8,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/handler";
 
 function GoogleIcon() {
   return (
@@ -64,22 +63,25 @@ export function AuthButton() {
           </h2>
         </DialogHeader>
         <div className="flex flex-col items-center space-y-4">
-          <Button
-            className="flex w-max gap-x-3 font-semibold"
-            onClick={() => signIn("github")}
-            variant="outline"
-          >
-            <GitHubIcon />
-            <span>Log in with GitHub</span>
-          </Button>
-          <Button
-            className="flex w-max gap-x-3 font-semibold"
-            onClick={() => signIn("google")}
-            variant="outline"
-          >
-            <GoogleIcon />
-            <span>Log in with GitHub</span>
-          </Button>
+          <form action={signInGitHub}>
+            <Button
+              className="flex w-max gap-x-3 font-semibold"
+              variant="outline"
+            >
+              <GitHubIcon />
+              <span>Log in with GitHub</span>
+            </Button>
+          </form>
+          <form action={signInGoogle}>
+            <Button
+              className="flex w-max gap-x-3 font-semibold"
+              // onClick={() => signIn("google")}
+              variant="outline"
+            >
+              <GoogleIcon />
+              <span>Log in with GitHub</span>
+            </Button>
+          </form>
         </div>
       </DialogContent>
     </Dialog>
@@ -88,18 +90,14 @@ export function AuthButton() {
 
 export function SignOutButton() {
   return (
-    <button
-      className="flex w-full items-center gap-x-2 text-sm"
-      onClick={() =>
-        signOut({
-          redirect: true,
-          callbackUrl: "/",
-        })
-      }
-      type="button"
-    >
-      <LogOutIcon className="inline-block h-4 w-4" />
-      <span>ログアウト</span>
-    </button>
+    <form action={signOutOauth}>
+      <button
+        className="flex w-full items-center gap-x-2 text-sm"
+        type="submit"
+      >
+        <LogOutIcon className="inline-block h-4 w-4" />
+        <span>ログアウト</span>
+      </button>
+    </form>
   );
 }
