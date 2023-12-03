@@ -1,9 +1,10 @@
-import { Category } from "@prisma/client";
 import { cache } from "react";
-import { prisma } from "@/lib/client/prisma";
+import { categories } from "@/db/schema";
+import { drizzle } from "@/lib/client/drizzle";
+import { type Category } from "@/types/drizzle";
 
 export const getCategories = cache(async (): Promise<Category[]> => {
-  const categories = await prisma.category.findMany();
+  const result = await drizzle.select().from(categories);
 
-  return categories;
+  return result;
 });
