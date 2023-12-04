@@ -1,4 +1,5 @@
 import { AdapterAccount } from "@auth/core/adapters";
+import { createId } from "@paralleldrive/cuid2";
 import { sql } from "drizzle-orm";
 import {
   mysqlTable,
@@ -6,13 +7,19 @@ import {
   primaryKey,
   unique,
   varchar,
-  text,
   int,
   double,
-  tinyint,
   datetime,
   timestamp,
+  boolean,
+  text,
 } from "drizzle-orm/mysql-core";
+
+/* 
+************************************************************
+  Auth.js v5 schema 
+************************************************************
+ */
 
 export const users = mysqlTable(
   "user",
@@ -38,7 +45,6 @@ export const accounts = mysqlTable(
   "account",
   {
     userId: varchar("userId", { length: 255 }).notNull(),
-
     type: varchar("type", { length: 255 })
       .$type<AdapterAccount["type"]>()
       .notNull(),
@@ -58,12 +64,41 @@ export const accounts = mysqlTable(
     }),
   })
 );
+
+export const sessions = mysqlTable("session", {
+  sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
+  userId: varchar("userId", { length: 255 }).notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const verificationTokens = mysqlTable(
+  "verificationToken",
+  {
+    identifier: varchar("identifier", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey({
+      columns: [vt.identifier, vt.token],
+    }),
+  })
+);
+
+/*
+************************************************************
+  App schema
+************************************************************
+*/
+
 export const categories = mysqlTable(
   "category",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    name: varchar("name", { length: 191 }).notNull(),
-    description: varchar("description", { length: 191 }),
+    id: varchar("id", { length: 128 })
+      .notNull()
+      .$defaultFn(() => createId()),
+    name: varchar("name", { length: 50 }).notNull(),
+    description: text("description"),
   },
   (table) => {
     return {
@@ -76,10 +111,12 @@ export const categories = mysqlTable(
 export const codes = mysqlTable(
   "code",
   {
-    id: varchar("id", { length: 191 }).notNull(),
+    id: varchar("id", { length: 128 })
+      .notNull()
+      .$defaultFn(() => createId()),
     url: varchar("url", { length: 256 }).notNull(),
     type: varchar("type", { length: 256 }).notNull(),
-    componentId: varchar("component_id", { length: 191 }).notNull(),
+    componentId: varchar("component_id", { length: 128 }).notNull(),
   },
   (table) => {
     return {
@@ -92,17 +129,19 @@ export const codes = mysqlTable(
 export const components = mysqlTable(
   "component",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    creatorId: varchar("creator_id", { length: 191 }).notNull(),
-    name: varchar("name", { length: 191 }).notNull(),
-    description: varchar("description", { length: 191 }),
-    price: double("price").notNull(),
-    free: tinyint("free").default(0).notNull(),
+    id: varchar("id", { length: 128 })
+      .notNull()
+      .$defaultFn(() => createId()),
+    creatorId: varchar("creator_id", { length: 255 }).notNull(),
+    name: varchar("name", { length: 50 }).notNull(),
+    description: text("description"),
+    price: double("price").notNull().default(0),
+    free: boolean("free").default(false).notNull(),
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
     updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
-    categoryId: varchar("category_id", { length: 191 }).notNull(),
+    categoryId: varchar("category_id", { length: 128 }).notNull(),
   },
   (table) => {
     return {
@@ -120,10 +159,12 @@ export const components = mysqlTable(
 export const componentSets = mysqlTable(
   "componentSet",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    name: varchar("name", { length: 191 }).notNull(),
-    description: varchar("description", { length: 191 }),
-    price: double("price").notNull(),
+    id: varchar("id", { length: 128 })
+      .notNull()
+      .$defaultFn(() => createId()),
+    name: varchar("name", { length: 50 }).notNull(),
+    description: text("description"),
+    price: double("price").notNull().default(0),
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
@@ -143,8 +184,8 @@ export const componentSetItems = mysqlTable(
   "componentSetItem",
   {
     id: int("id").autoincrement().notNull(),
-    componentSetId: varchar("component_set_id", { length: 191 }).notNull(),
-    componentId: varchar("component_id", { length: 191 }).notNull(),
+    componentSetId: varchar("component_set_id", { length: 128 }).notNull(),
+    componentId: varchar("component_id", { length: 128 }).notNull(),
   },
   (table) => {
     return {
@@ -165,10 +206,12 @@ export const componentSetItems = mysqlTable(
 export const dependencies = mysqlTable(
   "dependency",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    name: varchar("name", { length: 191 }).notNull(),
-    command: varchar("command", { length: 191 }).notNull(),
-    codeId: varchar("code_id", { length: 191 }).notNull(),
+    id: varchar("id", { length: 128 })
+      .notNull()
+      .$defaultFn(() => createId()),
+    name: varchar("name", { length: 50 }).notNull(),
+    command: varchar("command", { length: 255 }).notNull(),
+    codeId: varchar("code_id", { length: 128 }).notNull(),
   },
   (table) => {
     return {
@@ -182,41 +225,22 @@ export const dependencies = mysqlTable(
   }
 );
 
-export const plans = mysqlTable(
-  "plan",
-  {
-    id: int("id").autoincrement().notNull(),
-    name: varchar("name", { length: 191 }).notNull(),
-    description: text("description").notNull(),
-    price: double("price").notNull(),
-    createdAt: datetime("created_at", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
-      .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
-  },
-  (table) => {
-    return {
-      planIdPk: primaryKey({ columns: [table.id], name: "Plan_id_pk" }),
-    };
-  }
-);
-
 export const purchases = mysqlTable(
   "purchase",
   {
     id: int("id").autoincrement().notNull(),
-    userId: varchar("user_id", { length: 191 }).notNull(),
-    componentSetId: varchar("component_set_id", { length: 191 }),
-    componentId: varchar("component_id", { length: 191 }),
-    amount: double("amount").notNull(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
+    componentSetId: varchar("component_set_id", { length: 128 }),
+    componentId: varchar("component_id", { length: 128 }),
+    amount: double("amount").notNull().default(0),
     purchaseDate: datetime("purchase_date", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
     stripeCheckoutSessionId: varchar("stripe_checkout_session_id", {
-      length: 191,
+      length: 255,
     }),
-    stripePaymentId: varchar("stripe_payment_id", { length: 191 }),
-    paymentStatus: varchar("payment_status", { length: 191 }),
+    stripePaymentId: varchar("stripe_payment_id", { length: 255 }),
+    paymentStatus: varchar("payment_status", { length: 255 }),
   },
   (table) => {
     return {
@@ -234,10 +258,10 @@ export const reviews = mysqlTable(
   "review",
   {
     id: int("id").autoincrement().notNull(),
-    componentId: varchar("component_id", { length: 191 }).notNull(),
-    userId: varchar("user_id", { length: 191 }).notNull(),
+    componentId: varchar("component_id", { length: 128 }).notNull(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
     rating: int("rating").notNull(),
-    comment: varchar("comment", { length: 191 }),
+    comment: varchar("comment", { length: 255 }),
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
@@ -250,54 +274,4 @@ export const reviews = mysqlTable(
       reviewIdPk: primaryKey({ columns: [table.id], name: "Review_id_pk" }),
     };
   }
-);
-
-export const sessions = mysqlTable("session", {
-  sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
-  userId: varchar("userId", { length: 255 }).notNull(),
-
-  expires: timestamp("expires", { mode: "date" }).notNull(),
-});
-
-export const userSubscriptions = mysqlTable(
-  "userSubscription",
-  {
-    id: int("id").autoincrement().notNull(),
-    userId: varchar("user_id", { length: 191 }).notNull(),
-    planId: int("plan_id").notNull(),
-    startDate: datetime("start_date", { mode: "string", fsp: 3 }).notNull(),
-    endDate: datetime("end_date", { mode: "string", fsp: 3 }),
-    status: varchar("status", { length: 191 }).notNull(),
-    createdAt: datetime("created_at", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
-      .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
-    stripeCheckoutSessionId: varchar("stripe_checkout_session_id", {
-      length: 191,
-    }),
-    stripePaymentId: varchar("stripe_payment_id", { length: 191 }),
-    paymentStatus: varchar("payment_status", { length: 191 }),
-  },
-  (table) => {
-    return {
-      userIdIdx: index("UserSubscription_user_id_idx").on(table.userId),
-      planIdIdx: index("UserSubscription_plan_id_idx").on(table.planId),
-      userSubscriptionIdPk: primaryKey({
-        columns: [table.id],
-        name: "UserSubscription_id_pk",
-      }),
-    };
-  }
-);
-
-export const verificationTokens = mysqlTable(
-  "verificationToken",
-  {
-    identifier: varchar("identifier", { length: 255 }).notNull(),
-    token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (vt) => ({
-    compoundKey: primaryKey(vt.identifier, vt.token),
-  })
 );
