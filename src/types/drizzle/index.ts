@@ -12,6 +12,12 @@ import {
 } from "@/db/schema";
 
 export type Category = InferSelectModel<typeof categories>;
+export type CategoriesWithComponentsCount = {
+  categories: Category;
+  components: {
+    count: number;
+  };
+};
 export type InsertCategory = InferInsertModel<typeof categories>;
 
 export type Component = InferSelectModel<typeof components>;

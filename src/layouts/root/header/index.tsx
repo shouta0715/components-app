@@ -1,5 +1,5 @@
 import React from "react";
-import { CommandPallet } from "@/components/global/server/commandPallet";
+import { CommandPallet } from "@/components/global/server/command-pallet";
 import { NavSheet } from "@/components/global/server/nav-sheet";
 import { UserAvatar } from "@/components/global/server/user-avatar";
 import { ThemeToggle } from "@/components/theme/theme-toggle";

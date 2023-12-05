@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Monitor, MoonStar, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import * as React from "react";
 
@@ -20,13 +20,13 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="h-8 w-8 md:h-10 md:w-10 "
+          className="h-8 w-8 border-input md:h-10 md:w-10"
           radius="full"
           size="icon"
           variant="outline"
         >
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 md:h-5 md:w-5" />
-          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 md:h-5 md:w-5" />
+          <MoonStar className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 md:h-5 md:w-5" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
@@ -49,7 +49,7 @@ export function ThemeToggle() {
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           <div className="flex items-center">
             <div className="flex h-6 w-6 flex-none items-center justify-center rounded-md bg-white shadow ring-1 ring-slate-900/10 dark:text-background">
-              <Moon
+              <MoonStar
                 className={clsx(
                   "h-4 w-4 ",
                   theme === "dark"

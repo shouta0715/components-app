@@ -36,7 +36,7 @@ export function CategoryCommand({ categories }: { categories: Category[] }) {
     <>
       <Button
         aria-label="Open command palette"
-        className="grid h-8 w-8 place-items-center md:h-10 md:w-10"
+        className="grid h-8 w-8 place-items-center md:hidden"
         onClick={() => setOpen((o) => !o)}
         radius="full"
         size="icon"
@@ -44,6 +44,20 @@ export function CategoryCommand({ categories }: { categories: Category[] }) {
       >
         <Search className="h-5 w-5 md:h-6 md:w-6" />
       </Button>
+
+      <button
+        aria-label="Open command palette"
+        className="relative hidden w-48 items-center justify-between rounded-lg bg-accent px-2 py-1 md:flex"
+        onClick={() => setOpen((o) => !o)}
+        type="button"
+      >
+        <Search className="absolute h-5 w-5 text-accent-foreground/50" />
+        <span className="ml-7 text-accent-foreground/50">Search</span>
+
+        <kbd className="pointer-events-none inline-flex select-none  gap-1 rounded border bg-muted px-1.5 text-[10px] font-medium text-muted-foreground opacity-100 shadow-xl">
+          <span className="text-xs">⌘</span>K
+        </kbd>
+      </button>
       <CommandDialog onOpenChange={setOpen} open={open}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>

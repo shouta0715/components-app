@@ -6,6 +6,7 @@ import {
   SignOutButton,
 } from "@/components/global/parts/auth-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -20,13 +21,18 @@ function UnAuthorized() {
 function Authorized({ session }: { session: Session }) {
   return (
     <Popover>
-      <PopoverTrigger>
-        <Avatar className="h-8 w-8 md:h-10 md:w-10">
-          <AvatarImage src={session.user?.image ?? ""} />
-          <AvatarFallback>
-            {session.user?.name?.slice(0, 2) ?? "UN"}
-          </AvatarFallback>
-        </Avatar>
+      <PopoverTrigger asChild>
+        <Button
+          className="h-8 w-8 overflow-hidden rounded-full border border-input md:h-10 md:w-10"
+          variant="ghost"
+        >
+          <Avatar className="bg-none">
+            <AvatarImage src={session.user?.image ?? ""} />
+            <AvatarFallback className="animate-pulse">
+              {session.user?.name?.slice(0, 2) ?? "UN"}
+            </AvatarFallback>
+          </Avatar>
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         align="end"
