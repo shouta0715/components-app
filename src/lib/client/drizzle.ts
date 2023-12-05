@@ -1,6 +1,9 @@
 import { connect } from "@planetscale/database";
 import { drizzle as DevDrizzle } from "drizzle-orm/mysql2";
-import { drizzle as Drizzle } from "drizzle-orm/planetscale-serverless";
+import {
+  drizzle as Drizzle,
+  PlanetScaleDatabase,
+} from "drizzle-orm/planetscale-serverless";
 import { createConnection } from "mysql2";
 import * as schema from "@/db/schema";
 
@@ -26,4 +29,7 @@ const devConnection = createConnection({
 export const drizzle =
   process.env.NODE_ENV === "production"
     ? Drizzle(connection, { schema })
-    : DevDrizzle(devConnection);
+    : (DevDrizzle<typeof schema>(devConnection, {
+        mode: "planetscale",
+        schema,
+      }) as unknown as PlanetScaleDatabase<typeof schema>);
