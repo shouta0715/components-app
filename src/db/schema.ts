@@ -140,7 +140,11 @@ export const components = mysqlTable(
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" })
+      .defaultNow()
+      .onUpdateNow()
+      .notNull(),
+
     categoryId: varchar("category_id", { length: 128 }).notNull(),
   },
   (table) => {
@@ -168,7 +172,10 @@ export const componentSets = mysqlTable(
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" })
+      .defaultNow()
+      .onUpdateNow()
+      .notNull(),
   },
   (table) => {
     return {
@@ -265,7 +272,10 @@ export const reviews = mysqlTable(
     createdAt: datetime("created_at", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" })
+      .defaultNow()
+      .onUpdateNow()
+      .notNull(),
   },
   (table) => {
     return {
