@@ -166,6 +166,7 @@ export const componentSets = mysqlTable(
     id: varchar("id", { length: 128 })
       .notNull()
       .$defaultFn(() => createId()),
+    creatorId: varchar("creator_id", { length: 255 }).notNull(),
     name: varchar("name", { length: 50 }).notNull(),
     description: text("description"),
     price: double("price").notNull().default(0),
