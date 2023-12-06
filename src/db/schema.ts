@@ -1,6 +1,6 @@
 import { AdapterAccount } from "@auth/core/adapters";
 import { createId } from "@paralleldrive/cuid2";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   mysqlTable,
   index,
@@ -286,3 +286,28 @@ export const reviews = mysqlTable(
     };
   }
 );
+
+/* 
+************************************************************
+  relations
+************************************************************
+  */
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  components: many(components),
+}));
+
+export const componentsRelations = relations(components, ({ one, many }) => ({
+  category: one(categories, {
+    fields: [components.categoryId],
+    references: [categories.id],
+  }),
+  codes: many(codes),
+}));
+
+export const codesRelations = relations(codes, ({ one }) => ({
+  component: one(components, {
+    fields: [codes.componentId],
+    references: [components.id],
+  }),
+}));
