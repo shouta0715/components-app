@@ -11,18 +11,6 @@ import {
   users,
 } from "@/db/schema";
 
-export type Category = InferSelectModel<typeof categories>;
-export type CategoriesWithComponentsCount = {
-  categories: Category;
-  components: {
-    count: number;
-  };
-};
-export type InsertCategory = InferInsertModel<typeof categories>;
-
-export type Component = InferSelectModel<typeof components>;
-export type InsertComponent = InferInsertModel<typeof components>;
-
 export type ComponentSet = InferSelectModel<typeof componentSets>;
 export type InsertComponentSet = InferInsertModel<typeof componentSets>;
 
@@ -43,3 +31,20 @@ export type InsertReview = InferInsertModel<typeof reviews>;
 
 export type User = InferSelectModel<typeof users>;
 export type InsertUser = InferInsertModel<typeof users>;
+
+export type Component = InferSelectModel<typeof components>;
+export type InsertComponent = InferInsertModel<typeof components>;
+export type ComponentWithCode = {
+  components: Component;
+  codes: Code[];
+};
+
+export type Category = InferSelectModel<typeof categories>;
+export type InsertCategory = InferInsertModel<typeof categories>;
+export type CategoryWithCode = {
+  categories: Category;
+  components: Pick<Component, "id">[];
+  aggregate: {
+    count: number;
+  };
+};
