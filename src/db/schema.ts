@@ -114,8 +114,8 @@ export const codes = mysqlTable(
     id: varchar("id", { length: 128 })
       .notNull()
       .$defaultFn(() => createId()),
-    url: varchar("url", { length: 256 }).notNull(),
-    type: varchar("type", { length: 256 }).notNull(),
+    fileId: varchar("file_id", { length: 128 }).notNull(),
+    type: varchar("type", { length: 50 }).notNull(),
     componentId: varchar("component_id", { length: 128 }).notNull(),
   },
   (table) => {
