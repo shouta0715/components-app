@@ -14,7 +14,9 @@
     "seed": "dotenv -e .env.development.local pnpm tsx src/db/seed/index.ts",
     "migrate": "pnpm tsx src/db/migrate.ts",
     "prepare": "husky install",
-    "format": "prettier --write . && eslint --fix ."
+    "format": "prettier --write . && eslint --fix .",
+    "test": "dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
+    "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },
   "dependencies": {
     "@auth/core": "^0.18.4",
@@ -50,11 +52,15 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@types/node": "^20.10.2",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.17",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/ui": "^1.0.2",
     "autoprefixer": "^10.4.16",
     "drizzle-kit": "^0.20.6",
     "eslint": "^8.55.0",
@@ -67,12 +73,23 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "happy-dom": "^12.10.3",
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "postcss": "^8.4.32",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.5",
     "tsx": "^4.6.2",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "vitest": "^1.0.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss,md,html}": [
+      "prettier --write"
+    ]
   }
 }
