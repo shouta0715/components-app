@@ -35,11 +35,13 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@types/minify": "^9.1.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "drizzle-orm": "^0.29.1",
     "lucide-react": "^0.294.0",
+    "minify": "^10.5.2",
     "mysql2": "^3.6.5",
     "next": "14.0.3",
     "next-auth": "5.0.0-beta.4",
@@ -49,7 +51,9 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1"
+    "uglify-js": "^3.17.4",
+    "uuid": "^9.0.1",
+    "valibot": "^0.22.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
@@ -57,6 +61,7 @@
     "@types/node": "^20.10.2",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.17",
+    "@types/uglify-js": "^3.17.4",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@vitejs/plugin-react": "^4.2.1",

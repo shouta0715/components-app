@@ -7,10 +7,12 @@ import {
   BentoHeader,
   BentoTitle,
 } from "@/components/ui/bento-grid";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Codes } from "@/features/code";
 import { CategoryWithCode } from "@/types/drizzle";
 
 export async function Category({ category }: { category: CategoryWithCode }) {
+  const firstCodes = category.components[0].codes;
+
   return (
     <BentoCard
       asLink
@@ -19,7 +21,9 @@ export async function Category({ category }: { category: CategoryWithCode }) {
       name={category.categories.name}
     >
       <BentoBackground>
-        <Skeleton className="h-40" />
+        <div className="mx-auto flex h-40 w-full overflow-hidden ">
+          <Codes codes={firstCodes} />
+        </div>
       </BentoBackground>
       <BentoHeader>
         <BentoTitle className="group-hover:text-destructive">

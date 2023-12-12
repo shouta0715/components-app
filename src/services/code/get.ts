@@ -15,8 +15,7 @@ export const getCodeByComponentId = cache(
     const res = await drizzle
       .select()
       .from(codes)
-      .where(eq(codes.componentId, componentId))
-      .limit(1);
+      .where(eq(codes.componentId, componentId));
 
     return res;
   }

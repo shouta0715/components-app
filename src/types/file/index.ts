@@ -1,10 +1,5 @@
-export type ExtensionType = "tsx" | "html" | "css" | "js" | "ts" | "jsx";
+import { Input, picklist } from "valibot";
 
-export const extensions: ExtensionType[] = [
-  "tsx",
-  "html",
-  "css",
-  "js",
-  "ts",
-  "jsx",
-];
+export const extensions = picklist(["tsx", "html", "css", "js", "ts", "jsx"]);
+
+export type ExtensionType = Input<typeof extensions>;

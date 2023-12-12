@@ -1,7 +1,9 @@
-import { CategoryWithCode, Category, Component } from "@/types/drizzle";
+import { CategoryWithCode, Category, Component, Code } from "@/types/drizzle";
 
 type Categories = (Category & {
-  components: Pick<Component, "id">[];
+  components: (Pick<Component, "id"> & {
+    codes: Code[];
+  })[];
 })[];
 
 export const toResCategories = (categories: Categories): CategoryWithCode[] => {

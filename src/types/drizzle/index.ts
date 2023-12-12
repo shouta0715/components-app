@@ -43,7 +43,9 @@ export type Category = InferSelectModel<typeof categories>;
 export type InsertCategory = InferInsertModel<typeof categories>;
 export type CategoryWithCode = {
   categories: Category;
-  components: Pick<Component, "id">[];
+  components: {
+    codes: Code[];
+  }[];
   aggregate: {
     count: number;
   };
