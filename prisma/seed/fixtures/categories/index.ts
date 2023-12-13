@@ -40,6 +40,76 @@ const categoriesFixture: Prisma.CategoryCreateInput[] = [
     name: "Alert",
     description: "警告や通知を表示するアラートコンポーネント",
   },
+  {
+    name: "Spinner",
+    description: "ローディング表示のためのスピナーコンポーネント",
+  },
+  {
+    name: "Breadcrumb",
+    description: "ナビゲーションパスを表示するブレッドクラムコンポーネント",
+  },
+  {
+    name: "Pagination",
+    description: "ページネーションコンポーネント",
+  },
+  {
+    name: "Progress",
+    description: "進行状況を表示するプログレスバーコンポーネント",
+  },
+  {
+    name: "Badge",
+    description: "ステータスや通知を表示するバッジコンポーネント",
+  },
+  {
+    name: "Carousel",
+    description:
+      "画像やコンテンツのスライドショーを表示するカルーセルコンポーネント",
+  },
+  {
+    name: "Drawer",
+    description: "サイドからスライドするドロワーコンポーネント",
+  },
+  {
+    name: "Stepper",
+    description:
+      "ステップバイステップの進行状況を表示するステッパーコンポーネント",
+  },
+  {
+    name: "Timeline",
+    description: "時間軸に沿ったイベントを表示するタイムラインコンポーネント",
+  },
+  {
+    name: "Chip",
+    description: "コンパクトな要素を表示するチップコンポーネント",
+  },
+  {
+    name: "Snackbar",
+    description: "一時的なメッセージを表示するスナックバーコンポーネント",
+  },
+  {
+    name: "Rating",
+    description: "評価を表示するレーティングコンポーネント",
+  },
+  {
+    name: "Slider",
+    description: "値の範囲を選択するスライダーコンポーネント",
+  },
+  {
+    name: "Switch",
+    description: "オン/オフの切り替えを行うスイッチコンポーネント",
+  },
+  {
+    name: "AppBar",
+    description: "アプリケーションの上部に配置するアプリバーコンポーネント",
+  },
+  {
+    name: "Paper",
+    description: "マテリアルデザインの紙面を模したコンポーネント",
+  },
+  {
+    name: "Backdrop",
+    description: "背景に覆いかぶさるバックドロップコンポーネント",
+  },
 ];
 
 export async function seedCategories(
