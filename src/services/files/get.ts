@@ -1,17 +1,18 @@
+import { File } from "@prisma/client";
 import { cache } from "react";
 import { getSignedFileUrl } from "@/lib/client/s3";
 import { OBJECT_PUBLIC_BASE_URL, PUBLIC_BUCKET_NAME } from "@/lib/constant";
 import { validate } from "@/lib/validation";
-import { Code } from "@/types/drizzle";
-import { ExtensionType, extensions } from "@/types/file";
+
+import { Extension, extensions } from "@/types/file";
 
 type Result = {
   file: string;
-  extension: ExtensionType;
+  extension: Extension;
 };
 
 export const getSignedFile = cache(
-  async (id: string, extension: ExtensionType): Promise<Result> => {
+  async (id: string, extension: Extension): Promise<Result> => {
     const filename = `${id}.${extension}`;
     const url = await getSignedFileUrl(filename, PUBLIC_BUCKET_NAME);
 
@@ -36,7 +37,7 @@ export const getSignedFile = cache(
 );
 
 export const getNotSignedFile = cache(
-  async (id: string, extension: ExtensionType): Promise<Result> => {
+  async (id: string, extension: Extension): Promise<Result> => {
     const filename = `${id}.${extension}`;
     const url = `${OBJECT_PUBLIC_BASE_URL}/${filename}`;
 
@@ -60,13 +61,13 @@ export const getNotSignedFile = cache(
   }
 );
 
-export const getFiles = (codes: Code[]): Promise<Result[]> => {
+export const getFiles = (codes: File[]): Promise<Result[]> => {
   const extensionList = codes.map((code) => {
-    validate(code.type, extensions);
+    validate(code.extension, extensions);
 
     return {
-      fileId: code.fileId,
-      extension: code.type,
+      fileId: code.objectId,
+      extension: code.extension,
     };
   });
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Category } from "@prisma/client";
 import { CreditCard, Search, Settings, User } from "lucide-react";
 import * as React from "react";
 
@@ -14,7 +15,6 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { type Category } from "@/types/drizzle";
 
 export function CategoryCommand({ categories }: { categories: Category[] }) {
   const [open, setOpen] = React.useState(false);

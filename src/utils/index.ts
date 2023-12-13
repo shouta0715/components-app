@@ -1,12 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { ExtensionType } from "@/types/file";
+import { Extension } from "@/types/file";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getContentType = (type: ExtensionType) => {
+export const getContentType = (type: Extension) => {
   if (type === "tsx") {
     return "text/typescript-jsx";
   }

@@ -8,7 +8,6 @@ import {
   BentoTitle,
 } from "@/components/ui/bento-grid";
 import { Codes } from "@/features/code";
-import { CategoryWithCode } from "@/types/drizzle";
 
 export async function Category({ category }: { category: CategoryWithCode }) {
   const firstCodes = category.components[0].codes;
