@@ -37,8 +37,10 @@ services:
       until mc ls ui-trade; do echo '...waiting...' && sleep 1; done;
       mc mb --ignore-existing ui-trade/ui-trade-private;
       mc mb --ignore-existing ui-trade/ui-trade-public;
+      mc mb --ignore-existing ui-trade/ui-trade-preview;
       mc anonymous set download ui-trade/ui-trade-public;
       mc anonymous set private ui-trade/ui-trade-private;
+      mc policy set download ui-trade/ui-trade-preview;
       "
 
 volumes:

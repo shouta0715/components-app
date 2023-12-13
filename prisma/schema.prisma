@@ -96,7 +96,7 @@ enum Extension {
 
 model File {
   id        Int       @id @default(autoincrement())
-  objectId       String
+  objectId  String
   extension Extension
 
   // RELATIONSHIPS

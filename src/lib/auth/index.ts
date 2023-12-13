@@ -1,11 +1,10 @@
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import { authConfig } from "@/lib/auth/config";
-import { drizzle } from "@/lib/client/drizzle";
+import { prisma } from "@/lib/client/prisma";
 
 const authOptions: NextAuthConfig = {
-  adapter: DrizzleAdapter(drizzle),
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   pages: {
     error: "/auth/error",
