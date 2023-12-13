@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import {
   BentoBackground,
@@ -7,41 +8,52 @@ import {
   BentoHeader,
   BentoTitle,
 } from "@/components/ui/bento-grid";
-import { Codes } from "@/features/code";
+import { CategoriesByHome } from "@/types/prisma";
+import { getImageUrl } from "@/utils";
 
-export async function Category({ category }: { category: CategoryWithCode }) {
-  const firstCodes = category.components[0].codes;
+export async function Category({ category }: { category: CategoriesByHome }) {
+  const { previewImages } = category.components;
 
   return (
     <BentoCard
       asLink
-      cta="View components"
-      href={`/categories/${category.categories.id}`}
-      name={category.categories.name}
+      cta="View"
+      href={`/categories/${category.id}`}
+      name={category.name}
     >
       <BentoBackground>
-        <div className="mx-auto flex h-40 w-full overflow-hidden ">
-          <Codes codes={firstCodes} />
+        <div className="flex h-52 items-center justify-center bg-accent sm:h-44">
+          <div className="relative grid h-5/6 w-11/12 place-items-center overflow-hidden ">
+            <div className="z-10 h-full w-full [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--accent))_95%_100%)]" />
+            <Image
+              alt={`Image for ${category.name}`}
+              className="scale-90 rounded-md  object-cover object-top  shadow-inner"
+              fill
+              priority
+              sizes="100%"
+              src={`${getImageUrl(previewImages[0].objectId)}.png`}
+            />
+          </div>
         </div>
       </BentoBackground>
       <BentoHeader>
         <BentoTitle className="group-hover:text-destructive">
-          {category.categories.name}
+          {category.name}
         </BentoTitle>
         <BentoDescription className="grid gap-y-1">
-          <span>{category.categories.description ?? ""}</span>
-          <span>{category.aggregate.count ?? 0} components</span>
+          <span>{category.description ?? ""}</span>
+          <span>{category._count.components ?? 0} components</span>
         </BentoDescription>
       </BentoHeader>
     </BentoCard>
   );
 }
 
-export function Categories({ categories }: { categories: CategoryWithCode[] }) {
+export function Categories({ categories }: { categories: CategoriesByHome[] }) {
   return (
-    <BentoGrid className="col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-y-10 xl:grid-cols-3 xl:gap-x-8">
+    <BentoGrid className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-y-10 xl:grid-cols-3">
       {categories.map((category) => (
-        <Category key={category.categories.id} category={category} />
+        <Category key={category.id} category={category} />
       ))}
     </BentoGrid>
   );

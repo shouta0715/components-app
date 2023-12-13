@@ -22,7 +22,7 @@ const BentoGrid = ({
 };
 
 const BentoAnchor = ({ href }: { href: string }) => {
-  return <Link className="absolute inset-0 z-10" href={href} />;
+  return <Link className="absolute inset-0 z-20" href={href} />;
 };
 
 const BentoBackground = ({ children }: { children: ReactNode }) => {
@@ -58,7 +58,7 @@ const BentoTitle = ({
   return (
     <CardTitle
       className={cn(
-        "font-semibold text-popover-foreground md:text-xl",
+        "font-semibold text-popover-foreground text-lg md:text-xl",
         className
       )}
     >
@@ -125,7 +125,7 @@ const BentoCard = ({
           </Button>
         </div>
       </CardContent>
-      <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-black/[.1]" />
+      <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.02] group-hover:dark:bg-black/[.1]" />
     </Card>
   );
 };
