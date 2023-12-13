@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// ************************************************************
+//   Auth.js v5 schema 
+// ************************************************************
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+
+  // CUSTOM FIELDS
+  components          Component[]
+  componentSets       ComponentSet[]
+  componentReviews    ComponentReview[]
+  componentSetReviews ComponentSetReview[]
+}
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+
+  // MANY FILEDS
+  components Component[]
+}
+
+model Component {
+  id         String   @id @default(cuid())
+  name       String
+  draft      Boolean  @default(true)
+  document   String   @db.Text
+  previewUrl String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // RELATIONSHIPS
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  // MANY FILEDS
+  files         File[]
+  componentSets ComponentSet[]
+  previewImages ComponentPreviewImage[]
+  reviews       ComponentReview[]
+
+  @@index([creatorId])
+  @@index([categoryId])
+}
+
+enum Extension {
+  html
+  css
+  js
+  jsx
+  ts
+  tsx
+}
+
+model File {
+  id        Int       @id @default(autoincrement())
+  objectId  String
+  extension Extension
+
+  // RELATIONSHIPS
+  componentId String
+  Component   Component @relation(fields: [componentId], references: [id])
+
+  @@index([componentId])
+}
+
+model ComponentSet {
+  id              String   @id @default(cuid())
+  name            String
+  draft           Boolean  @default(true)
+  document        String   @db.Text
+  previewImageUrl String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // RELATIONSHIPS
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  // MANY FILEDS
+  components Component[]
+  reviews    ComponentSetReview[]
+
+  @@index([creatorId])
+}
+
+enum Responsive {
+  mobile
+  desktop
+}
+
+model ComponentPreviewImage {
+  id         Int        @id @default(autoincrement())
+  objectId   String
+  responsive Responsive
+
+  // RELATIONSHIPS
+  componentId String
+  Component   Component @relation(fields: [componentId], references: [id])
+
+  @@index([componentId])
+}
+
+model ComponentReview {
+  id        String   @id @default(cuid())
+  comment   String
+  rating    Int
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentId String
+  Component   Component @relation(fields: [componentId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentId])
+  @@index([userId])
+}
+
+model ComponentSetReview {
+  id        String   @id @default(cuid())
+  comment   String
+  rating    Int
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentSetId String
+  ComponentSet   ComponentSet @relation(fields: [componentSetId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentSetId])
+  @@index([userId])
+}

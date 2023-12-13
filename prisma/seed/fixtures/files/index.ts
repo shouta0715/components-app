@@ -1,16 +1,13 @@
 /* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
-import { createId } from "@paralleldrive/cuid2";
-import { codes } from "@/db/schema";
-import { Tx } from "@/db/seed/client";
+
+import { $Enums, Component, File, Prisma } from "@prisma/client";
 
 import { getSignedPostUrl } from "@/lib/client/s3";
-import { Code, Component, InsertCode } from "@/types/drizzle";
-import { ExtensionType } from "@/types/file";
 import { randomNum } from "@/utils/random";
 
-const getContentType = (type: ExtensionType) => {
+const getContentType = (type: $Enums.Extension) => {
   if (type === "tsx") {
     return "text/typescript-jsx";
   }
@@ -34,21 +31,25 @@ const getContentType = (type: ExtensionType) => {
   return "text/typescript";
 };
 
-function loadFiles(type: ExtensionType): string {
-  const baseFolder = `${process.cwd()}/src/db/fixtures/assets`;
+function loadFiles(type: $Enums.Extension): string {
+  const baseFolder = `${process.cwd()}/prisma/seed/fixtures/assets/files`;
 
   const filePath = path.join(baseFolder, `index.${type}`);
 
   return fs.readFileSync(filePath, "utf8");
 }
 
-async function uploadFiles(type: ExtensionType): Promise<{
-  type: ExtensionType;
+async function uploadFiles(type: $Enums.Extension): Promise<{
+  type: $Enums.Extension;
   id: string;
 }> {
   const contentType = getContentType(type);
 
-  const { url, fields, id } = await getSignedPostUrl(contentType, type);
+  const { url, fields, id } = await getSignedPostUrl(
+    contentType,
+    type,
+    "ui-trade-public"
+  );
 
   const formData = new FormData();
 
@@ -76,9 +77,9 @@ async function uploadFiles(type: ExtensionType): Promise<{
   };
 }
 
-async function generateSeedCode(
+async function generateSeedFiles(
   components: Component[]
-): Promise<InsertCode[]> {
+): Promise<Prisma.FileCreateManyInput[]> {
   const files = await Promise.all([
     uploadFiles("tsx"),
     uploadFiles("html"),
@@ -87,33 +88,32 @@ async function generateSeedCode(
     uploadFiles("ts"),
   ]);
 
-  const created = components.map((component) => {
+  const created: Prisma.FileCreateManyInput[] = components.map((component) => {
     return {
-      id: createId(),
+      objectId: files[randomNum(0, files.length - 1)].id,
       componentId: component.id,
-      fileId: files[randomNum(files.length - 1)].id,
-      type: files[randomNum(files.length - 1)].type,
+      extension: files[randomNum(0, files.length - 1)].type,
     };
   });
 
   return created.flat();
 }
 
-export async function seedCodes(
-  tx: Tx,
+export async function seedFiles(
+  tx: Prisma.TransactionClient,
   components: Component[]
-): Promise<Code[]> {
-  const result = await tx.query.codes.findFirst();
+): Promise<File[]> {
+  const result = await tx.file.findFirst();
 
   if (result) {
     console.log("Code already seeded");
 
-    return tx.query.codes.findMany();
+    return tx.file.findMany();
   }
 
-  const values = await generateSeedCode(components);
+  const values = await generateSeedFiles(components);
 
-  await tx.insert(codes).values(values);
+  await tx.file.createMany({ data: values });
 
-  return tx.query.codes.findMany();
+  return tx.file.findMany();
 }

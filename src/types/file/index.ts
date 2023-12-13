@@ -1,6 +1,8 @@
-export type ExtensionType = "tsx" | "html" | "css" | "js" | "ts" | "jsx";
+import { $Enums } from "@prisma/client";
 
-export const extensions: ExtensionType[] = [
+export type Extension = $Enums.Extension;
+
+export const extensions: Extension[] = [
   "tsx",
   "html",
   "css",
