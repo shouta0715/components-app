@@ -49,9 +49,9 @@ CREATE TABLE `Component` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `categoryId` VARCHAR(191) NOT NULL,
-    `createrId` VARCHAR(191) NOT NULL,
+    `creatorId` VARCHAR(191) NOT NULL,
 
-    INDEX `Component_createrId_idx`(`createrId`),
+    INDEX `Component_creatorId_idx`(`creatorId`),
     INDEX `Component_categoryId_idx`(`categoryId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -59,7 +59,7 @@ CREATE TABLE `Component` (
 -- CreateTable
 CREATE TABLE `File` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `url` VARCHAR(191) NOT NULL,
+    `objectId` VARCHAR(191) NOT NULL,
     `extension` ENUM('html', 'css', 'js', 'jsx', 'ts', 'tsx') NOT NULL,
     `componentId` VARCHAR(191) NOT NULL,
 
@@ -76,25 +76,25 @@ CREATE TABLE `ComponentSet` (
     `previewImageUrl` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `createrId` VARCHAR(191) NOT NULL,
+    `creatorId` VARCHAR(191) NOT NULL,
 
-    INDEX `ComponentSet_createrId_idx`(`createrId`),
+    INDEX `ComponentSet_creatorId_idx`(`creatorId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `componentPreviewImage` (
+CREATE TABLE `ComponentPreviewImage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `url` VARCHAR(191) NOT NULL,
+    `objectId` VARCHAR(191) NOT NULL,
     `responsive` ENUM('mobile', 'desktop') NOT NULL,
     `componentId` VARCHAR(191) NOT NULL,
 
-    INDEX `componentPreviewImage_componentId_idx`(`componentId`),
+    INDEX `ComponentPreviewImage_componentId_idx`(`componentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `componentReview` (
+CREATE TABLE `ComponentReview` (
     `id` VARCHAR(191) NOT NULL,
     `comment` VARCHAR(191) NOT NULL,
     `rating` INTEGER NOT NULL,
@@ -102,13 +102,13 @@ CREATE TABLE `componentReview` (
     `componentId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    INDEX `componentReview_componentId_idx`(`componentId`),
-    INDEX `componentReview_userId_idx`(`userId`),
+    INDEX `ComponentReview_componentId_idx`(`componentId`),
+    INDEX `ComponentReview_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `componentSetReview` (
+CREATE TABLE `ComponentSetReview` (
     `id` VARCHAR(191) NOT NULL,
     `comment` VARCHAR(191) NOT NULL,
     `rating` INTEGER NOT NULL,
@@ -116,8 +116,8 @@ CREATE TABLE `componentSetReview` (
     `componentSetId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    INDEX `componentSetReview_componentSetId_idx`(`componentSetId`),
-    INDEX `componentSetReview_userId_idx`(`userId`),
+    INDEX `ComponentSetReview_componentSetId_idx`(`componentSetId`),
+    INDEX `ComponentSetReview_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

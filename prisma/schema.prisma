@@ -46,8 +46,8 @@ model User {
   // CUSTOM FIELDS
   components          Component[]
   componentSets       ComponentSet[]
-  componentReviews    componentReview[]
-  componentSetReviews componentSetReview[]
+  componentReviews    ComponentReview[]
+  componentSetReviews ComponentSetReview[]
 }
 
 model Category {
@@ -72,16 +72,16 @@ model Component {
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
 
-  createrId String
-  creater   User   @relation(fields: [createrId], references: [id])
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
 
   // MANY FILEDS
   files         File[]
   componentSets ComponentSet[]
-  previewImages componentPreviewImage[]
-  reviews       componentReview[]
+  previewImages ComponentPreviewImage[]
+  reviews       ComponentReview[]
 
-  @@index([createrId])
+  @@index([creatorId])
   @@index([categoryId])
 }
 
@@ -96,7 +96,7 @@ enum Extension {
 
 model File {
   id        Int       @id @default(autoincrement())
-  url       String
+  objectId       String
   extension Extension
 
   // RELATIONSHIPS
@@ -116,14 +116,14 @@ model ComponentSet {
   updatedAt       DateTime @updatedAt
 
   // RELATIONSHIPS
-  createrId String
-  creater   User   @relation(fields: [createrId], references: [id])
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
 
   // MANY FILEDS
   components Component[]
-  reviews    componentSetReview[]
+  reviews    ComponentSetReview[]
 
-  @@index([createrId])
+  @@index([creatorId])
 }
 
 enum Responsive {
@@ -131,9 +131,9 @@ enum Responsive {
   desktop
 }
 
-model componentPreviewImage {
+model ComponentPreviewImage {
   id         Int        @id @default(autoincrement())
-  url        String
+  objectId   String
   responsive Responsive
 
   // RELATIONSHIPS
@@ -143,7 +143,7 @@ model componentPreviewImage {
   @@index([componentId])
 }
 
-model componentReview {
+model ComponentReview {
   id        String   @id @default(cuid())
   comment   String
   rating    Int
@@ -160,7 +160,7 @@ model componentReview {
   @@index([userId])
 }
 
-model componentSetReview {
+model ComponentSetReview {
   id        String   @id @default(cuid())
   comment   String
   rating    Int
