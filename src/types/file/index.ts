@@ -1,10 +1,6 @@
-export type ExtensionType = "tsx" | "html" | "css" | "js" | "ts" | "jsx";
+import { $Enums } from "@prisma/client";
+import { picklist } from "valibot";
 
-export const extensions: ExtensionType[] = [
-  "tsx",
-  "html",
-  "css",
-  "js",
-  "ts",
-  "jsx",
-];
+export type Extension = $Enums.Extension;
+
+export const extensions = picklist(["tsx", "html", "css", "js", "ts", "jsx"]);

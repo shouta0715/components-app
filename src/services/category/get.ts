@@ -1,28 +1,40 @@
-import { count, eq } from "drizzle-orm";
+import { Category } from "@prisma/client";
 import { cache } from "react";
-import { categories, components } from "@/db/schema";
-import { drizzle } from "@/lib/client/drizzle";
-import { CategoriesWithComponentsCount, type Category } from "@/types/drizzle";
+
+import { toResCategoriesByHome } from "@/domain/categories";
+import { prisma } from "@/lib/client/prisma";
+import { CategoriesByHome } from "@/types/prisma";
 
 export const getCategories = cache(async (): Promise<Category[]> => {
-  const result = await drizzle.select().from(categories);
+  const result = await prisma.category.findMany();
 
   return result;
 });
 
-export const getCategoriesWithComponentsCount = cache(
-  async (): Promise<CategoriesWithComponentsCount[]> => {
-    const result = await drizzle
-      .select({
-        categories,
+export const getCategoriesByHome = cache(
+  async (): Promise<CategoriesByHome[]> => {
+    const result = await prisma.category.findMany({
+      orderBy: {
         components: {
-          count: count(components.id),
+          _count: "desc",
         },
-      })
-      .from(categories)
-      .leftJoin(components, eq(categories.id, components.categoryId))
-      .groupBy(categories.id);
+      },
+      include: {
+        components: {
+          take: 1,
+          select: {
+            id: true,
+            previewImages: true,
+          },
+        },
+        _count: {
+          select: {
+            components: true,
+          },
+        },
+      },
+    });
 
-    return result;
+    return toResCategoriesByHome(result);
   }
 );

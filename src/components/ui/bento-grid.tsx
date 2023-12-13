@@ -21,8 +21,8 @@ const BentoGrid = ({
   return <div className={cn(className)}>{children}</div>;
 };
 
-const BendAnchor = ({ href }: { href: string }) => {
-  return <Link className="absolute inset-0 z-10" href={href} />;
+const BentoAnchor = ({ href }: { href: string }) => {
+  return <Link className="absolute inset-0 z-20" href={href} />;
 };
 
 const BentoBackground = ({ children }: { children: ReactNode }) => {
@@ -39,7 +39,7 @@ const BentoHeader = ({
   return (
     <CardHeader
       className={cn(
-        "pointer-events-none z-10 flex transform-gpu flex-col gap-1 p-4 transition-all duration-300 group-hover:-translate-y-10",
+        "pointer-events-none p-4 z-10 flex transform-gpu flex-col gap-1 transition-all duration-300 group-hover:-translate-y-12",
         className
       )}
     >
@@ -58,7 +58,7 @@ const BentoTitle = ({
   return (
     <CardTitle
       className={cn(
-        "font-semibold text-popover-foreground md:text-xl",
+        "font-semibold text-popover-foreground text-lg md:text-xl",
         className
       )}
     >
@@ -104,7 +104,7 @@ const BentoCard = ({
         className
       )}
     >
-      {asLink && <BendAnchor href={href} />}
+      {asLink && <BentoAnchor href={href} />}
       {children}
       <CardContent className="p-0">
         <div
@@ -125,7 +125,7 @@ const BentoCard = ({
           </Button>
         </div>
       </CardContent>
-      <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-black/[.]" />
+      <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.02] group-hover:dark:bg-black/[.1]" />
     </Card>
   );
 };
