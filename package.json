@@ -9,13 +9,17 @@
     "lint": "next lint",
     "generate": "pnpm prisma generate",
     "studio": "pnpm prisma studio",
-    "seed": "pnpm prisma db seed ",
+    "studio:test": "dotenv -e .env.test pnpm prisma studio",
+    "seed": "dotenv -e .env.development.local pnpm prisma db seed ",
     "new-migrate": "pnpm prisma migrate dev --name",
-    "migrate": "pnpm prisma migrate dev",
+    "migrate": "dotenv -e .env.development.local pnpm prisma migrate dev",
     "reset": "pnpm prisma migrate reset --force && pnpm migrate",
     "prepare": "husky install",
     "format": "prettier --write . && eslint --fix .",
-    "test": "dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
+    "seed:test": "dotenv -e .env.test tsx prisma/seed/index.ts",
+    "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
+    "reset:test": "dotenv -e .env.test pnpm prisma migrate reset --force && pnpm migrate:test",
+    "test": "dotenv -e .env.test pnpm migrate:test && pnpm seed:test && pnpm vitest -c ./vitest.config.ts",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },
   "dependencies": {
@@ -96,6 +100,6 @@
     ]
   },
   "prisma": {
-    "seed": "tsx prisma/seed/index.ts"
+    "seed": "tsx --no-cache prisma/seed/index.ts"
   }
 }
