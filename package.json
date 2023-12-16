@@ -59,6 +59,7 @@
     "valibot": "^0.22.0"
   },
   "devDependencies": {
+    "@quramy/prisma-fabbrica": "^2.0.2",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.10.2",
