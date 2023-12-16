@@ -48,6 +48,9 @@ model User {
   componentSets       ComponentSet[]
   componentReviews    ComponentReview[]
   componentSetReviews ComponentSetReview[]
+  componentLikes      ComponentLike[]
+  componentSetLikes   ComponentSetLike[]
+
 }
 
 model Category {
@@ -80,6 +83,7 @@ model Component {
   componentSets ComponentSet[]
   previewImages ComponentPreviewImage[]
   reviews       ComponentReview[]
+  likes         ComponentLike[]
 
   @@index([creatorId])
   @@index([categoryId])
@@ -122,6 +126,7 @@ model ComponentSet {
   // MANY FILEDS
   components Component[]
   reviews    ComponentSetReview[]
+  likes      ComponentSetLike[]
 
   @@index([creatorId])
 }
@@ -164,6 +169,36 @@ model ComponentSetReview {
   id        String   @id @default(cuid())
   comment   String
   rating    Int
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentSetId String
+  ComponentSet   ComponentSet @relation(fields: [componentSetId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentSetId])
+  @@index([userId])
+}
+
+model ComponentLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentId String
+  Component   Component @relation(fields: [componentId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentId])
+  @@index([userId])
+}
+
+model ComponentSetLike {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
   // RELATIONSHIPS
