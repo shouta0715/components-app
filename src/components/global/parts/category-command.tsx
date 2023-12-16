@@ -47,12 +47,12 @@ export function CategoryCommand({ categories }: { categories: Category[] }) {
 
       <button
         aria-label="Open command palette"
-        className="relative hidden w-48 items-center justify-between rounded-lg bg-accent px-2 py-1 md:flex"
+        className="relative hidden w-48 items-center justify-between rounded-lg bg-accent p-2 md:flex"
         onClick={() => setOpen((o) => !o)}
         type="button"
       >
         <Search className="absolute h-5 w-5 text-accent-foreground/50" />
-        <span className="ml-7 text-accent-foreground/50">Search</span>
+        <span className="ml-7 text-sm text-accent-foreground/50">Search</span>
 
         <kbd className="pointer-events-none inline-flex select-none  gap-1 rounded border bg-muted px-1.5 text-[10px] font-medium text-muted-foreground opacity-100 shadow-xl">
           <span className="text-xs">⌘</span>K

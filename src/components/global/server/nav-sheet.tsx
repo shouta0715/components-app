@@ -3,18 +3,8 @@
 import { Menu } from "lucide-react";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { LeftSide } from "@/layouts/root/left";
 
 export function NavSheet() {
   return (
@@ -24,35 +14,17 @@ export function NavSheet() {
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
-        <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit
-            accusantium officia ad rem laudantium fuga illo, ipsa nihil, sed
-            placeat temporibus velit quasi excepturi dolorem reiciendis
-            quibusdam voluptate, perspiciatis expedita.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="name">
-              Name
-            </Label>
-            <Input className="col-span-3" id="name" value="Pedro Duarte" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="username">
-              Username
-            </Label>
-            <Input className="col-span-3" id="username" value="@peduarte" />
-          </div>
-        </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
+
+      <SheetContent className="grid gap-4" side="left">
+        <h2 className="flex items-center gap-4 ">
+          <img
+            alt="Your Company"
+            className="h-6 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+          />
+          <span className="inline-block text-lg font-bold">UI TRADE</span>
+        </h2>
+        <LeftSide />
       </SheetContent>
     </Sheet>
   );
