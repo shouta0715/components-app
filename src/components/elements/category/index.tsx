@@ -31,7 +31,7 @@ export async function Category({ category }: { category: CategoriesByHome }) {
               fill
               priority
               sizes="100%"
-              src={`${getImageUrl(previewImages[0].objectId)}.png`}
+              src={`${getImageUrl(previewImages[0].objectId)}`}
             />
           </div>
         </div>

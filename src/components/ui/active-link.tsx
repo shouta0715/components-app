@@ -13,12 +13,14 @@ export type ActiveLinkProps = Omit<
 > & {
   href: string;
   className?: string;
+  activeClass?: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 export const ActiveLink = ({
   href,
   size,
   radius,
   className,
+  activeClass,
   ...props
 }: ActiveLinkProps) => {
   const pathname = usePathname();
@@ -29,9 +31,7 @@ export const ActiveLink = ({
     <Link
       className={cn(
         buttonVariants({ variant: "link", size, className, radius }),
-        {
-          "text-primary": active,
-        }
+        active ? activeClass : ""
       )}
       href={href}
       {...props}
