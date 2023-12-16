@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ComponentSet, Prisma, User } from "@prisma/client";
 import { uploadImage } from "../lib/uploadimage";
-import { randomString } from "@/utils/random";
+import { randomNum, randomString } from "@/utils/random";
 
 async function generateSeedComponentSets(
   users: User[]
@@ -9,7 +9,9 @@ async function generateSeedComponentSets(
   const image = await uploadImage();
 
   const created = users.map((user) => {
-    return Array.from({ length: 2 }).map((_, i) => {
+    return Array.from({
+      length: randomNum(100, 0),
+    }).map((_, i) => {
       return {
         name: `${user.name} Component Set ${i}`,
         creatorId: user.id,
