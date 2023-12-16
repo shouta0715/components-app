@@ -1,4 +1,4 @@
-import { Category, ComponentPreviewImage } from "@prisma/client";
+import { Category, Component, ComponentPreviewImage } from "@prisma/client";
 
 export type CategoriesByHome = {
   components: {
@@ -9,3 +9,7 @@ export type CategoriesByHome = {
     components: number;
   };
 } & Category;
+
+export type CompWithImgs = Component & {
+  previewImages?: ComponentPreviewImage[];
+};

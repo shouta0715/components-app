@@ -31,8 +31,8 @@ export const getContentType = (type: Extension) => {
   return "text/typescript";
 };
 
-export const getImageUrl = (id: string) => {
+export const getImageUrl = (id: string, extension = "png") => {
   const endpoint = process.env.AWS_S3_ENDPOINT;
 
-  return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}`;
+  return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}.${extension}`;
 };
