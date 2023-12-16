@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { TopComponent } from "@/components/elements/components/top";
 import { Button } from "@/components/ui/button";
 
 export async function TopHeader() {
@@ -33,6 +34,8 @@ export async function TopHeader() {
           </Link>
         </Button>
       </div>
+
+      <TopComponent />
     </div>
   );
 }

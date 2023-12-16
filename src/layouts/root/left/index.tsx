@@ -141,7 +141,7 @@ function Rankings() {
 }
 
 async function Categories() {
-  const categories = await getCategories();
+  const categories = await getCategories(50);
 
   return (
     <nav>
@@ -167,8 +167,8 @@ async function Categories() {
 
 export async function LeftSide() {
   return (
-    <ScrollArea className="h-[calc(100vh-8rem)]">
-      <div className="grid gap-y-8">
+    <ScrollArea className="h-[calc(100dvh-8rem)]">
+      <div className="grid h-full gap-y-8">
         <div>
           <p className="mb-3 font-semibold text-primary">Introduction</p>
           <IntroDuction />
