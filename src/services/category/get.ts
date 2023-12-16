@@ -26,6 +26,11 @@ export const getCategoriesByHome = cache(
             id: true,
             previewImages: true,
           },
+          orderBy: {
+            likes: {
+              _count: "desc",
+            },
+          },
         },
         _count: {
           select: {
