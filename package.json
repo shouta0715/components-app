@@ -19,7 +19,7 @@
     "format": "prettier --write . && eslint --fix .",
     "seed:test": "dotenv -e .env.test tsx prisma/seed/index.ts",
     "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
-    "test": "dotenv -e .env.test pnpm migrate:test && pnpm seed:test && pnpm vitest -c ./vitest.config.ts",
+    "test": "pnpm migrate:test && dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },
   "dependencies": {
@@ -71,6 +71,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.0.2",
     "autoprefixer": "^10.4.16",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.55.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
