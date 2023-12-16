@@ -1,11 +1,12 @@
 import React from "react";
 import { Image } from "@/components/elements/images";
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
+import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
 import { getImageUrl } from "@/utils";
 
 export async function TopComponent() {
-  const components = await getTopComps(5);
+  const components = await cache(async () => getTopComps(5), ["topComps"])();
 
   return (
     <div className="h-72 w-full">

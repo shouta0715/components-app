@@ -34,6 +34,7 @@ export async function TopHeader() {
           </Link>
         </Button>
       </div>
+
       <TopComponent />
     </div>
   );
