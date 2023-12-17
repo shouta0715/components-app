@@ -36,3 +36,15 @@ export const getImageUrl = (id: string, extension = "png") => {
 
   return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}.${extension}`;
 };
+
+export const getDisplayName = (name?: string | null, slice?: number) => {
+  if (!name) return "Unknown";
+
+  if (!slice) return name;
+
+  if (name.length > slice) {
+    return `${name.slice(0, slice)}...`;
+  }
+
+  return name;
+};
