@@ -47,7 +47,7 @@ export function CategoryCommand({ categories }: { categories: Category[] }) {
 
       <button
         aria-label="Open command palette"
-        className="relative hidden w-48 items-center justify-between rounded-lg bg-accent p-2 md:flex"
+        className="relative hidden w-48  items-center justify-between rounded-lg bg-accent p-2 md:flex"
         onClick={() => setOpen((o) => !o)}
         type="button"
       >

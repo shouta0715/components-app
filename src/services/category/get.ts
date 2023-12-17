@@ -17,7 +17,10 @@ export const getCategories = async (
   return result;
 };
 
-export const getCategoriesByHome = async (): Promise<CategoriesByHome[]> => {
+export const getCategoriesByHome = async (
+  take: number,
+  skip = 0
+): Promise<CategoriesByHome[]> => {
   const result = await prisma.category.findMany({
     orderBy: {
       components: {
@@ -43,6 +46,8 @@ export const getCategoriesByHome = async (): Promise<CategoriesByHome[]> => {
         },
       },
     },
+    take,
+    skip,
   });
 
   return toResCategoriesByHome(result);
