@@ -1,3 +1,5 @@
+"server only";
+
 import { Mail } from "lucide-react";
 import { Session } from "next-auth";
 import React from "react";
@@ -12,18 +14,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { auth } from "@/lib/auth";
 
-function UnAuthorized() {
+export function UnAuthorized() {
   return <AuthButton />;
 }
 
-function Authorized({ session }: { session: Session }) {
+export function Authorized({ session }: { session: Session }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          className="h-8 w-8 overflow-hidden rounded-full border border-input md:h-10 md:w-10"
+          className="mx-2 h-8 w-8 overflow-hidden rounded-full border border-input md:h-10 md:w-10"
           variant="ghost"
         >
           <Avatar className="bg-none">
@@ -57,10 +58,4 @@ function Authorized({ session }: { session: Session }) {
       </PopoverContent>
     </Popover>
   );
-}
-
-export async function UserAvatar() {
-  const session = await auth();
-
-  return session ? <Authorized session={session} /> : <UnAuthorized />;
 }
