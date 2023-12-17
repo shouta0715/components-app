@@ -11,13 +11,11 @@
     "studio": "pnpm prisma studio",
     "studio:test": "dotenv -e .env.test pnpm prisma studio",
     "seed": "dotenv -e .env.development.local pnpm prisma db seed ",
-    "seed:all": "pnpm seed && pnpm seed:test",
     "new-migrate": "pnpm prisma migrate dev --name",
     "migrate": "dotenv -e .env.development.local pnpm prisma migrate dev",
     "migrate:all": "pnpm migrate && pnpm migrate:test",
     "prepare": "husky install",
     "format": "prettier --write . && eslint --fix .",
-    "seed:test": "dotenv -e .env.test tsx prisma/seed/index.ts",
     "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
     "test": "pnpm migrate:test && dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"

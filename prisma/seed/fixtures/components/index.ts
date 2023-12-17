@@ -8,7 +8,7 @@ function generateSeedComponents(
   users: User[]
 ): Prisma.ComponentCreateManyInput[] {
   const created = categories.map((category) => {
-    return Array.from({ length: randomNum(100, 1) }).map((_, i) => {
+    return Array.from({ length: randomNum(50, 1) }).map((_, i) => {
       const data: Prisma.ComponentCreateManyInput = {
         name: `${category.name} Component ${i}`,
         categoryId: category.id,

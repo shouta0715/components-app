@@ -3,15 +3,15 @@ import fs from "fs";
 import path from "path";
 import { getSignedPostUrl } from "@/lib/client/s3";
 
-function loadFiles(): Buffer {
+function loadFiles(name: string = "index"): Buffer {
   const baseFolder = `${process.cwd()}/prisma/seed/fixtures/assets/images`;
 
-  const filePath = path.join(baseFolder, `index.png`);
+  const filePath = path.join(baseFolder, `${name}.png`);
 
   return fs.readFileSync(filePath);
 }
 
-export async function uploadImage(): Promise<{
+export async function uploadImage(name: string = "index"): Promise<{
   id: string;
 }> {
   const { url, fields, id } = await getSignedPostUrl(
@@ -26,7 +26,7 @@ export async function uploadImage(): Promise<{
     formData.append(key, value);
   });
 
-  const file = loadFiles();
+  const file = loadFiles(name);
 
   formData.append("file", new Blob([file], { type: "image/png" }));
 
