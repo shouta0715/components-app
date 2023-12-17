@@ -1,8 +1,9 @@
 import Link from "next/link";
 import React from "react";
+import { AuthUser } from "@/components/global/auth/client";
 import { CommandPallet } from "@/components/global/server/command-pallet";
 import { NavSheet } from "@/components/global/server/nav-sheet";
-import { UserAvatar } from "@/components/global/server/user-avatar";
+
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function Header() {
@@ -22,10 +23,10 @@ export function Header() {
             </span>
           </Link>
         </div>
-        <div className="flex items-center gap-x-4 md:gap-x-6">
+        <div className="flex items-center gap-x-4 transition-opacity duration-1000 animate-in fade-in-0 md:gap-x-6">
           <CommandPallet />
           <ThemeToggle />
-          <UserAvatar />
+          <AuthUser />
         </div>
       </div>
     </header>
