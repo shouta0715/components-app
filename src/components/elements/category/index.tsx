@@ -22,18 +22,18 @@ export async function Category({ category }: { category: CategoriesByHome }) {
       name={category.name}
     >
       <BentoBackground>
-        <div className="flex h-52 items-center justify-center bg-accent sm:h-44">
-          <div className="relative grid h-5/6 w-11/12 place-items-center overflow-hidden ">
-            <div className="z-10 h-full w-full [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--accent))_95%_100%)]" />
+        <div className="relative h-52 w-full overflow-hidden bg-accent sm:h-44">
+          <div className="absolute bottom-0 z-10 h-full w-full [backgroundImage:linear-gradient(180deg,transparent_0_60%,hsl(var(--accent))_98%_100%)]" />
+          <figure className="relative mx-16 mt-4 block h-full sm:mx-8  md:mx-16">
             <Image
               alt={`Image for ${category.name}`}
-              className="scale-90 rounded-md  object-cover object-top  shadow-inner"
+              className="rounded-md object-cover object-top"
               fill
               priority
               sizes="100%"
               src={`${getImageUrl(previewImages[0].objectId)}`}
             />
-          </div>
+          </figure>
         </div>
       </BentoBackground>
       <BentoHeader>

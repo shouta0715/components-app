@@ -3,12 +3,13 @@ import Link from "next/link";
 import React from "react";
 
 import { Image } from "@/components/elements/images";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
 import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
-import { getImageUrl } from "@/utils";
+import { getDisplayName, getImageUrl } from "@/utils";
 
 async function TopComponent() {
   const components = await cache(async () => getTopComps(5), ["topComps"])();
@@ -24,7 +25,7 @@ async function TopComponent() {
         }}
         classNames={{
           root: "h-full",
-          container: "w-full h-full",
+          container: "w-full h-full grid",
           viewport: "overflow-hidden h-full",
         }}
         dots
@@ -35,18 +36,43 @@ async function TopComponent() {
           return (
             <CarouselSlider
               key={image?.id}
-              className="group basis-2/3 sm:basis-1/2"
+              className="group"
               href={`/components/${comp.id}`}
             >
-              <div className="absolute z-10 h-full w-full opacity-100 transition-opacity duration-500 [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--background))_95%_100%)] group-hover:opacity-0" />
-              <Image
-                alt={comp.name}
-                className="scale-90 rounded-lg object-cover object-top"
-                fill
-                loading="lazy"
-                sizes="100%"
-                src={getImageUrl(image?.objectId as string)}
-              />
+              <div className="relative h-full w-full items-end justify-end">
+                <div
+                  aria-hidden
+                  className="absolute z-10 h-full w-full [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--background))_85%_100%)]"
+                />
+                <Image
+                  alt={comp.name}
+                  className="rounded-lg from-transparent object-cover object-top "
+                  fill
+                  priority
+                  sizes="100%"
+                  src={getImageUrl(image?.objectId as string)}
+                />
+
+                <div className="absolute bottom-6 left-2 z-20 grid gap-1">
+                  <Link
+                    className="flex items-center gap-1"
+                    href={`/users/${comp.creator.id}`}
+                  >
+                    <Avatar className="h-6 w-6 bg-accent text-xs sm:h-7 sm:w-7 sm:text-sm">
+                      <AvatarImage src={comp.creator.image ?? ""} />
+                      <AvatarFallback>
+                        {comp.creator.name?.slice(0, 2) ?? "UK"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="line-clamp-1 w-full text-sm text-primary">
+                      {getDisplayName(comp.creator.name)}
+                    </p>
+                  </Link>
+                  <p className="px-1 text-xs text-primary sm:text-sm">
+                    {comp.name}
+                  </p>
+                </div>
+              </div>
             </CarouselSlider>
           );
         })}

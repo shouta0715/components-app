@@ -73,10 +73,10 @@ const CarouselSlider = React.forwardRef<
     <div
       ref={ref}
       {...props}
-      className={cn("flex relative shrink-0 grow-0 basis-2/3", className)}
+      className={cn("relative h-full first:ml-8", className)}
     >
       {href && <CarouselLink href={href} />}
-      <div className={cn("relative w-full", classNames?.inner)}>{children}</div>
+      <div className={cn("h-full relative", classNames?.inner)}>{children}</div>
     </div>
   );
 });
@@ -218,7 +218,13 @@ function Carousel({
   return (
     <div className={cn("relative", classNames?.root)}>
       <div ref={emblaRef} className={cn(classNames?.viewport)}>
-        <div className={cn("flex", className, classNames?.container)}>
+        <div
+          className={cn(
+            "grid grid-flow-col auto-cols-[50%] gap-x-8",
+            className,
+            classNames?.container
+          )}
+        >
           {children}
         </div>
       </div>
