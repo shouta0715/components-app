@@ -6,7 +6,7 @@ import { NavSheet } from "@/components/global/server/nav-sheet";
 
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
-export function Header() {
+function CommonHeader({ children }: { children?: React.ReactNode }) {
   return (
     <header className="shrink-0 border-b bg-background dark:border-gray-700">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -26,9 +26,21 @@ export function Header() {
         <div className="flex items-center gap-x-4 transition-opacity duration-1000 animate-in fade-in-0 md:gap-x-6">
           <CommandPallet />
           <ThemeToggle />
-          <AuthUser />
+          {children}
         </div>
       </div>
     </header>
   );
+}
+
+export function AppHeader() {
+  return (
+    <CommonHeader>
+      <AuthUser />
+    </CommonHeader>
+  );
+}
+
+export function AuthHeader() {
+  return <CommonHeader />;
 }

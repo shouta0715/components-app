@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "@/style/tailwind.css";
 import { Toaster } from "@/components/ui/toaster";
-import { BaseLayout } from "@/layouts/root";
 import { cn } from "@/utils";
 
 const fontSans = FontSans({
@@ -32,7 +31,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <BaseLayout>{children}</BaseLayout>
+        {children}
         <Toaster />
       </body>
     </html>
