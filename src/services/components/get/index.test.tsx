@@ -1,0 +1,80 @@
+import { describe, expect, test } from "vitest";
+
+import { NotFoundError } from "@/lib/errors";
+import {
+  getComp,
+  getCompWithImages,
+  getTopComps,
+} from "@/services/components/get";
+import {
+  defineCategoryFactory,
+  defineComponentFactory,
+  defineComponentPreviewImageFactory,
+  defineUserFactory,
+} from "@/tests/fabbrica";
+
+describe("GET Component RDB Test", async () => {
+  test("getComp", async () => {
+    const category = defineCategoryFactory();
+    const creator = defineUserFactory();
+    const mockComponent = defineComponentFactory({
+      defaultData: { category, creator },
+    });
+
+    const wont = await mockComponent.create();
+
+    const should = await getComp(wont.id);
+
+    expect(should).toStrictEqual(should);
+  });
+
+  test("if getComponent is null throw on NotFoundError", async () => {
+    expect(getComp("")).rejects.toThrow(NotFoundError);
+  });
+
+  test("getCompWithImages", async () => {
+    const category = defineCategoryFactory();
+    const creator = defineUserFactory();
+
+    const component = defineComponentFactory({
+      defaultData: { category, creator },
+    });
+
+    const wont = await component.create();
+    const previewImages = defineComponentPreviewImageFactory({
+      defaultData: async () => ({
+        Component: {
+          connect: {
+            id: wont.id,
+          },
+        },
+      }),
+    });
+
+    await previewImages.createList(3);
+
+    const should = await getCompWithImages(wont.id);
+
+    expect(should).toStrictEqual(should);
+    expect(should.previewImages).toHaveLength(3);
+  });
+
+  test("if getComponentWithImages is null throw on NotFoundError", async () => {
+    expect(getCompWithImages("not-found")).rejects.toThrow(NotFoundError);
+  });
+
+  test("getTopComps", async () => {
+    const category = defineCategoryFactory();
+    const creator = defineUserFactory();
+
+    const component = defineComponentFactory({
+      defaultData: { category, creator },
+    });
+
+    await component.createList(10);
+
+    const should = await getTopComps(5);
+
+    expect(should).toHaveLength(5);
+  });
+});

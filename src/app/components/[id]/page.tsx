@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function RightSide() {
+export default function Page() {
   return <div>index</div>;
 }

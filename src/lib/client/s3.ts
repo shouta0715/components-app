@@ -6,17 +6,22 @@ import { Extension } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { BUCKET_NAME } from "@/lib/constant";
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+if (
+  !process.env.AWS_ACCESS_KEY_ID ||
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_S3_ENDPOINT
+) {
   throw new Error("AWS credentials not found");
 }
 
 const s3Client = new S3Client({
   region: "us-east-1",
-  endpoint: "http://127.0.0.1:9000",
+  endpoint: process.env.AWS_S3_ENDPOINT,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
   },
+  forcePathStyle: true,
 });
 
 export const getSignedPostUrl = async (
@@ -25,6 +30,7 @@ export const getSignedPostUrl = async (
   bucket: BUCKET_NAME
 ): Promise<PresignedPost & { id: string }> => {
   const id = uuidv4();
+
   const command = await createPresignedPost(s3Client, {
     Bucket: bucket,
     Key: `${id}.${fileExtension}`,
@@ -33,7 +39,6 @@ export const getSignedPostUrl = async (
       ["starts-with", "$Content-Type", contentType],
     ],
     Fields: {
-      acl: "public-read",
       "Content-Type": contentType,
     },
     Expires: 600,
@@ -45,9 +50,12 @@ export const getSignedPostUrl = async (
   };
 };
 
-export const getSignedFileUrl = async (filename: string) => {
+export const getSignedFileUrl = async (
+  filename: string,
+  bucket: BUCKET_NAME
+) => {
   const command = new GetObjectCommand({
-    Bucket: "ui-trade",
+    Bucket: `${bucket}`,
     Key: filename,
   });
 

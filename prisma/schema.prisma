@@ -5,6 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator fabbrica {
+  provider = "prisma-fabbrica"
+  output   = "../src/tests/fabbrica"
+}
+
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
@@ -33,6 +38,7 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+  @@map("accounts")
 }
 
 model User {
@@ -48,6 +54,10 @@ model User {
   componentSets       ComponentSet[]
   componentReviews    ComponentReview[]
   componentSetReviews ComponentSetReview[]
+  componentLikes      ComponentLike[]
+  componentSetLikes   ComponentSetLike[]
+
+  @@map("users")
 }
 
 model Category {
@@ -57,6 +67,8 @@ model Category {
 
   // MANY FILEDS
   components Component[]
+
+  @@map("categories")
 }
 
 model Component {
@@ -80,9 +92,12 @@ model Component {
   componentSets ComponentSet[]
   previewImages ComponentPreviewImage[]
   reviews       ComponentReview[]
+  likes         ComponentLike[]
 
   @@index([creatorId])
   @@index([categoryId])
+
+  @@map("components")
 }
 
 enum Extension {
@@ -104,6 +119,8 @@ model File {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
+
+  @@map("files")
 }
 
 model ComponentSet {
@@ -122,8 +139,11 @@ model ComponentSet {
   // MANY FILEDS
   components Component[]
   reviews    ComponentSetReview[]
+  likes      ComponentSetLike[]
 
   @@index([creatorId])
+
+  @@map("componentSets")
 }
 
 enum Responsive {
@@ -141,6 +161,8 @@ model ComponentPreviewImage {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
+
+  @@map("componentPreviewImages")
 }
 
 model ComponentReview {
@@ -158,6 +180,8 @@ model ComponentReview {
 
   @@index([componentId])
   @@index([userId])
+
+  @@map("componentReviews")
 }
 
 model ComponentSetReview {
@@ -175,4 +199,40 @@ model ComponentSetReview {
 
   @@index([componentSetId])
   @@index([userId])
+
+  @@map("componentSetReviews")
+}
+
+model ComponentLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentId String
+  Component   Component @relation(fields: [componentId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentId])
+  @@index([userId])
+
+  @@map("componentLikes")
+}
+
+model ComponentSetLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  componentSetId String
+  ComponentSet   ComponentSet @relation(fields: [componentSetId], references: [id])
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([componentSetId])
+  @@index([userId])
+
+  @@map("componentSetLikes")
 }

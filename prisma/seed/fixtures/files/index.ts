@@ -5,6 +5,7 @@ import path from "path";
 import { $Enums, Component, File, Prisma } from "@prisma/client";
 
 import { getSignedPostUrl } from "@/lib/client/s3";
+
 import { randomNum } from "@/utils/random";
 
 const getContentType = (type: $Enums.Extension) => {
@@ -52,6 +53,7 @@ async function uploadFiles(type: $Enums.Extension): Promise<{
   );
 
   const formData = new FormData();
+  const formData2 = new FormData();
 
   Object.entries(fields).forEach(([key, value]) => {
     formData.append(key, value);
@@ -60,14 +62,15 @@ async function uploadFiles(type: $Enums.Extension): Promise<{
   const file = loadFiles(type);
 
   formData.append("file", new Blob([file], { type: contentType }));
+  formData2.append("file", new Blob([file], { type: contentType }));
 
-  const response = await fetch(url, {
+  const res = await fetch(url, {
     method: "POST",
     body: formData,
   });
 
-  if (!response.ok) {
-    console.log(response);
+  if (!res.ok) {
+    console.log(res.ok);
     throw new Error("Failed to upload file");
   }
 
@@ -81,8 +84,9 @@ async function generateSeedFiles(
   components: Component[]
 ): Promise<Prisma.FileCreateManyInput[]> {
   const files = await Promise.all([
-    uploadFiles("tsx"),
     uploadFiles("html"),
+    uploadFiles("tsx"),
+    uploadFiles("jsx"),
     uploadFiles("css"),
     uploadFiles("js"),
     uploadFiles("ts"),

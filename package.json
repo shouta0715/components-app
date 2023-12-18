@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "docker compose up -d && next dev",
-    "up": "docker compose up -d",
-    "down": "docker compose down",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate": "pnpm prisma generate",
     "studio": "pnpm prisma studio",
-    "seed": "pnpm prisma db seed ",
+    "studio:test": "dotenv -e .env.test pnpm prisma studio",
+    "seed": "dotenv -e .env.development.local pnpm prisma db seed ",
     "new-migrate": "pnpm prisma migrate dev --name",
-    "migrate": "pnpm prisma migrate dev",
-    "reset": "pnpm prisma migrate reset --force && pnpm migrate",
+    "migrate": "dotenv -e .env.development.local pnpm prisma migrate dev",
+    "migrate:all": "pnpm migrate && pnpm migrate:test",
     "prepare": "husky install",
     "format": "prettier --write . && eslint --fix .",
-    "test": "dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
+    "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
+    "test": "pnpm migrate:test && dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },
   "dependencies": {
@@ -29,16 +29,21 @@
     "@next/env": "^14.0.3",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.7.0",
+    "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@types/minify": "^9.1.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
+    "embla-carousel-autoplay": "8.0.0-rc15",
+    "embla-carousel-react": "8.0.0-rc15",
     "lucide-react": "^0.294.0",
     "next": "14.0.3",
     "next-auth": "5.0.0-beta.4",
@@ -48,19 +53,23 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "valibot": "^0.22.0"
   },
   "devDependencies": {
+    "@quramy/prisma-fabbrica": "^2.0.2",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.10.2",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.17",
+    "@types/uglify-js": "^3.17.4",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.0.2",
     "autoprefixer": "^10.4.16",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.55.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -92,6 +101,6 @@
     ]
   },
   "prisma": {
-    "seed": "tsx prisma/seed/index.ts"
+    "seed": "tsx --no-cache prisma/seed/index.ts"
   }
 }

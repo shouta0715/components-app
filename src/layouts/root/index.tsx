@@ -3,7 +3,6 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Footer } from "@/layouts/root/footer";
 import { Header } from "@/layouts/root/header";
 import { LeftSide } from "@/layouts/root/left";
-import RightSide from "@/layouts/root/right";
 
 export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -22,9 +21,6 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
             <LeftSide />
           </aside>
           <main className="flex-1">{children}</main>
-          <aside className="sticky top-20 hidden w-96 shrink-0 xl:block">
-            <RightSide />
-          </aside>
         </div>
         <Footer />
       </div>

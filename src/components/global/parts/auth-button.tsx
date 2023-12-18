@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/handler";
+import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/actions";
 
 function GoogleIcon() {
   return (
