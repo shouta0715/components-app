@@ -4,6 +4,8 @@ Application Constants
 *********************************************
 */
 
+import { RedirectType } from "next/navigation";
+
 export const PUBLIC_BUCKET_NAME = "ui-trade-public" as const;
 export const PRIVATE_BUCKET_NAME = "ui-trade-private" as const;
 export const PREVIEW_BUCKET_NAME = "ui-trade-preview" as const;
@@ -18,6 +20,15 @@ export const OBJECT_PUBLIC_BASE_URL =
 
 export const OBJECT_PRIVATE_BASE_URL =
   `${process.env.AWS_S3_ENDPOINT}/${PRIVATE_BUCKET_NAME}` as const;
+
+/*
+*********************************************
+Next.js Constants
+*********************************************
+*/
+
+export const REDIRECT_PUSH = RedirectType.push as const;
+export const REDIRECT_REPLACE = RedirectType.replace as const;
 
 /* 
 *********************************************

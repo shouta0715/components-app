@@ -13,7 +13,7 @@ import {
   defineUserFactory,
 } from "@/tests/fabbrica";
 
-describe("Component RDB Test", async () => {
+describe("GET Component RDB Test", async () => {
   test("getComp", async () => {
     const category = defineCategoryFactory();
     const creator = defineUserFactory();

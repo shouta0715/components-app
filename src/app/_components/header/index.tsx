@@ -2,9 +2,10 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+import { createDraftComp } from "@/actions/components/create";
 import { Image } from "@/components/elements/images";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
 import { cache } from "@/lib/next/cache";
@@ -99,17 +100,20 @@ export async function TopHeader() {
       </div>
       <div className="flex flex-col gap-4 sm:flex-row">
         <Button asChild>
-          <Link href="/docs">
-            Document
+          <Link href="/components/popular">
+            人気のコンポーネントを見る
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>
         </Button>
-        <Button asChild variant="outline">
-          <Link href="/components">
-            Popular Components
+        <form
+          action={createDraftComp}
+          className={buttonVariants({ variant: "outline" })}
+        >
+          <button className="flex items-center" type="submit">
+            投稿する
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
-          </Link>
-        </Button>
+          </button>
+        </form>
       </div>
 
       <TopComponent />
