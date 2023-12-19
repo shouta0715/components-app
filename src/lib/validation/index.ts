@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
 import { User } from "next-auth";
 import { BaseSchema, Input, parse, safeParse } from "valibot";
+import { UnauthorizedError } from "@/lib/errors";
 
 export function validate<T extends BaseSchema>(
   target: unknown,
@@ -17,7 +17,5 @@ export const safeValidate = <T extends BaseSchema>(
 };
 
 export function assertUser(user?: User): asserts user is User {
-  if (!user) {
-    redirect("/auth/login");
-  }
+  if (!user) throw new UnauthorizedError();
 }
