@@ -4,6 +4,7 @@ import React from "react";
 
 import { createDraftComp } from "@/actions/components/create";
 import { Image } from "@/components/elements/images";
+import { AuthForm } from "@/components/ui/auth-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 
@@ -105,7 +106,7 @@ export async function TopHeader() {
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>
         </Button>
-        <form
+        <AuthForm
           action={createDraftComp}
           className={buttonVariants({ variant: "outline" })}
         >
@@ -113,7 +114,7 @@ export async function TopHeader() {
             投稿する
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </button>
-        </form>
+        </AuthForm>
       </div>
 
       <TopComponent />

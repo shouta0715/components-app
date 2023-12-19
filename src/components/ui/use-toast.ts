@@ -13,6 +13,11 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement;
 };
 
+export type ErrorToast = {
+  title: string;
+  message: string;
+};
+
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
