@@ -11,7 +11,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
 import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
-import { getDisplayName, getImageUrl } from "@/utils";
+import { cn, getDisplayName, getImageUrl } from "@/utils";
 
 async function TopComponent() {
   const components = await cache(async () => getTopComps(5), ["topComps"])();
@@ -101,16 +101,21 @@ export async function TopHeader() {
       </div>
       <div className="flex flex-col gap-4 sm:flex-row">
         <Button asChild>
-          <Link href="/components/popular">
+          <Link href="/components/popular" scroll={false}>
             人気のコンポーネントを見る
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>
         </Button>
         <AuthForm
           action={createDraftComp}
-          className={buttonVariants({ variant: "outline" })}
+          className={cn(
+            buttonVariants({
+              variant: "outline",
+            }),
+            "px-0 py-0"
+          )}
         >
-          <button className="flex items-center" type="submit">
+          <button className="flex items-center px-4 py-2" type="submit">
             投稿する
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </button>

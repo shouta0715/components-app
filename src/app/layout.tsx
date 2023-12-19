@@ -19,8 +19,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="ja" suppressHydrationWarning>
@@ -31,6 +33,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
+        {modal}
         {children}
         <Toaster />
       </body>
