@@ -17,7 +17,9 @@ import { signOutOauth } from "@/lib/auth/actions";
 export function UnAuthorized() {
   return (
     <Button asChild size="sm">
-      <Link href="/auth/login">LogIn</Link>
+      <Link href="/auth/login" scroll={false}>
+        LogIn
+      </Link>
     </Button>
   );
 }

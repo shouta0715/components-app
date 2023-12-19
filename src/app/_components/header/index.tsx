@@ -101,7 +101,7 @@ export async function TopHeader() {
       </div>
       <div className="flex flex-col gap-4 sm:flex-row">
         <Button asChild>
-          <Link href="/components/popular" scroll={false}>
+          <Link href="/components/popular">
             人気のコンポーネントを見る
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>

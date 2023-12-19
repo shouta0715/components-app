@@ -40,7 +40,9 @@ export function useAuthForm(
       if (redirect) router.push(redirect);
     } catch (error) {
       if (error instanceof UnauthorizedError) {
-        router.push("/auth/login");
+        router.push("/auth/login", {
+          scroll: false,
+        });
 
         return;
       }
