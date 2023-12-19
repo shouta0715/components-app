@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
+import { defineCategoryFactory } from "../../../tests/fabbrica";
 import { getCategories } from "@/services/category/get";
-import { defineCategoryFactory } from "@/tests/fabbrica";
 
 describe("Category RDB Test", async () => {
   test("getCategories", async () => {

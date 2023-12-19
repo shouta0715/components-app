@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
+import { defineUserFactory } from "../../../../tests/fabbrica";
 import { createDraftComponent } from "@/services/components/post";
-import { defineUserFactory } from "@/tests/fabbrica";
 
 describe("POST Component RDB test", () => {
   test("createDraftComponent", async () => {

@@ -1,17 +1,17 @@
 import { describe, expect, test } from "vitest";
 
+import {
+  defineCategoryFactory,
+  defineComponentFactory,
+  defineComponentPreviewImageFactory,
+  defineUserFactory,
+} from "../../../../tests/fabbrica";
 import { NotFoundError } from "@/lib/errors";
 import {
   getComp,
   getCompWithImages,
   getTopComps,
 } from "@/services/components/get";
-import {
-  defineCategoryFactory,
-  defineComponentFactory,
-  defineComponentPreviewImageFactory,
-  defineUserFactory,
-} from "@/tests/fabbrica";
 
 describe("GET Component RDB Test", async () => {
   test("getComp", async () => {
