@@ -12,7 +12,7 @@ export default defineConfig({
     globals: true,
     environment: "happy-dom",
     setupFiles: ["./__tests__/setup.ts"],
-    include: ["./src/**/*.test.{ts,tsx}", "./tests/**/*.test.{ts,tsx}"],
+    include: ["./src/**/*.test.{ts,tsx}"],
     exclude: [
       ...configDefaults.exclude,
       "src/**/e2e/**/*",

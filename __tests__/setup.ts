@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import router from "next-router-mock";
 import React from "react";
 import { vi } from "vitest";
-import { initialize } from "../tests/fabbrica";
+import { initialize } from "../src/tests/fabbrica";
 
 vi.mock("next/navigation", () => ({
   // eslint-disable-next-line global-require
