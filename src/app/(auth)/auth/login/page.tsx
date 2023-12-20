@@ -104,7 +104,7 @@ export default async function Page() {
             <span className="mr-2 font-bold tabular-nums">
               {componentsCount}
             </span>
-            個のコンポーネントが投稿し、使用されています。
+            個のコンポーネントが投稿され、使用されています。
           </p>
         </div>
         <div className="flex gap-4 sm:max-w-xs sm:flex-col">
