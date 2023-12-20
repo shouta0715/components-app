@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useSession, SessionProvider } from "next-auth/react";
 import { useCallback, useEffect } from "react";
-import { Authorized, UnAuthorized } from "@/components/global/auth/server";
-import { GitHubIcon } from "@/components/icons/GitHub";
-import { GoogleIcon } from "@/components/icons/Google";
-import { Button } from "@/components/ui/button";
+import {
+  Authorized,
+  GitHubButton,
+  GoogleButton,
+  UnAuthorized,
+} from "@/components/global/auth/server";
+import { Icon } from "@/components/icons/Icon";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { signInGitHub, signInGoogle } from "@/lib/auth/actions";
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   return <SessionProvider>{children}</SessionProvider>;
@@ -55,31 +57,22 @@ export function AuthModal() {
 
   return (
     <Dialog defaultOpen onOpenChange={onDismiss}>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="grid max-w-sm gap-8">
         <DialogHeader>
-          <h2 className="text-center text-lg font-bold uppercase text-primary">
-            Log in to your account
+          <h2 className="mx-auto flex items-center gap-2 text-center text-3xl   text-primary">
+            <Icon className="h-7 w-auto" />
+            <span className="font-semibold">UI TRADE</span>
           </h2>
         </DialogHeader>
+
+        <p className="text-sm">
+          UIをシェアするプラットフォームです。
+          あなたの作ったUIが世界中の開発者に使われるかもしれません。
+        </p>
+
         <div className="flex flex-col items-center space-y-4">
-          <form action={signInGitHub}>
-            <Button
-              className="flex w-max gap-x-3 font-semibold"
-              variant="outline"
-            >
-              <GitHubIcon />
-              <span>Log in with GitHub</span>
-            </Button>
-          </form>
-          <form action={signInGoogle}>
-            <Button
-              className="flex w-max gap-x-3 font-semibold"
-              variant="outline"
-            >
-              <GoogleIcon />
-              <span>Log in with GitHub</span>
-            </Button>
-          </form>
+          <GitHubButton />
+          <GoogleButton />
         </div>
       </DialogContent>
     </Dialog>

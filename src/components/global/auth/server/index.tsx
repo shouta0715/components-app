@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Session } from "next-auth";
 import React from "react";
 
+import { GitHubIcon } from "@/components/icons/GitHub";
+import { GoogleIcon } from "@/components/icons/Google";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { signOutOauth } from "@/lib/auth/actions";
+import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/actions";
 
 export function UnAuthorized() {
   return (
@@ -78,3 +80,25 @@ export function Authorized({ session }: { session: Session }) {
     </Popover>
   );
 }
+
+export const GitHubButton = () => {
+  return (
+    <form action={signInGitHub}>
+      <Button className="flex w-max gap-x-3 font-semibold" variant="outline">
+        <GitHubIcon />
+        <span className="px-4">GitHubでログイン</span>
+      </Button>
+    </form>
+  );
+};
+
+export const GoogleButton = () => {
+  return (
+    <form action={signInGoogle}>
+      <Button className="flex w-max gap-x-3 font-semibold" variant="outline">
+        <GoogleIcon />
+        <span className="px-4">Googleでログイン</span>
+      </Button>
+    </form>
+  );
+};
