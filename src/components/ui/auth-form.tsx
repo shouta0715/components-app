@@ -6,7 +6,7 @@ import { useAuthForm } from "@/components/ui/use-auth-form";
 import { ActionResult } from "@/lib/next/actions";
 
 export interface AuthFormProps
-  extends React.ButtonHTMLAttributes<HTMLFormElement> {
+  extends React.FormHTMLAttributes<HTMLFormElement> {
   action: (formData: FormData) => Promise<ActionResult>;
 }
 
