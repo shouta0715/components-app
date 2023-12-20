@@ -52,3 +52,7 @@ export const getTopComps = async (
 
   return components;
 };
+
+export const getComponentCount = async (): Promise<number> => {
+  return prisma.component.count();
+};
