@@ -1,12 +1,12 @@
 "server only";
 
-import { Mail } from "lucide-react";
+import { LogOutIcon, Mail } from "lucide-react";
+import Link from "next/link";
 import { Session } from "next-auth";
 import React from "react";
-import {
-  AuthButton,
-  SignOutButton,
-} from "@/components/global/parts/auth-button";
+
+import { GitHubIcon } from "@/components/icons/GitHub";
+import { GoogleIcon } from "@/components/icons/Google";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +14,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/actions";
 
 export function UnAuthorized() {
-  return <AuthButton />;
+  return (
+    <Button asChild size="sm">
+      <Link href="/auth/login" scroll={false}>
+        LogIn
+      </Link>
+    </Button>
+  );
+}
+
+export function SignOutButton() {
+  return (
+    <form action={signOutOauth}>
+      <button
+        className="flex w-full items-center gap-x-2 text-sm"
+        type="submit"
+      >
+        <LogOutIcon className="inline-block h-4 w-4" />
+        <span>ログアウト</span>
+      </button>
+    </form>
+  );
 }
 
 export function Authorized({ session }: { session: Session }) {
@@ -59,3 +80,25 @@ export function Authorized({ session }: { session: Session }) {
     </Popover>
   );
 }
+
+export const GitHubButton = () => {
+  return (
+    <form action={signInGitHub}>
+      <Button className="flex w-max gap-x-3 font-semibold" variant="outline">
+        <GitHubIcon />
+        <span className="px-4">GitHubでログイン</span>
+      </Button>
+    </form>
+  );
+};
+
+export const GoogleButton = () => {
+  return (
+    <form action={signInGoogle}>
+      <Button className="flex w-max gap-x-3 font-semibold" variant="outline">
+        <GoogleIcon />
+        <span className="px-4">Googleでログイン</span>
+      </Button>
+    </form>
+  );
+};

@@ -4,13 +4,14 @@ import React from "react";
 
 import { createDraftComp } from "@/actions/components/create";
 import { Image } from "@/components/elements/images";
+import { AuthForm } from "@/components/ui/auth-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
 import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
-import { getDisplayName, getImageUrl } from "@/utils";
+import { cn, getDisplayName, getImageUrl } from "@/utils";
 
 async function TopComponent() {
   const components = await cache(async () => getTopComps(5), ["topComps"])();
@@ -84,36 +85,46 @@ async function TopComponent() {
 
 export async function TopHeader() {
   return (
-    <div className="mb-20 grid gap-4">
+    <div className="mb-20 grid gap-8">
       <div className=" grid max-w-md gap-4">
-        <h1 className="text-4xl font-bold  text-primary sm:text-7xl">
+        <h1 className="flex items-center gap-4 text-6xl font-bold text-primary sm:text-7xl">
           UI TRADE
         </h1>
-        <p className="leading-7 text-muted-foreground sm:text-lg">
+        <p className="grid gap-2 leading-7 text-muted-foreground sm:text-lg">
           <span className="block">
             コンポーネントやUIをシェアするプラットフォーム。
           </span>
-          あなたが作成したUIを世界中の開発者と共有しましょう。
           他の開発者が作成したUIを使って、デザインを勉強、開発を加速させましょう。
-          自由にシェアして、自由に使って、自由に開発。あなたのサイトをより良いものにしましょう。
+          <span className="block">
+            あなたの作ったUIが世界中の開発者に使われるかもしれません。
+          </span>
         </p>
       </div>
       <div className="flex flex-col gap-4 sm:flex-row">
-        <Button asChild>
+        <Button asChild className="font-bold">
           <Link href="/components/popular">
             人気のコンポーネントを見る
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>
         </Button>
-        <form
+        <AuthForm
           action={createDraftComp}
-          className={buttonVariants({ variant: "outline" })}
+          className={cn(
+            buttonVariants({
+              variant: "outline",
+              className: "font-bold",
+            }),
+            "px-0 py-0"
+          )}
         >
-          <button className="flex items-center" type="submit">
+          <button
+            className="flex w-full items-center justify-center px-4 py-2 text-center"
+            type="submit"
+          >
             投稿する
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </button>
-        </form>
+        </AuthForm>
       </div>
 
       <TopComponent />

@@ -73,6 +73,25 @@ export class InternalServerError extends HttpError {
   }
 }
 
+export const throwHttpErrorFromStatus = (status: ErrorType): never => {
+  switch (status) {
+    case 400:
+      throw new BadRequestError();
+    case 401:
+      throw new UnauthorizedError();
+    case 403:
+      throw new ForbiddenError();
+    case 404:
+      throw new NotFoundError();
+    case 405:
+      throw new MethodNotAllowedError();
+    case 500:
+      throw new InternalServerError();
+    default:
+      throw new InternalServerError();
+  }
+};
+
 export const handleApiError = ({
   res,
   error,

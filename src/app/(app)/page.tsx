@@ -1,4 +1,4 @@
-import { TopHeader } from "@/app/_components/header";
+import { TopHeader } from "@/app/(app)/_components/header";
 import { Categories } from "@/components/elements/category";
 import { Section } from "@/components/ui/section";
 import { getCategoriesByHome } from "@/services/category/get";

@@ -18,9 +18,9 @@ async function transaction(tx: Prisma.TransactionClient) {
   const componentSets = await seedComponentSets(tx, users);
   await seedFiles(tx, components);
   await seedPreviewImages(tx, components, categories);
-  await seedReviews(tx, components, componentSets, users);
   await seedComponentLikes(tx, components, users);
   await seedComponentSetLikes(tx, componentSets, users);
+  await seedReviews(tx, components, componentSets, users);
 }
 
 async function main() {
