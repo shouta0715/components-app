@@ -59,8 +59,8 @@ export function AuthModal() {
     <Dialog defaultOpen onOpenChange={onDismiss}>
       <DialogContent className="grid max-w-sm gap-8">
         <DialogHeader>
-          <h2 className="mx-auto flex items-center gap-2 text-center text-3xl   text-primary">
-            <Icon className="h-7 w-auto" />
+          <h2 className="mx-auto flex flex-col items-center gap-2 text-center text-3xl   text-primary">
+            <Icon className="h-7 w-auto sm:h-10" />
             <span className="font-semibold">UI TRADE</span>
           </h2>
         </DialogHeader>

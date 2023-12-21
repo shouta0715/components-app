@@ -79,7 +79,7 @@ export default async function Page() {
           <TableHeader>
             <TableRow>
               <TableHead aria-hidden="true" />
-              <TableHead className="text-center">ゲストユーザー</TableHead>
+              <TableHead className="text-center">ゲスト</TableHead>
               <TableHead className="text-center">ログインユーザー</TableHead>
             </TableRow>
           </TableHeader>
