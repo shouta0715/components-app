@@ -56,8 +56,26 @@ model User {
   componentSetReviews ComponentSetReview[]
   componentLikes      ComponentLike[]
   componentSetLikes   ComponentSetLike[]
+  followers           Follow[]             @relation("follower")
+  followings          Follow[]             @relation("following")
 
   @@map("users")
+}
+
+model Follow {
+  createdAt DateTime @default(now())
+
+  // RELATIONSHIPS
+  followerId String
+  Follower   User   @relation("follower", fields: [followerId], references: [id])
+
+  followingId String
+  Following   User   @relation("following", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
 }
 
 model Category {
@@ -96,7 +114,6 @@ model Component {
 
   @@index([creatorId])
   @@index([categoryId])
-
   @@map("components")
 }
 
@@ -119,7 +136,6 @@ model File {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
-
   @@map("files")
 }
 
@@ -142,7 +158,6 @@ model ComponentSet {
   likes      ComponentSetLike[]
 
   @@index([creatorId])
-
   @@map("componentSets")
 }
 
@@ -161,7 +176,6 @@ model ComponentPreviewImage {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
-
   @@map("componentPreviewImages")
 }
 
@@ -180,7 +194,6 @@ model ComponentReview {
 
   @@index([componentId])
   @@index([userId])
-
   @@map("componentReviews")
 }
 
@@ -199,7 +212,6 @@ model ComponentSetReview {
 
   @@index([componentSetId])
   @@index([userId])
-
   @@map("componentSetReviews")
 }
 
@@ -216,7 +228,6 @@ model ComponentLike {
 
   @@index([componentId])
   @@index([userId])
-
   @@map("componentLikes")
 }
 
@@ -233,6 +244,5 @@ model ComponentSetLike {
 
   @@index([componentSetId])
   @@index([userId])
-
   @@map("componentSetLikes")
 }
