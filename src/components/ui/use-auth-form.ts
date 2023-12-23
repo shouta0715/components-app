@@ -1,5 +1,6 @@
 import { notFound, useRouter } from "next/navigation";
-import { ErrorToast, toast, useToast } from "@/components/ui/use-toast";
+
+import { toast } from "sonner";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -9,10 +10,9 @@ import { ActionResult } from "@/lib/next/actions";
 
 export function useAuthForm(
   action: (formData: FormData) => Promise<ActionResult>,
-  errorToasts?: ErrorToast
+  errorToasts?: { title: string; message: string }
 ) {
   const router = useRouter();
-  const { toast: onToast } = useToast();
 
   async function clientActions(formData: FormData) {
     try {
@@ -31,8 +31,7 @@ export function useAuthForm(
       if (isToast) {
         const { title, message } = result.toast;
 
-        onToast({
-          title,
+        toast.success(title, {
           description: message,
         });
       }
@@ -51,8 +50,7 @@ export function useAuthForm(
 
       if (!errorToasts) throw error;
 
-      toast({
-        title: errorToasts.title,
+      toast.error(errorToasts.title, {
         description: errorToasts.message,
       });
     }
