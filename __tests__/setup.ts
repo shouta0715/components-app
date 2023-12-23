@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import "@testing-library/jest-dom";
 import router from "next-router-mock";
 import React from "react";
-import { vi } from "vitest";
+import { beforeEach, vi } from "vitest";
 import { initialize } from "../src/tests/fabbrica";
 
 vi.mock("next/navigation", () => ({
@@ -16,6 +16,10 @@ vi.mock("next/navigation", () => ({
     return undefined as never;
   }),
 }));
+
+beforeEach(() => {
+  router.setCurrentUrl("/");
+});
 
 const prisma = new PrismaClient();
 
