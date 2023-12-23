@@ -171,10 +171,10 @@ function CarouselArrow({ api }: { api: EmblaCarouselType }) {
 function CarouselLoading() {
   return (
     <div className="h-72 ">
-      <div className="relative flex h-full gap-8">
-        <Skeleton className="h-full w-full basis-1/3" />
-        <Skeleton className="h-full w-full basis-2/3" />
-        <Skeleton className="h-full w-full basis-1/3" />
+      <div className="relative flex h-full gap-x-8">
+        <Skeleton className="hidden h-full w-full sm:block sm:basis-1/3" />
+        <Skeleton className="h-full w-full sm:basis-2/3 " />
+        <Skeleton className="hidden h-full w-full sm:block sm:basis-1/3" />
         <div className="absolute z-10 h-full w-full transition-opacity [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--background))_95%_100%)]" />
       </div>
       <div className="flex justify-center gap-x-2">
@@ -220,7 +220,7 @@ function Carousel({
       <div ref={emblaRef} className={cn(classNames?.viewport)}>
         <div
           className={cn(
-            "grid grid-flow-col auto-cols-[50%] gap-x-8",
+            "grid grid-flow-col auto-cols-[100%] sm:auto-cols-[50%] gap-x-8",
             className,
             classNames?.container
           )}
