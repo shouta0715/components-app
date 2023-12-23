@@ -1,17 +1,13 @@
 import React from "react";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+
+import { Providers } from "@/layouts/providers";
 import { Footer } from "@/layouts/root/footer";
 import { AppHeader, AuthHeader } from "@/layouts/root/header";
 import { LeftSide } from "@/layouts/root/left";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
+    <Providers>
       <div className="flex min-h-screen flex-col">
         <div className="sticky top-0 z-50">
           <AppHeader />
@@ -24,18 +20,13 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <Footer />
       </div>
-    </ThemeProvider>
+    </Providers>
   );
 };
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
+    <Providers>
       <div className="flex min-h-screen flex-col">
         <div className="sticky top-0 z-50">
           <AuthHeader />
@@ -48,6 +39,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <Footer />
       </div>
-    </ThemeProvider>
+    </Providers>
   );
 };

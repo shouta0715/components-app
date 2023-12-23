@@ -39,6 +39,8 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@tanstack/react-query": "^5.14.2",
+    "@tanstack/react-query-devtools": "^5.14.5",
     "@types/minify": "^9.1.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

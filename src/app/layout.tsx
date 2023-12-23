@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "@/style/tailwind.css";
-import { Toaster } from "@/components/ui/toaster";
+
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/utils";
 
 const fontSans = FontSans({
@@ -35,7 +36,7 @@ export default async function RootLayout({
       >
         {modal}
         {children}
-        <Toaster />
+        <Toaster closeButton position="top-right" />
       </body>
     </html>
   );
