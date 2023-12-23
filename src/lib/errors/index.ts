@@ -1,5 +1,8 @@
 /* eslint-disable max-classes-per-file */
+import { Prisma } from "@prisma/client";
+
 import { NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { ValiError } from "valibot";
 
 /* eslint-disable max-classes-per-file */
@@ -92,39 +95,39 @@ export const throwHttpErrorFromStatus = (status: ErrorType): never => {
   }
 };
 
-export const handleApiError = ({
-  res,
-  error,
-}: {
-  res: NextApiResponse<Error>;
-  error: unknown;
-}) => {
+export const handleApiError = ({ error }: { error: unknown }) => {
   if (error instanceof ValiError) {
     const status = 400;
     const { message } = errors[status];
-    res.status(status).json({
-      message,
-      status,
-    });
 
-    return;
+    return NextResponse.json({ message, status });
   }
 
   if (error instanceof HttpError) {
     const { status, message } = error.throwMessage();
-    res.status(status).json({ message, status });
 
-    return;
+    return NextResponse.json({ message }, { status });
+  }
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const status = 404;
+    const { message } = errors[status];
+
+    return NextResponse.json({ message }, { status });
+  }
+
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    const status = 404;
+    const { message } = errors[status];
+
+    return NextResponse.json({ message }, { status });
   }
 
   const status = 500;
 
   const { message } = errors[status];
 
-  res.status(status).json({
-    message,
-    status,
-  });
+  return NextResponse.json({ message }, { status });
 };
 
 export const notArrowedHandler = (res: NextApiResponse<Error>) => {
