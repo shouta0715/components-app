@@ -9,6 +9,7 @@
 # testing
 /coverage
 fabbrica
+__snapshots__
 
 # next.js
 /.next/
