@@ -15,11 +15,11 @@ const handler = async (req: Request) => {
     const body = await req.json();
     validate(body, followSchema);
 
-    const { followed, followerId, followingId } = body;
+    const { trigger, followerId, followingId } = body;
 
     if (followerId !== session.user.id) throw new UnauthorizedError();
 
-    if (followed) {
+    if (trigger === "unfollow") {
       await deleteFollow(followerId, followingId);
     } else {
       await createFollow(followerId, followingId);
@@ -27,7 +27,7 @@ const handler = async (req: Request) => {
 
     const result = {
       message: "Success",
-      followed: !followed,
+      followed: trigger === "follow",
     };
 
     return NextResponse.json(result, { status: 200 });

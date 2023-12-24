@@ -6,7 +6,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ThemeProviderProps } from "next-themes/dist/types";
 import { useState } from "react";
 
-const getInitialClientState = () => {
+export const getInitialClientState = () => {
   return new QueryClient({
     defaultOptions: {
       queries: {

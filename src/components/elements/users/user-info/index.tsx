@@ -1,9 +1,11 @@
 import Link from "next/link";
 import React from "react";
+import { FollowButton } from "@/components/elements/follow/follow-button";
 import { AvatarLink } from "@/components/elements/users/avatar-link";
 import { Button } from "@/components/ui/button";
 
 import { auth } from "@/lib/auth";
+import { getIsFollowing } from "@/services/follow/get";
 
 export async function UserInfo({
   creator,
@@ -11,6 +13,7 @@ export async function UserInfo({
   creator: { name: string | null; image: string | null; id: string };
 }) {
   const session = await auth();
+  const isFollowing = await getIsFollowing(session?.user?.id, creator.id);
 
   return (
     <div className="flex items-center  justify-between gap-4">
@@ -25,7 +28,13 @@ export async function UserInfo({
         size="lg"
       />
 
-      {session ? null : (
+      {session && session.user ? (
+        <FollowButton
+          followerId={session.user?.id}
+          followingId={creator.id}
+          initialFollowed={isFollowing}
+        />
+      ) : (
         <Button asChild size="sm" variant="outline">
           <Link href="/auth/login">Follow</Link>
         </Button>

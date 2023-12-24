@@ -1,7 +1,7 @@
-import { Input, boolean, object, string } from "valibot";
+import { Input, object, picklist, string } from "valibot";
 
 export const followSchema = object({
-  followed: boolean(),
+  trigger: picklist(["follow", "unfollow"]),
   followerId: string(),
   followingId: string(),
 });
