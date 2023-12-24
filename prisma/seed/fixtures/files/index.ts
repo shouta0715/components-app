@@ -92,12 +92,18 @@ async function generateSeedFiles(
     uploadFiles("ts"),
   ]);
 
-  const created: Prisma.FileCreateManyInput[] = components.map((component) => {
-    return {
-      objectId: files[randomNum(0, files.length - 1)].id,
-      componentId: component.id,
-      extension: files[randomNum(0, files.length - 1)].type,
-    };
+  const created = components.map((component) => {
+    return Array.from({ length: randomNum(1, 3) }).map((_, i) => {
+      // １つ目はtsx or jsx or html
+      // ２つ目以降はcss or js or ts
+      const file = i === 0 ? files[randomNum(0, 2)] : files[randomNum(3, 5)];
+
+      return {
+        objectId: file.id,
+        extension: file.type,
+        componentId: component.id,
+      };
+    });
   });
 
   return created.flat();

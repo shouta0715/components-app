@@ -10,7 +10,7 @@ async function generateSeedComponentSets(
 
   const created = users.map((user) => {
     return Array.from({
-      length: randomNum(100, 0),
+      length: randomNum(0, 100),
     }).map((_, i) => {
       return {
         name: `${user.name} Component Set ${i}`,
