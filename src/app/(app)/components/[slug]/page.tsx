@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import React from "react";
+import { FilePreview } from "@/components/elements/files/file-previe";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
-import { getComp } from "@/services/components/get";
+import { getCompWithFiles } from "@/services/components/get";
 import { Params } from "@/types/next";
 
 export default async function Page({ params }: Params) {
-  const component = await getComp(params.slug, true);
+  const component = await getCompWithFiles(params.slug, true);
 
   if (component.draft) notFound();
 
@@ -33,6 +34,7 @@ export default async function Page({ params }: Params) {
       {/* Main Component Preview and User Info */}
       <div>
         <UserInfo creator={component.creator} />
+        <FilePreview files={component.files} />
       </div>
     </div>
   );
