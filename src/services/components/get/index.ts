@@ -1,9 +1,14 @@
 import { User } from "@prisma/client";
 
 import { notFound } from "next/navigation";
-import { ComponentWithParent, CompWithImgs } from "../../../types/prisma/index";
+
 import { prisma } from "@/lib/client/prisma";
 import { NotFoundError } from "@/lib/errors";
+import {
+  CompWithFiles,
+  CompWithImgs,
+  ComponentWithParent,
+} from "@/types/prisma";
 
 export const getComp = async (
   id: string,
@@ -74,6 +79,39 @@ export const getTopComps = async (
   });
 
   return components;
+};
+
+export const getCompWithFiles = async (
+  id: string,
+  nextNotFound = true
+): Promise<CompWithFiles> => {
+  const component = await prisma.component.findUnique({
+    where: { id },
+    include: {
+      files: true,
+      creator: {
+        select: {
+          name: true,
+          image: true,
+          id: true,
+        },
+      },
+      category: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+    },
+  });
+
+  if (!component) {
+    if (nextNotFound) notFound();
+
+    throw new NotFoundError();
+  }
+
+  return component;
 };
 
 export const getComponentCount = async (): Promise<number> => {

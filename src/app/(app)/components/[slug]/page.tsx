@@ -30,10 +30,10 @@ export default async function Page({ params }: Params) {
           {component.name}
         </h1>
       </div>
-
       {/* Main Component Preview and User Info */}
-      <div>
+      <div className="grid flex-1 gap-8">
         <UserInfo creator={component.creator} />
+
         <FilePreview files={component.files} />
       </div>
     </div>

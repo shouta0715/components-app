@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { NotFoundError } from "@/lib/errors";
 import {
   getComp,
+  getCompWithFiles,
   getCompWithImages,
   getTopComps,
 } from "@/services/components/get";
@@ -10,6 +11,7 @@ import {
   defineCategoryFactory,
   defineComponentFactory,
   defineComponentPreviewImageFactory,
+  defineFileFactory,
   defineUserFactory,
 } from "@/tests/fabbrica";
 
@@ -24,6 +26,29 @@ describe("GET Component RDB Test", async () => {
     const wont = await mockComponent.create();
 
     const should = await getComp(wont.id);
+
+    expect(should).toStrictEqual(should);
+  });
+
+  test("getCompWithFiles", async () => {
+    const category = defineCategoryFactory();
+    const creator = defineUserFactory();
+    const mockComponent = await defineComponentFactory({
+      defaultData: { category, creator },
+    }).create();
+    const mockFile = defineFileFactory({
+      defaultData: async () => ({
+        Component: {
+          connect: {
+            id: mockComponent.id,
+          },
+        },
+      }),
+    });
+
+    await mockFile.createList(3);
+
+    const should = await getCompWithFiles(mockComponent.id);
 
     expect(should).toStrictEqual(should);
   });
