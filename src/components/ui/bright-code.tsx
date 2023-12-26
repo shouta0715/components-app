@@ -47,6 +47,7 @@ function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
 export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
   return (
     <Tabs
+      className="overflow-hidden rounded-md"
       defaultValue={`${objects[0].componentId}/index.${objects[0].extension}`}
     >
       <TabsList className="flex h-auto justify-start gap-2 overflow-y-scroll rounded-none bg-code py-2 data-[state=active]:shadow-none">
