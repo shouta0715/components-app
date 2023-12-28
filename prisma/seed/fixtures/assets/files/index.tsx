@@ -29,7 +29,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function Component() {
+export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
