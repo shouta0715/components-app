@@ -1,5 +1,7 @@
 import { File } from "@prisma/client";
-import React from "react";
+import React, { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { UIPreview } from "@/components/elements/files/ui-preview/server";
 import { MultipleBrightCode } from "@/components/ui/bright-code";
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
 import {
@@ -10,7 +12,7 @@ import {
 } from "@/components/ui/tabs";
 import { getFiles } from "@/services/files/get";
 
-export async function FilePreview({ files }: { files: File[] }) {
+export async function FilePreviews({ files }: { files: File[] }) {
   const objects = await getFiles(files);
 
   return (
@@ -39,7 +41,13 @@ export async function FilePreview({ files }: { files: File[] }) {
           />
         </div>
       </TabsList>
-      <TabsContent value="preview">aaa</TabsContent>
+      <TabsContent value="preview">
+        <ErrorBoundary fallback={<p>Error</p>}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <UIPreview objects={objects} />
+          </Suspense>
+        </ErrorBoundary>
+      </TabsContent>
       <TabsContent value="code">
         <MultipleBrightCode objects={objects} />
       </TabsContent>
