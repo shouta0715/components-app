@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import React from "react";
-import { FilePreview } from "@/components/elements/files/file-previe";
+import { FilePreviews } from "@/components/elements/files/file-previe";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
 import { getCompWithFiles } from "@/services/components/get";
@@ -34,7 +34,7 @@ export default async function Page({ params }: Params) {
       <div className="grid flex-1 gap-8">
         <UserInfo creator={component.creator} />
 
-        <FilePreview files={component.files} />
+        <FilePreviews files={component.files} />
       </div>
     </div>
   );
