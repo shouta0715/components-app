@@ -29,15 +29,3 @@ Next.js Constants
 
 export const REDIRECT_PUSH = RedirectType.push as const;
 export const REDIRECT_REPLACE = RedirectType.replace as const;
-
-/* 
-*********************************************
-Code Transformer Constants
-*********************************************
-*/
-
-export const ESM_BASE_URL = "https://esm.sh" as const;
-export const DYNAMIC_IMPORT_REGEX = /import\(['"](.+?)['"]\)/g;
-
-export const STATIC_IMPORT_REGEX =
-  /(\/\/\s*)?(import\s+)(.*\s+from\s+)?['"](.*)['"];?/g;
