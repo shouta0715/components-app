@@ -12,7 +12,13 @@ import {
 } from "@/components/ui/tabs";
 import { getFiles } from "@/services/files/get";
 
-export async function FilePreviews({ files }: { files: File[] }) {
+export async function FilePreviews({
+  files,
+  name,
+}: {
+  files: File[];
+  name: string;
+}) {
   const objects = await getFiles(files);
 
   return (
@@ -44,7 +50,7 @@ export async function FilePreviews({ files }: { files: File[] }) {
       <TabsContent value="preview">
         <ErrorBoundary fallback={<p>Error</p>}>
           <Suspense fallback={<div>Loading...</div>}>
-            <UIPreview objects={objects} />
+            <UIPreview name={name} objects={objects} />
           </Suspense>
         </ErrorBoundary>
       </TabsContent>

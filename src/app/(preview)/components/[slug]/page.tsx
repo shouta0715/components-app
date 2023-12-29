@@ -34,7 +34,7 @@ export default async function Page({ params }: Params) {
       <div className="grid flex-1 gap-8">
         <UserInfo creator={component.creator} />
 
-        <FilePreviews files={component.files} />
+        <FilePreviews files={component.files} name={component.name} />
       </div>
     </div>
   );

@@ -12,7 +12,13 @@ import { transformCode } from "@/scripts/ui-preview";
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
 import { FileObject } from "@/services/files/get";
 
-export async function UIPreview({ objects }: { objects: FileObject[] }) {
+export async function UIPreview({
+  objects,
+  name,
+}: {
+  objects: FileObject[];
+  name: string;
+}) {
   const { data, error } = await transformCode(objects);
 
   if (error || !data) throw new CodeBundlerError();
@@ -26,6 +32,7 @@ export async function UIPreview({ objects }: { objects: FileObject[] }) {
           <PreviewIframe
             componentId={objects[0].componentId}
             inputData={data}
+            name={name}
             title={objects[0].componentId}
           />
         </Suspense>
