@@ -7,11 +7,9 @@ import {
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
 
 function resolvePackage(target: string): string {
-  const isLibrary = target.startsWith(".");
+  const isNotLibrary = target.startsWith(".");
 
-  if (isLibrary) {
-    return target;
-  }
+  if (isNotLibrary) return target;
 
   return `${ESM_BASE_URL}/${target}`;
 }
@@ -28,9 +26,7 @@ function resolveStaticImports(target: string): string {
   const resolved = target.replace(
     STATIC_IMPORT_REGEX,
     (raw: string, comment: string, _, im: string, pk: string) => {
-      if (comment) {
-        return raw;
-      }
+      if (comment) return raw;
 
       return `import ${im}"${resolvePackage(pk)}"`;
     }

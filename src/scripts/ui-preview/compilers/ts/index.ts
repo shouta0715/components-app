@@ -1,4 +1,5 @@
 import ts from "typescript";
+import { CompilerError } from "@/scripts/ui-preview/errors";
 
 const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -41,9 +42,11 @@ export const compileTypescript = async (
     return diagnostic.category === ts.DiagnosticCategory.Error;
   });
 
+  if (!isErrors) throw new CompilerError();
+
   return {
     result: outputText,
-    error: isErrors,
-    message: isErrors ? "Failed to compile" : "Successfully compiled",
+    error: false,
+    message: "Successfully compiled",
   };
 };
