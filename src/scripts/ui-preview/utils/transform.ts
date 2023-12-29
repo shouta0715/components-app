@@ -1,4 +1,4 @@
-import { compileTypescript } from "@/scripts/ui-preview/compilers/ts";
+import { compile } from "@/scripts/ui-preview/compilers";
 import { CodeBundlerError, CompilerError } from "@/scripts/ui-preview/errors";
 import {
   getExportComponentName,
@@ -28,7 +28,7 @@ export async function transformWithHTML(
   // ここを通る場合は、HTML + CSS OR HTML + JS OR HTML + JS + CSS
   if (!tsFile) return htmlToResult([htmlFile, ...removedPreview]);
 
-  const { error, result } = await compileTypescript(tsFile.file);
+  const { error, result } = await compile(tsFile.file, tsFile.extension);
 
   if (error) throw new CompilerError();
 
@@ -65,7 +65,7 @@ export async function transformWithoutHTML(
   const componentName = getExportComponentName(mainFile.file);
 
   if (!scriptFile) {
-    const { error, result } = await compileTypescript(mainFile.file);
+    const { error, result } = await compile(mainFile.file, mainFile.extension);
 
     if (error) throw new CompilerError();
 
@@ -83,8 +83,8 @@ export async function transformWithoutHTML(
 
   const [{ error: mainError, result: mainResult }, { error, result }] =
     await Promise.all([
-      compileTypescript(mainFile.file),
-      compileTypescript(scriptFile.file),
+      compile(mainFile.file, mainFile.extension),
+      compile(scriptFile.file, scriptFile.extension),
     ]);
 
   if (mainError || error) throw new CompilerError();

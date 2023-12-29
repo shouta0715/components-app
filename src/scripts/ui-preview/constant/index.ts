@@ -1,6 +1,6 @@
 export const HTML_MIME_TYPE = "text/html" as const;
 export const CSS_MIME_TYPE = "text/css" as const;
-export const JAVASCRIPT_MIME_TYPE = "text/javascript" as const;
+export const JAVASCRIPT_MIME_TYPE = "application/javascript" as const;
 
 /*
 ********************
@@ -28,8 +28,7 @@ Code Transformer Constants
 export const ESM_BASE_URL = "https://esm.sh" as const;
 export const DYNAMIC_IMPORT_REGEX = /import\(['"](.+?)['"]\)/g;
 
-export const STATIC_IMPORT_REGEX =
-  /(\/\/\s*)?(import\s+)(.*\s+from\s+)?['"](.*)['"];?/g;
+export const STATIC_IMPORT_REGEX = /import\s*(.*?)\s*from\s*['"](.*?)['"];?/g;
 
 /* 
 *********************************************

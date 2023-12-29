@@ -25,10 +25,8 @@ function resolveDynamicImports(target: string): string {
 function resolveStaticImports(target: string): string {
   const resolved = target.replace(
     STATIC_IMPORT_REGEX,
-    (raw: string, comment: string, _, im: string, pk: string) => {
-      if (comment) return raw;
-
-      return `import ${im}"${resolvePackage(pk)}"`;
+    (_: string, im: string, pk: string) => {
+      return `import ${im} from "${resolvePackage(pk)}";`;
     }
   );
 

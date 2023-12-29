@@ -27,7 +27,7 @@ async function getPostMessage() {
   const rejectHandler = new Promise<never>((_, reject) => {
     setTimeout(() => {
       reject(new Error("Timeout"));
-    }, 10000);
+    }, 30000);
   });
 
   return Promise.race([resolveHandler, rejectHandler]);
@@ -42,6 +42,7 @@ export function usePreviewIframe({ inputData, componentId }: Props) {
     const { contentWindow } = e.target as HTMLIFrameElement;
 
     if (!contentWindow) return;
+
     const message = JSON.stringify(inputData);
 
     contentWindow.postMessage(message, SANDBOX_URL);
