@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 import { PreviewIframe } from "@/components/elements/files/ui-preview/client";
 import {
@@ -6,7 +6,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Skeleton } from "@/components/ui/skeleton";
 
 import { transformCode } from "@/scripts/ui-preview";
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
@@ -26,18 +25,14 @@ export async function UIPreview({
   return (
     <ResizablePanelGroup className="px-2" direction="horizontal">
       <ResizablePanel className="min-w-64" defaultSize={100} minSize={30}>
-        <Suspense
-          fallback={<Skeleton className="h-96 w-full rounded-md border" />}
-        >
-          <PreviewIframe
-            componentId={objects[0].componentId}
-            inputData={data}
-            name={name}
-            title={objects[0].componentId}
-          />
-        </Suspense>
+        <PreviewIframe
+          componentId={objects[0].componentId}
+          inputData={data}
+          name={name}
+          title={objects[0].componentId}
+        />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle className="w-0" withHandle />
 
       <ResizablePanel defaultSize={0} />
     </ResizablePanelGroup>

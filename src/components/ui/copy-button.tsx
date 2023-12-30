@@ -46,9 +46,9 @@ export function CopyButton({
       type="button"
     >
       {copied ? (
-        <Check className="size-3 sm:size-4" />
+        <Check className="size-3 text-green-400 sm:size-4" />
       ) : (
-        <Clipboard className="size-3 sm:size-4" />
+        <Clipboard className="size-3  sm:size-4" />
       )}
     </button>
   );

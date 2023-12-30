@@ -2,6 +2,7 @@ import { File } from "@prisma/client";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { UIPreview } from "@/components/elements/files/ui-preview/server";
+import { SuspenseFrameLoading } from "@/components/elements/files/ui-preview/server/loading";
 import { MultipleBrightCode } from "@/components/ui/bright-code";
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
 import {
@@ -49,7 +50,7 @@ export async function FilePreviews({
       </TabsList>
       <TabsContent value="preview">
         <ErrorBoundary fallback={<p>Error</p>}>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<SuspenseFrameLoading name={name} />}>
             <UIPreview name={name} objects={objects} />
           </Suspense>
         </ErrorBoundary>
