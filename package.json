@@ -18,7 +18,8 @@
     "prepare": "husky install",
     "format": "prettier --write . && eslint --fix .",
     "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
-    "test": "pnpm migrate:test && dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
+    "test": "pnpm migrate:test && pnpm vitest -c ./vitest.config.ts",
+    "test:coverage": "pnpm vitest --ui --coverage",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },
   "dependencies": {
@@ -79,6 +80,7 @@
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.1.0",
     "@vitest/ui": "^1.0.2",
     "autoprefixer": "^10.4.16",
     "dotenv-cli": "^7.3.0",
