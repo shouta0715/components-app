@@ -1,7 +1,7 @@
 import {
   DYNAMIC_IMPORT_REGEX,
   ESM_BASE_URL,
-  EXPORT_COMPONENT_REGEX,
+  EXPORT_COMPONENT_REGEXES,
   STATIC_IMPORT_REGEX,
 } from "@/scripts/ui-preview/constant";
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
@@ -16,7 +16,7 @@ function resolvePackage(target: string): string {
 
 function resolveDynamicImports(target: string): string {
   const resolved = target.replace(DYNAMIC_IMPORT_REGEX, (_, pk) => {
-    return `import(${resolvePackage(pk)})`;
+    return `import("${resolvePackage(pk)}")`;
   });
 
   return resolved;
@@ -36,15 +36,19 @@ function resolveStaticImports(target: string): string {
 export function getExportComponentName(target: string): string {
   let result: string | undefined;
 
-  EXPORT_COMPONENT_REGEX.forEach((regex) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const regex of EXPORT_COMPONENT_REGEXES) {
     const match = target.match(regex);
 
-    if (!match || (result && result !== "function")) return;
+    // eslint-disable-next-line no-continue
+    if (!match) continue;
+
+    if (result && result !== "function") break;
 
     const [, name] = match;
 
     result = name;
-  });
+  }
 
   if (!result) throw new CodeBundlerError();
 
