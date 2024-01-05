@@ -1,29 +1,27 @@
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
 import { MIMETYPE } from "@/scripts/ui-preview/types";
-import { FileObject } from "@/services/files/get";
 import { Extension } from "@/types/file";
 
-const badCombinationExtensions: [Extension, Extension] = ["js", "ts"] || [
-    "jsx",
-    "tsx",
-  ] || ["js", "tsx"] || ["jsx", "ts"];
+const badCombinationExtensions: [Extension, Extension][] = [
+  ["js", "ts"],
+  ["js", "tsx"],
+  ["jsx", "ts"],
+  ["jsx", "tsx"],
+];
 
-const isDuplicationExtensions = (extensions: Extension[]): boolean => {
-  if (extensions.length === 1) return false;
-
+export const isBadCombination = (extensions: Extension[]): boolean => {
   const uniqueExtensions = [...new Set(extensions)];
 
-  return extensions.length !== uniqueExtensions.length;
-};
+  if (extensions.length !== uniqueExtensions.length) return true;
 
-export const isBadCombination = (files: FileObject[]): boolean => {
-  const extensions = files.map((file) => file.extension);
+  return badCombinationExtensions.some((badCombination) => {
+    const [firstExtension, secondExtension] = badCombination;
 
-  if (isDuplicationExtensions(extensions)) return true;
-
-  return badCombinationExtensions.every((extension) =>
-    extensions.includes(extension)
-  );
+    return (
+      uniqueExtensions.includes(firstExtension) &&
+      uniqueExtensions.includes(secondExtension)
+    );
+  });
 };
 
 export const getExtensionToMimeType = (extension: Extension): MIMETYPE => {

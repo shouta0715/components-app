@@ -19,7 +19,8 @@ export async function transformCode(
   files: FileObject[]
 ): Promise<TransformedResult> {
   try {
-    if (isBadCombination(files)) throw new BadCombinationExtensionsError();
+    const extensions = files.map((file) => file.extension);
+    if (isBadCombination(extensions)) throw new BadCombinationExtensionsError();
 
     const htmlFile = files.find((file) => file.extension === "html");
 
