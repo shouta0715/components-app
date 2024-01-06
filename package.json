@@ -19,6 +19,7 @@
     "format": "prettier --write . && eslint --fix .",
     "migrate:test": "dotenv -e .env.test pnpm prisma migrate dev",
     "test": "pnpm migrate:test && pnpm vitest -c ./vitest.config.ts",
+    "test:ci": "pnpm migrate:test && dotenv -e .env.test pnpm vitest -c ./vitest.config.ts",
     "test:coverage": "pnpm vitest --ui --coverage",
     "test:ui": "pnpm vitest -c ./vitest.config.ts --ui"
   },

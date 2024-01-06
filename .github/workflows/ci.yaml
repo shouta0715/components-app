@@ -39,4 +39,4 @@ jobs:
         run: cp .env.example.test .env.test
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm test:ci
