@@ -14,6 +14,10 @@ const modulesErrors = {
   BadCombinationExtensions: {
     message: "Bad combination extensions error",
   },
+
+  TimeOut: {
+    message: "Time out error",
+  },
 } as const;
 
 export type ModulesErrors = typeof modulesErrors;
@@ -53,5 +57,11 @@ export class PackageError extends ModuleError {
 export class BadCombinationExtensionsError extends ModuleError {
   constructor() {
     super("BadCombinationExtensions");
+  }
+}
+
+export class TimeOutError extends ModuleError {
+  constructor() {
+    super("TimeOut");
   }
 }

@@ -17,7 +17,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { SANDBOX_URL } from "@/lib/constant";
-import { CodeBundlerError } from "@/scripts/ui-preview/errors";
+import { CodeBundlerError, TimeOutError } from "@/scripts/ui-preview/errors";
 import { SuccessTransformedData } from "@/scripts/ui-preview/types";
 import { cn } from "@/utils";
 
@@ -138,6 +138,8 @@ const PreviewIframe = ({
     reload,
     isReloading,
     isReloadError,
+    error,
+    reloadError,
   } = usePreviewIframe({
     inputData,
     componentId,
@@ -147,7 +149,13 @@ const PreviewIframe = ({
 
   const isLoading = isPending || isReloading;
 
-  if (isError || isReloadError) throw new CodeBundlerError();
+  if (isError || isReloadError) {
+    if (error instanceof TimeOutError || reloadError instanceof TimeOutError) {
+      throw new TimeOutError();
+    }
+
+    throw new CodeBundlerError();
+  }
 
   return (
     <Collapsible

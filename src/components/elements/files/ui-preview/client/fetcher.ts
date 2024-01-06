@@ -1,5 +1,6 @@
 import { SANDBOX_URL } from "@/lib/constant";
 import { PREVIEW_TIMEOUT } from "@/scripts/ui-preview/constant";
+import { TimeOutError } from "@/scripts/ui-preview/errors";
 
 type ReceiveData = {
   height: number;
@@ -17,7 +18,7 @@ function createTimeoutHandler(
 
   function startTimer(listener: (e: MessageEvent) => void) {
     timer = setTimeout(() => {
-      reject(new Error("Timeout"));
+      reject(new TimeOutError());
       window.removeEventListener("message", listener);
     }, ms);
   }
@@ -34,7 +35,7 @@ export async function getPostMessage() {
       const data = JSON.parse(e.data) as ReceiveData;
 
       if (data.error) {
-        reject(new Error("Error"));
+        reject(new TimeOutError());
       } else {
         resolve(data);
       }

@@ -13,7 +13,7 @@ type Props = { inputData: SuccessTransformedData; componentId: string };
 
 export function usePreviewIframe({ inputData, componentId }: Props) {
   const ref = useRef<HTMLIFrameElement>(null);
-  const { isPending, data, isError } = useQuery({
+  const { isPending, data, isError, error } = useQuery({
     queryFn: getPostMessage,
     queryKey: ["preview-iframe", componentId],
     retry: false,
@@ -25,6 +25,7 @@ export function usePreviewIframe({ inputData, componentId }: Props) {
     isPending: isReloading,
     mutate,
     isError: isReloadError,
+    error: reloadError,
   } = useMutation({
     mutationFn: () => onReloadIframe(ref.current),
     mutationKey: ["preview-iframe", componentId],
@@ -54,5 +55,7 @@ export function usePreviewIframe({ inputData, componentId }: Props) {
     isReloading,
     reload: mutate,
     isReloadError,
+    reloadError,
+    error,
   };
 }
