@@ -1,7 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { FullscreenIcon, Loader, MinusIcon, RotateCw } from "lucide-react";
+import {
+  FullscreenIcon,
+  Loader,
+  MinusIcon,
+  PlusIcon,
+  RotateCw,
+} from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { usePreviewIframe } from "@/components/elements/files/ui-preview/client/usePreviewIframe";
 import { FrameLoading } from "@/components/elements/files/ui-preview/server/loading";
@@ -34,11 +40,13 @@ function FrameHeader({
   name,
   reload,
   isLoading,
+  collapsible,
 }: {
   iframe: React.RefObject<HTMLIFrameElement>;
   name: string;
   reload: () => void;
   isLoading: boolean;
+  collapsible: boolean;
 }) {
   const onFullscreen = useCallback(() => {
     if (!iframe.current) return;
@@ -70,15 +78,32 @@ function FrameHeader({
         className="group flex size-3.5 items-center justify-center rounded-full bg-[#febc2e] disabled:animate-pulse disabled:cursor-not-allowed"
         disabled={isLoading}
       >
-        <MinusIcon
-          className="hidden text-black  group-hover:flex group-disabled:hidden"
-          size={8}
-        />
-        <span className="sr-only">
-          {isLoading
-            ? "プレビューをロード中です。しばらくお待ちください。"
-            : `${name}のプレビューを最小化する`}
-        </span>
+        {collapsible ? (
+          <>
+            {" "}
+            <MinusIcon
+              className="hidden text-black  group-hover:flex group-disabled:hidden"
+              size={8}
+            />
+            <span className="sr-only">
+              {isLoading
+                ? "プレビューをロード中です。しばらくお待ちください。"
+                : `${name}のプレビューを最小化する`}
+            </span>
+          </>
+        ) : (
+          <>
+            <PlusIcon
+              className="hidden text-black  group-hover:flex group-disabled:hidden"
+              size={8}
+            />
+            <span className="sr-only">
+              {isLoading
+                ? "プレビューをロード中です。しばらくお待ちください。"
+                : `${name}のプレビューを最大化する`}
+            </span>
+          </>
+        )}
       </CollapsibleTrigger>
       <HoverCard openDelay={500}>
         <HoverCardTrigger asChild>
@@ -165,6 +190,7 @@ const PreviewIframe = ({
       open={collapsible}
     >
       <FrameHeader
+        collapsible={collapsible}
         iframe={ref}
         isLoading={isLoading}
         name={name}
