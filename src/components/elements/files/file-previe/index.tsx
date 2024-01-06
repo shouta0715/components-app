@@ -1,8 +1,10 @@
 import { File } from "@prisma/client";
 import React, { Suspense } from "react";
+
 import { ErrorBoundary } from "react-error-boundary";
+import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 import { UIPreview } from "@/components/elements/files/ui-preview/server";
-import { SuspenseFrameLoading } from "@/components/elements/files/ui-preview/server/loading";
+import { UIPreviewLoading } from "@/components/elements/files/ui-preview/server/loading";
 import { MultipleBrightCode } from "@/components/ui/bright-code";
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
 import {
@@ -49,8 +51,8 @@ export async function FilePreviews({
         </div>
       </TabsList>
       <TabsContent value="preview">
-        <ErrorBoundary fallback={<p>Error</p>}>
-          <Suspense fallback={<SuspenseFrameLoading name={name} />}>
+        <ErrorBoundary FallbackComponent={UIPreviewError}>
+          <Suspense fallback={<UIPreviewLoading name={name} />}>
             <UIPreview name={name} objects={objects} />
           </Suspense>
         </ErrorBoundary>

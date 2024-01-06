@@ -8,7 +8,7 @@ export function FrameLoading() {
   return <Skeleton className="h-96 w-full rounded-md border" />;
 }
 
-export function SuspenseFrameLoading({ name }: { name: string }) {
+export function UIPreviewLoading({ name }: { name: string }) {
   return (
     <div className="px-2">
       <div className="grid overflow-hidden rounded-md border border-border">
