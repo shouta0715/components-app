@@ -36,7 +36,9 @@ export async function UserInfo({
         />
       ) : (
         <Button asChild size="sm" variant="outline">
-          <Link href="/auth/login">フォロー</Link>
+          <Link href="/auth/login" scroll={false}>
+            フォロー
+          </Link>
         </Button>
       )}
     </div>

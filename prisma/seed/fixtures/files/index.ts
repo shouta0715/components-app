@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
@@ -93,14 +94,92 @@ async function generateSeedFiles(
   ]);
 
   const created = components.map((component) => {
+    let firstFileExtension: $Enums.Extension;
+    let secondFileExtension: $Enums.Extension;
+
     return Array.from({ length: randomNum(1, 3) }).map((_, i) => {
       // １つ目はtsx or jsx or html
       // ２つ目以降はcss or js or ts
-      const file = i === 0 ? files[randomNum(0, 2)] : files[randomNum(3, 5)];
+
+      if (i === 0) {
+        const file = files[randomNum(0, 2)];
+
+        firstFileExtension = file.type;
+
+        return {
+          objectId: file.id,
+          extension: file.type,
+          componentId: component.id,
+        };
+      }
+
+      if (i === 1) {
+        // jsxなら二個目はcss or js
+        // tsxなら二個目はcss or ts
+        // htmlなら二個目はcss or js or ts
+
+        let file: { type: $Enums.Extension; id: string } | undefined;
+
+        if (firstFileExtension === "jsx") {
+          file = files[randomNum(3, 4)];
+
+          secondFileExtension = file.type;
+        }
+
+        if (firstFileExtension === "tsx") {
+          file = files[randomNum(3, 5)];
+
+          secondFileExtension = file.type;
+        }
+
+        if (firstFileExtension === "html") {
+          file = files[randomNum(3, 5)];
+
+          secondFileExtension = file.type;
+        }
+
+        if (!file) throw new Error("Failed to generate seed files");
+
+        return {
+          objectId: file?.id,
+          extension: file?.type,
+          componentId: component.id,
+        };
+      }
+
+      if (secondFileExtension === "css") {
+        // 2個目がcssの場合1個目のファイルがjsxなら3個目はjs
+        // 2個目がcssの場合1個目のファイルがtsxなら3個目はts
+        // 2個目がcssの場合1個目のファイルがhtmlなら3個目はjs or ts
+
+        let file: { type: $Enums.Extension; id: string } | undefined;
+
+        if (firstFileExtension === "jsx") {
+          file = files[4];
+        }
+
+        if (firstFileExtension === "tsx") {
+          file = files[5];
+        }
+
+        if (firstFileExtension === "html") {
+          file = files[randomNum(4, 5)];
+        }
+
+        if (!file) throw new Error("Failed to generate seed files");
+
+        return {
+          objectId: file?.id,
+          extension: file?.type,
+          componentId: component.id,
+        };
+      }
+
+      // 3つめはCSS
 
       return {
-        objectId: file.id,
-        extension: file.type,
+        objectId: files[3].id,
+        extension: files[3].type,
         componentId: component.id,
       };
     });

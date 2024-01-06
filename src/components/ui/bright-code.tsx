@@ -1,3 +1,5 @@
+"server only";
+
 import { Code, BrightProps } from "bright";
 import React from "react";
 
@@ -30,7 +32,7 @@ function LangIcon({ extension }: { extension: Extension }) {
 
 function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
   return (
-    <div className="relative h-96  w-full overflow-scroll">
+    <div className="relative h-[467px]  w-full overflow-scroll">
       <Code
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
         codeClassName="w-full"

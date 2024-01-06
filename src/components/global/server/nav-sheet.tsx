@@ -1,5 +1,6 @@
 "server only";
 
+import clsx from "clsx";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -8,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LeftSide } from "@/layouts/root/left";
 
-export function NavSheet() {
+export function NavSheet({ preview = false }: { preview?: boolean }) {
   return (
     <Sheet>
-      <SheetTrigger asChild className="lg:hidden">
+      <SheetTrigger asChild className={clsx(preview ? "" : "lg:hidden")}>
         <Button size="icon" variant="ghost">
           <Menu className="h-6 w-6" />
         </Button>

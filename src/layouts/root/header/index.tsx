@@ -7,12 +7,18 @@ import { NavSheet } from "@/components/global/server/nav-sheet";
 import { Icon } from "@/components/icons/Icon";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
-function CommonHeader({ children }: { children?: React.ReactNode }) {
+function CommonHeader({
+  children,
+  preview = false,
+}: {
+  children?: React.ReactNode;
+  preview?: boolean;
+}) {
   return (
     <header className="shrink-0 border-b bg-background dark:border-gray-700">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-x-2">
-          <NavSheet />
+          <NavSheet preview={preview} />
           <Link className="flex items-center gap-4" href="/">
             <Icon className="hidden h-6 w-auto lg:block" />
             <span className="text-xl font-bold sm:inline-block">UI TRADE</span>
@@ -31,6 +37,14 @@ function CommonHeader({ children }: { children?: React.ReactNode }) {
 export function AppHeader() {
   return (
     <CommonHeader>
+      <AuthUser />
+    </CommonHeader>
+  );
+}
+
+export function PreviewHeader() {
+  return (
+    <CommonHeader preview>
       <AuthUser />
     </CommonHeader>
   );

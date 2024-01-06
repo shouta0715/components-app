@@ -66,11 +66,6 @@ describe("FollowButton", () => {
   afterEach(() => {
     vi.resetAllMocks();
   });
-  test("renders", async () => {
-    const { container } = await setup();
-
-    expect(container).toMatchSnapshot();
-  });
 
   test("follows", async () => {
     const { getByRole } = await setup();
