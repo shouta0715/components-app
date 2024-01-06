@@ -16,11 +16,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { SANDBOX_URL } from "@/lib/constant";
 import { CodeBundlerError } from "@/scripts/ui-preview/errors";
 import { SuccessTransformedData } from "@/scripts/ui-preview/types";
 import { cn } from "@/utils";
 
-const SANDBOX_URL = process.env.NEXT_PUBLIC_SANDBOX_URL as string;
 type PreviewIframeProps = React.PropsWithoutRef<
   JSX.IntrinsicElements["iframe"]
 > & {
@@ -165,7 +165,7 @@ const PreviewIframe = ({
       <CollapsibleContent
         className={clsx(
           "relative overflow-hidden p-2 sm:p-4",
-          collapsible ? "" : "max-h-56 "
+          collapsible ? "" : "max-h-44"
         )}
         forceMount
       >

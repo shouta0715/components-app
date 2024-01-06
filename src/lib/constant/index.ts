@@ -21,6 +21,7 @@ export const OBJECT_PUBLIC_BASE_URL =
 export const OBJECT_PRIVATE_BASE_URL =
   `${process.env.AWS_S3_ENDPOINT}/${PRIVATE_BUCKET_NAME}` as const;
 
+export const SANDBOX_URL = process.env.NEXT_PUBLIC_SANDBOX_URL as string;
 /*
 *********************************************
 Next.js Constants
