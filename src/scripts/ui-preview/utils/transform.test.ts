@@ -43,6 +43,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         files: [fxHTMLFileResult],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -58,6 +59,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         files: [fxHTMLFileResult],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -73,6 +75,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         files: [fxHTMLFileResult],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -97,6 +100,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -126,6 +130,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -150,6 +155,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: null,
         action: "render",
+        exportStyle: null,
       });
     });
 
@@ -184,6 +190,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 
@@ -205,6 +212,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 
@@ -231,6 +239,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 
@@ -257,6 +266,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 
@@ -292,6 +302,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 
@@ -327,6 +338,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         ],
         componentName: "Example",
         action: "render",
+        exportStyle: "named",
       });
     });
 

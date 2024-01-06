@@ -3,6 +3,8 @@ export const CSS_MIME_TYPE = "text/css" as const;
 export const JAVASCRIPT_MIME_TYPE = "application/javascript" as const;
 export const RELOAD_ACTION = "reload" as const;
 export const RENDER_ACTION = "render" as const;
+export const EXPORT_DEFAULT_STYLE = "default" as const;
+export const EXPORT_NAMED_STYLE = "named" as const;
 export const PREVIEW_TIMEOUT = 30000 as const;
 
 /*

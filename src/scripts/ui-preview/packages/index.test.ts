@@ -26,30 +26,42 @@ import {
 describe("scripts/ui-preview/packages", async () => {
   describe("Function getExportComponentName Test", async () => {
     test("Export Named Function", async () => {
-      const result = getExportComponentName(FX_NAMED_FUNCTION_COMPONENT);
+      const { exportStyle, result } = getExportComponentName(
+        FX_NAMED_FUNCTION_COMPONENT
+      );
       expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
+      expect(exportStyle).toBe("named");
     });
 
     test("Export Const Arrow Function", async () => {
-      const result = getExportComponentName(FX_CONST_ARROW_FUNCTION_COMPONENT);
+      const { exportStyle, result } = getExportComponentName(
+        FX_CONST_ARROW_FUNCTION_COMPONENT
+      );
       expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
+      expect(exportStyle).toBe("named");
     });
 
     test("Export Default Named Function", async () => {
-      const result = getExportComponentName(
+      const { result, exportStyle } = getExportComponentName(
         FX_DEFAULT_NAMED_FUNCTION_COMPONENT
       );
       expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
+      expect(exportStyle).toBe("default");
     });
 
     test("Export Default Variable", async () => {
-      const result = getExportComponentName(FX_DEFAULT_VARIABLE_COMPONENT);
+      const { result, exportStyle } = getExportComponentName(
+        FX_DEFAULT_VARIABLE_COMPONENT
+      );
       expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
+      expect(exportStyle).toBe("default");
     });
 
     test("Export Named", async () => {
-      const result = getExportComponentName(FX_NAMED_COMPONENT);
+      const { result, exportStyle } =
+        getExportComponentName(FX_NAMED_COMPONENT);
       expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
+      expect(exportStyle).toBe("named");
     });
 
     test("No Export", async () => {

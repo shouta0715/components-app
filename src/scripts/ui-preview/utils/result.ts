@@ -1,6 +1,7 @@
 import { RENDER_ACTION } from "@/scripts/ui-preview/constant";
 import {
   CompiledFile,
+  ExportStyle,
   SuccessTransformedData,
   TransformedFile,
   TransformedResult,
@@ -21,6 +22,7 @@ export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
     files: resultFiles,
     componentName: null,
     action: RENDER_ACTION,
+    exportStyle: null,
   };
 
   return {
@@ -30,7 +32,8 @@ export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
 
 export const reactToResult = (
   componentName: string,
-  files: CompiledFile[]
+  files: CompiledFile[],
+  exportStyle: ExportStyle
 ): TransformedResult => {
   const resultFiles: TransformedFile[] = files.map((file) => {
     return {
@@ -45,6 +48,7 @@ export const reactToResult = (
     files: resultFiles,
     componentName,
     action: RENDER_ACTION,
+    exportStyle,
   };
 
   return {

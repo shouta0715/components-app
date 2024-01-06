@@ -2,9 +2,15 @@ import {
   DYNAMIC_IMPORT_REGEX,
   ESM_BASE_URL,
   EXPORT_COMPONENT_REGEXES,
+  EXPORT_CONST_ARROW_FUNCTION_REGEX,
+  EXPORT_DEFAULT_NAMED_FUNCTION_REGEX,
+  EXPORT_DEFAULT_VARIABLE_REGEX,
+  EXPORT_NAMED_FUNCTION_REGEX,
+  EXPORT_NAMED_REGEX,
   STATIC_IMPORT_REGEX,
 } from "@/scripts/ui-preview/constant";
 import { PackageError } from "@/scripts/ui-preview/errors";
+import { ExportStyle } from "@/scripts/ui-preview/types";
 
 function resolvePackage(target: string): string {
   const isNotLibrary = target.startsWith(".");
@@ -33,8 +39,12 @@ function resolveStaticImports(target: string): string {
   return resolved;
 }
 
-export function getExportComponentName(target: string): string {
+export function getExportComponentName(target: string): {
+  result: string;
+  exportStyle: ExportStyle;
+} {
   let result: string | undefined;
+  let exportStyle: ExportStyle | undefined;
 
   // eslint-disable-next-line no-restricted-syntax
   for (const regex of EXPORT_COMPONENT_REGEXES) {
@@ -47,12 +57,29 @@ export function getExportComponentName(target: string): string {
 
     const [, name] = match;
 
+    if (
+      regex === EXPORT_DEFAULT_NAMED_FUNCTION_REGEX ||
+      regex === EXPORT_DEFAULT_VARIABLE_REGEX
+    ) {
+      exportStyle = "default";
+    }
+
+    if (
+      regex === EXPORT_NAMED_FUNCTION_REGEX ||
+      regex === EXPORT_CONST_ARROW_FUNCTION_REGEX ||
+      regex === EXPORT_NAMED_REGEX
+    ) {
+      exportStyle = "named";
+    }
     result = name;
   }
 
-  if (!result) throw new PackageError();
+  if (!result || !exportStyle) throw new PackageError();
 
-  return result;
+  return {
+    result,
+    exportStyle,
+  };
 }
 
 export function replaceImports(target: string): string {

@@ -62,7 +62,9 @@ export async function transformWithoutHTML(
 
   if (!mainFile) throw new CodeBundlerError();
 
-  const componentName = getExportComponentName(mainFile.file);
+  const { result: componentName, exportStyle } = getExportComponentName(
+    mainFile.file
+  );
 
   const compileFiles = await Promise.all(
     files.map(({ file, extension }) => compile(file, extension))
@@ -97,5 +99,5 @@ export async function transformWithoutHTML(
     }
   );
 
-  return reactToResult(componentName, compiledFiles);
+  return reactToResult(componentName, compiledFiles, exportStyle);
 }
