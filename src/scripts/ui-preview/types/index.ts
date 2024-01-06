@@ -40,13 +40,6 @@ export type SuccessTransformedData =
       action: Extract<MessageAction, "reload">;
     };
 
-export type TransformedResult =
-  | {
-      data: SuccessTransformedData;
-      error: false;
-    }
-  | {
-      data: null;
-      error: true;
-      message: ErrorMessage;
-    };
+export type TransformedResult = {
+  data: SuccessTransformedData;
+};

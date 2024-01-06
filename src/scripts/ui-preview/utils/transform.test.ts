@@ -37,7 +37,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
     test("HTML Only", async () => {
       const result = await transformWithHTML([fxHTMLFile], fxHTMLFile);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toMatchObject<SuccessTransformedData>({
@@ -53,7 +52,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
         fxHTMLFile
       );
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toMatchObject<SuccessTransformedData>({
@@ -69,7 +67,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
         fxHTMLFile
       );
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -87,7 +84,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(1);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -112,7 +108,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(2);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -142,7 +137,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(1);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -178,7 +172,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(1);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -200,7 +193,6 @@ describe("scripts/ui-preview/utils/transform", async () => {
       expect(spyCompiler).toBeCalledTimes(1);
       expect(spyReplaceImports).toBeCalledTimes(1);
 
-      expect(result.error).toBe(false);
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -221,7 +213,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(2);
       expect(spyReplaceImports).toBeCalledTimes(2);
-      expect(result.error).toBe(false);
+
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -247,7 +239,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(2);
       expect(spyReplaceImports).toBeCalledTimes(2);
-      expect(result.error).toBe(false);
+
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -277,7 +269,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(3);
       expect(spyReplaceImports).toBeCalledTimes(2);
-      expect(result.error).toBe(false);
+
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({
@@ -312,7 +304,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
 
       expect(spyCompiler).toBeCalledTimes(3);
       expect(spyReplaceImports).toBeCalledTimes(2);
-      expect(result.error).toBe(false);
+
       expect(result.data).not.toBeNull();
 
       expect(result.data).toStrictEqual<SuccessTransformedData>({

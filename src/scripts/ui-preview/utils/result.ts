@@ -1,7 +1,6 @@
 import { RENDER_ACTION } from "@/scripts/ui-preview/constant";
 import {
   CompiledFile,
-  ErrorMessage,
   SuccessTransformedData,
   TransformedFile,
   TransformedResult,
@@ -25,7 +24,6 @@ export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
   };
 
   return {
-    error: false,
     data,
   };
 };
@@ -50,17 +48,6 @@ export const reactToResult = (
   };
 
   return {
-    error: false,
     data,
-  };
-};
-
-export const errorMessageToResult = (
-  message: ErrorMessage
-): TransformedResult => {
-  return {
-    data: null,
-    error: true,
-    message,
   };
 };

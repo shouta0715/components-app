@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { CodeBundlerError } from "@/scripts/ui-preview/errors";
+import { PackageError } from "@/scripts/ui-preview/errors";
 import {
   getExportComponentName,
   replaceImports,
@@ -54,7 +54,7 @@ describe("scripts/ui-preview/packages", async () => {
 
     test("No Export", async () => {
       expect(() => getExportComponentName(FX_NO_EXPORT_COMPONENT)).toThrow(
-        CodeBundlerError
+        PackageError
       );
     });
   });

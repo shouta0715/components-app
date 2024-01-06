@@ -18,9 +18,9 @@ export async function UIPreview({
   objects: FileObject[];
   name: string;
 }) {
-  const { data, error } = await transformCode(objects);
+  const { data } = await transformCode(objects);
 
-  if (error || !data) throw new CodeBundlerError();
+  if (!data) throw new CodeBundlerError();
 
   return (
     <ResizablePanelGroup className="px-2" direction="horizontal">

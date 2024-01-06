@@ -30,10 +30,6 @@ export class ModuleError extends Error {
     this.message = modulesErrors[module].message;
     this.module = module;
   }
-
-  throwMessage() {
-    return { message: this.message, module: this.module };
-  }
 }
 
 export class CodeBundlerError extends ModuleError {

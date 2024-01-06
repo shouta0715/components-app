@@ -4,7 +4,7 @@ import {
   EXPORT_COMPONENT_REGEXES,
   STATIC_IMPORT_REGEX,
 } from "@/scripts/ui-preview/constant";
-import { CodeBundlerError } from "@/scripts/ui-preview/errors";
+import { PackageError } from "@/scripts/ui-preview/errors";
 
 function resolvePackage(target: string): string {
   const isNotLibrary = target.startsWith(".");
@@ -50,7 +50,7 @@ export function getExportComponentName(target: string): string {
     result = name;
   }
 
-  if (!result) throw new CodeBundlerError();
+  if (!result) throw new PackageError();
 
   return result;
 }
