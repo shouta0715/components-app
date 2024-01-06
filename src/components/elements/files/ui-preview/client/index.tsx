@@ -80,7 +80,6 @@ function FrameHeader({
       >
         {collapsible ? (
           <>
-            {" "}
             <MinusIcon
               className="hidden text-black  group-hover:flex group-disabled:hidden"
               size={8}

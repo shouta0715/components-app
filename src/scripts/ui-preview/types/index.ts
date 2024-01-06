@@ -1,6 +1,8 @@
 import {
   CSS_MIME_TYPE,
   ERROR_MESSAGES,
+  EXPORT_DEFAULT_STYLE,
+  EXPORT_NAMED_STYLE,
   HTML_MIME_TYPE,
   JAVASCRIPT_MIME_TYPE,
   RELOAD_ACTION,
@@ -30,9 +32,14 @@ export type ErrorMessage = ErrorMessages[keyof ErrorMessages];
 
 type MessageAction = typeof RELOAD_ACTION | typeof RENDER_ACTION;
 
+export type ExportStyle =
+  | typeof EXPORT_DEFAULT_STYLE
+  | typeof EXPORT_NAMED_STYLE;
+
 export type SuccessTransformedData =
   | {
       componentName: string | null;
+      exportStyle: ExportStyle | null;
       files: TransformedFile[];
       action: Extract<MessageAction, "render">;
     }

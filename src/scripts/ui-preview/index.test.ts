@@ -138,6 +138,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: null,
           action: "render",
+          exportStyle: null,
         },
       });
     });
@@ -157,6 +158,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: null,
           action: "render",
+          exportStyle: null,
         },
       });
     });
@@ -181,6 +183,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: null,
           action: "render",
+          exportStyle: null,
         },
       });
     });
@@ -204,6 +207,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: null,
           action: "render",
+          exportStyle: null,
         },
       });
     });
@@ -226,6 +230,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
@@ -248,6 +253,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
@@ -274,6 +280,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
@@ -300,6 +307,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
@@ -328,6 +336,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
@@ -356,6 +365,7 @@ describe("scripts/ui-preview", () => {
           files: resultFiles,
           componentName: "Example",
           action: "render",
+          exportStyle: "named",
         },
       });
     });
