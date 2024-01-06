@@ -1,8 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
 import mockRouter from "next-router-mock";
+import { toast } from "sonner";
 import { describe, expect, test, vi } from "vitest";
 import { useAuthForm } from "@/components/ui/use-auth-form";
-import * as toast from "@/components/ui/use-toast";
 
 import * as errorFn from "@/lib/errors";
 import { ActionResult } from "@/lib/next/actions";
@@ -24,14 +24,10 @@ function spyActions(result?: ActionResult) {
 
 async function spyHooks(
   actionResult?: ActionResult,
-  errorToasts?: toast.ErrorToast
+  errorToasts?: { title: string; message: string }
 ) {
   const onToast = vi.fn();
-  vi.spyOn(toast, "useToast").mockReturnValue({
-    toast: onToast,
-    dismiss: vi.fn(),
-    toasts: [],
-  });
+  vi.spyOn(toast, "success").mockImplementation(onToast);
 
   const { action } = spyActions(actionResult);
 
@@ -130,7 +126,9 @@ describe("UI use auth form Test ", () => {
 
     await act(async () => clientActions(formData));
 
-    expect(onToast).toHaveBeenCalledWith(toastArg);
+    expect(onToast).toHaveBeenCalledWith(toastArg.title, {
+      description: toastArg.description,
+    });
   });
   test("if action result is success and is provided redirect, redirect to redirect", async () => {
     mockRouter.push("/");

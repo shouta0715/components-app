@@ -4,14 +4,14 @@ import React from "react";
 
 import { createDraftComp } from "@/actions/components/create";
 import { Image } from "@/components/elements/images";
+import { AvatarLink } from "@/components/elements/users/avatar-link";
 import { AuthForm } from "@/components/ui/auth-form";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
 import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
-import { cn, getDisplayName, getImageUrl } from "@/utils";
+import { cn, getImageUrl } from "@/utils";
 
 async function TopComponent() {
   const components = await cache(async () => getTopComps(5), ["topComps"])();
@@ -56,20 +56,11 @@ async function TopComponent() {
                 />
 
                 <div className="absolute bottom-6 left-2 z-20 grid gap-1">
-                  <Link
-                    className="flex items-center gap-1"
-                    href={`/users/${comp.creator.id}`}
-                  >
-                    <Avatar className="h-6 w-6 bg-accent text-xs sm:h-7 sm:w-7 sm:text-sm">
-                      <AvatarImage src={comp.creator.image ?? ""} />
-                      <AvatarFallback>
-                        {comp.creator.name?.slice(0, 2) ?? "UK"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <p className="line-clamp-1 w-full text-sm text-primary">
-                      {getDisplayName(comp.creator.name)}
-                    </p>
-                  </Link>
+                  <AvatarLink
+                    id={comp.creator.id}
+                    image={comp.creator.image}
+                    name={comp.creator.name}
+                  />
                   <p className="px-1 text-xs text-primary sm:text-sm">
                     {comp.name}
                   </p>

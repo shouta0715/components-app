@@ -1,42 +1,19 @@
 name: Run unit Tests
 
 on:
-  push:
-    branches: ["main", "develop"]
   pull_request:
-    branches: ["main", "develop"]
+    paths:
+      - "src/**"
+      - "test/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".env.example.test"
+      - "docker-compose.test.yaml"
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-
-    # services:
-    #   mysql:
-    #     image: mysql:8.0.35
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: root
-    #       MYSQL_DATABASE: ui-trade-test
-    #       MYSQL_USER: user
-    #       MYSQL_PASSWORD: password
-    #       TZ: "Asia/Tokyo"
-    #     ports:
-    #       - 3306:3306
-
-    #     options: --health-cmd="mysqladmin ping"
-    #       --health-interval=10s
-    #       --health-timeout=5s
-    #       --health-retries=3
-    #   minio:
-    #     image: minio/minio:RELEASE.2023-01-06T18-11-18Z
-    #     env:
-    #       MINIO_ROOT_USER: root
-    #       MINIO_ROOT_PASSWORD: password
-    #       MINIO_ACCESS_KEY: accsess_key
-    #       MINIO_SECRET_KEY: secret_key
-    #     ports:
-    #       - 9000:9000
-    #       - 9090:9090
 
     steps:
       - name: Checkout
@@ -62,4 +39,4 @@ jobs:
         run: cp .env.example.test .env.test
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm test:ci

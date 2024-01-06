@@ -3,9 +3,9 @@ import { randomNum } from "@/utils/random";
 
 function generateSeedFollows(users: User[]): Prisma.FollowCreateManyInput[] {
   const created: Prisma.FollowCreateManyInput[][] = users.map((user) => {
-    return Array.from({ length: randomNum(3, 0) }, () => ({
+    return Array.from({ length: randomNum(0, 5) }, (_, i) => ({
       followerId: user.id,
-      followingId: users[randomNum(users.length - 1, 0)].id,
+      followingId: users[i].id,
     }));
   });
 

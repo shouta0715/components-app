@@ -1,4 +1,25 @@
-import { Category, Component, ComponentPreviewImage } from "@prisma/client";
+import {
+  Category,
+  Component,
+  ComponentPreviewImage,
+  File,
+  User,
+} from "@prisma/client";
+
+/*
+**************************
+with Relations
+************************** 
+*/
+
+type WithCreator = Pick<User, "id" | "name" | "image">;
+type WithCategory = Pick<Category, "id" | "name">;
+
+/*
+**************************
+Categories
+************************** 
+*/
 
 export type CategoriesByHome = {
   components: {
@@ -10,6 +31,23 @@ export type CategoriesByHome = {
   };
 } & Category;
 
+/* 
+**************************
+Components
+************************** 
+*/
+
 export type CompWithImgs = Component & {
   previewImages?: ComponentPreviewImage[];
+};
+
+export type CompWithFiles = Component & {
+  category: WithCategory;
+  creator: WithCreator;
+  files: File[];
+};
+
+export type ComponentWithParent = Component & {
+  category: WithCategory;
+  creator: WithCreator;
 };

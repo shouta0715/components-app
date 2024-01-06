@@ -1,9 +1,12 @@
+import { loadEnvConfig } from "@next/env";
 import { PrismaClient } from "@prisma/client";
 import "@testing-library/jest-dom";
 import router from "next-router-mock";
 import React from "react";
-import { vi } from "vitest";
+import { beforeEach, vi } from "vitest";
 import { initialize } from "../src/tests/fabbrica";
+
+loadEnvConfig(`${process.cwd()}.env.test`);
 
 vi.mock("next/navigation", () => ({
   // eslint-disable-next-line global-require
@@ -16,6 +19,10 @@ vi.mock("next/navigation", () => ({
     return undefined as never;
   }),
 }));
+
+beforeEach(() => {
+  router.setCurrentUrl("/");
+});
 
 const prisma = new PrismaClient();
 

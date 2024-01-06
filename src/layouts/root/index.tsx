@@ -1,17 +1,13 @@
 import React from "react";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+
+import { Providers } from "@/layouts/providers";
 import { Footer } from "@/layouts/root/footer";
-import { AppHeader, AuthHeader } from "@/layouts/root/header";
+import { AppHeader, AuthHeader, PreviewHeader } from "@/layouts/root/header";
 import { LeftSide } from "@/layouts/root/left";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
+    <Providers>
       <div className="flex min-h-screen flex-col">
         <div className="sticky top-0 z-50">
           <AppHeader />
@@ -24,18 +20,29 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <Footer />
       </div>
-    </ThemeProvider>
+    </Providers>
   );
 };
 
+export function PreviewLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Providers>
+      <div className="flex min-h-screen flex-col">
+        <div className="sticky top-0 z-50">
+          <PreviewHeader />
+        </div>
+        <div className="mx-auto flex h-full w-full max-w-7xl flex-1 items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
+          <main className="flex-1">{children}</main>
+        </div>
+        <Footer />
+      </div>
+    </Providers>
+  );
+}
+
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
+    <Providers>
       <div className="flex min-h-screen flex-col">
         <div className="sticky top-0 z-50">
           <AuthHeader />
@@ -48,6 +55,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <Footer />
       </div>
-    </ThemeProvider>
+    </Providers>
   );
 };

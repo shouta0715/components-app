@@ -21,7 +21,7 @@
     "plugin:tailwindcss/recommended",
     "prettier"
   ],
-  "plugins": ["import", "jsx-a11y", "react", "unused-imports"],
+  "plugins": ["import", "jsx-a11y", "react", "unused-imports", "react-hooks"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -100,6 +100,8 @@
       {
         "allow": ["_count"]
       }
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
   }
 }

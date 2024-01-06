@@ -16,9 +16,9 @@ function generateComponentLikes({
   users: User[];
 }): Prisma.ComponentLikeCreateManyInput[] {
   const created = components.map((component) => {
-    return Array.from({ length: randomNum(20, 0) }, () => ({
+    return Array.from({ length: randomNum(0, 20) }, () => ({
       componentId: component.id,
-      userId: users[randomNum(users.length - 1, 0)].id,
+      userId: users[randomNum(0, users.length - 1)].id,
     }));
   });
 
@@ -33,9 +33,9 @@ function generateComponentSetLikes({
   users: User[];
 }): Prisma.ComponentSetLikeCreateManyInput[] {
   const created = componentSets.map((componentSet) => {
-    return Array.from({ length: randomNum(20, 0) }, () => ({
+    return Array.from({ length: randomNum(0, 20) }, () => ({
       componentSetId: componentSet.id,
-      userId: users[randomNum(users.length - 1, 0)].id,
+      userId: users[randomNum(0, users.length - 1)].id,
     }));
   });
 

@@ -67,15 +67,16 @@ model Follow {
 
   // RELATIONSHIPS
   followerId String
-  Follower   User   @relation("follower", fields: [followerId], references: [id])
+  follower   User   @relation("follower", fields: [followerId], references: [id])
 
   followingId String
-  Following   User   @relation("following", fields: [followingId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
   @@map("follows")
+  @@unique([followerId, followingId])
 }
 
 model Category {
