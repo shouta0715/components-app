@@ -1,5 +1,6 @@
 import { Extension } from "@prisma/client";
 import { Loader, TransformOptions, transform } from "esbuild";
+import { CompilerError } from "@/scripts/ui-preview/errors";
 
 const defaultCompilerOptions: TransformOptions = {
   minify: true,
@@ -21,8 +22,10 @@ function extensionToLoader(extension: Extension): Loader {
       return "ts";
     case "tsx":
       return "tsx";
+    case "css":
+      return "css";
     default:
-      throw new Error(`Unknown extension: ${extension}`);
+      throw new CompilerError();
   }
 }
 

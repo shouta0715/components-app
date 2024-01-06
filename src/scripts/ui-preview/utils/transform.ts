@@ -13,7 +13,6 @@ export async function transformWithHTML(
   files: FileObject[],
   htmlFile: FileObject
 ): Promise<TransformedResult> {
-  // HTMLファイルのみの場合
   if (files.length === 1) return htmlToResult([htmlFile]);
 
   const removedPreview = files.filter(
@@ -23,93 +22,80 @@ export async function transformWithHTML(
 
   if (removedPreview.length < 1) return htmlToResult([htmlFile]);
 
-  const tsFile = files.find((file) => file.extension === "ts");
+  const compileFiles = await Promise.all(
+    removedPreview.map(({ file, extension }) => compile(file, extension))
+  );
 
-  // ここを通る場合は、HTML + CSS OR HTML + JS OR HTML + JS + CSS
-  if (!tsFile) return htmlToResult([htmlFile, ...removedPreview]);
+  const compiledFiles: CompiledFile[] = compileFiles.map(
+    ({ error, result }, index) => {
+      if (error) throw new CompilerError();
 
-  const { error, result } = await compile(tsFile.file, tsFile.extension);
+      const { extension, componentId } = removedPreview[index];
 
-  if (error) throw new CompilerError();
+      if (extension === "ts" || extension === "js") {
+        return {
+          file: replaceImports(result),
+          extension: "js",
+          componentId,
+          originallyExtension: extension,
+        };
+      }
 
-  const cssFile = files.find((file) => file.extension === "css");
+      return {
+        file: result,
+        extension,
+        componentId,
+        originallyExtension: extension,
+      };
+    }
+  );
 
-  const compiledTsFile: CompiledFile = {
-    file: result,
-    extension: "js",
-    componentId: tsFile.componentId,
-    originallyExtension: tsFile.extension,
-  };
-
-  if (!cssFile) return htmlToResult([htmlFile, compiledTsFile]);
-
-  return htmlToResult([htmlFile, compiledTsFile, cssFile]);
+  return htmlToResult([htmlFile, ...compiledFiles]);
 }
 
 export async function transformWithoutHTML(
   files: FileObject[]
 ): Promise<TransformedResult> {
-  // ここに来た場合表示に使うファイルはJSXかTSXのみ。TSXとJSXの組み合わせは来ない。
-  // TSXとJSまたはJSXとTSの組み合わせは来ない。
-
   const mainFile = files.find(
     (file) => file.extension === "tsx" || file.extension === "jsx"
-  );
-  const cssFile = files.find((file) => file.extension === "css");
-  const scriptFile = files.find(
-    (file) => file.extension === "ts" || file.extension === "js"
   );
 
   if (!mainFile) throw new CodeBundlerError();
 
   const componentName = getExportComponentName(mainFile.file);
 
-  if (!scriptFile) {
-    const { error, result } = await compile(mainFile.file, mainFile.extension);
+  const compileFiles = await Promise.all(
+    files.map(({ file, extension }) => compile(file, extension))
+  );
 
-    if (error) throw new CompilerError();
+  const compiledFiles: CompiledFile[] = compileFiles.map(
+    ({ error, result }, index) => {
+      if (error) throw new CompilerError();
 
-    const compiledMainFile: CompiledFile = {
-      file: replaceImports(result),
-      extension: "js",
-      componentId: mainFile.componentId,
-      originallyExtension: mainFile.extension,
-    };
+      const { extension, componentId } = files[index];
 
-    if (!cssFile) return reactToResult(componentName, [compiledMainFile]);
+      if (
+        extension === "ts" ||
+        extension === "tsx" ||
+        extension === "jsx" ||
+        extension === "js"
+      ) {
+        return {
+          file: replaceImports(result),
+          extension: "js",
+          componentId,
+          originallyExtension: extension,
+        };
+      }
 
-    return reactToResult(componentName, [compiledMainFile, cssFile]);
-  }
+      return {
+        file: result,
+        extension,
+        componentId,
+        originallyExtension: extension,
+      };
+    }
+  );
 
-  const [{ error: mainError, result: mainResult }, { error, result }] =
-    await Promise.all([
-      compile(mainFile.file, mainFile.extension),
-      compile(scriptFile.file, scriptFile.extension),
-    ]);
-
-  if (mainError || error) throw new CompilerError();
-
-  const compiledMainFile: CompiledFile = {
-    file: replaceImports(mainResult),
-    extension: "js",
-    componentId: mainFile.componentId,
-    originallyExtension: mainFile.extension,
-  };
-
-  const compiledScriptFile: CompiledFile = {
-    file: replaceImports(result),
-    extension: "js",
-    componentId: scriptFile.componentId,
-    originallyExtension: scriptFile.extension,
-  };
-
-  if (!cssFile) {
-    return reactToResult(componentName, [compiledMainFile, compiledScriptFile]);
-  }
-
-  return reactToResult(componentName, [
-    compiledMainFile,
-    compiledScriptFile,
-    cssFile,
-  ]);
+  return reactToResult(componentName, compiledFiles);
 }
