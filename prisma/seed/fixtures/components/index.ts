@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { Category, Component, Prisma, User } from "@prisma/client";
+import { getMarkdownText } from "../lib/loadMarkdown";
 import { randomNum, randomString } from "@/utils/random";
 
 function generateSeedComponents(
@@ -14,7 +15,7 @@ function generateSeedComponents(
         categoryId: category.id,
         draft: i % 10 === 0,
         creatorId: users[randomNum(0, users.length - 1)].id,
-        document: randomString(),
+        document: getMarkdownText(),
         previewUrl: randomString(),
       };
 
