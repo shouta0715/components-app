@@ -1,61 +1,126 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import {
-  getPostMessage,
-  onReloadIframe,
-} from "@/components/elements/files/ui-preview/client/fetcher";
+  PostMessageError,
+  RenderError,
+  TimeOutError,
+  UnknownMessageError,
+} from "@/components/elements/files/ui-preview/error/errors";
+import {
+  PostMessageQuery,
+  ReceiveData,
+} from "@/components/elements/files/ui-preview/types";
 import { SANDBOX_URL } from "@/lib/constant";
+import { PREVIEW_TIMEOUT } from "@/scripts/ui-preview/constant";
+
 import { SuccessTransformedData } from "@/scripts/ui-preview/types";
 
-type Props = { inputData: SuccessTransformedData; componentId: string };
+type Props = { inputData: SuccessTransformedData };
 
-export function usePreviewIframe({ inputData, componentId }: Props) {
-  const ref = useRef<HTMLIFrameElement>(null);
-  const { isPending, data, isError, error } = useQuery({
-    queryFn: getPostMessage,
-    queryKey: ["preview-iframe", componentId],
-    retry: false,
-    gcTime: 0,
-    staleTime: 0,
+export function usePreviewIframe({ inputData }: Props) {
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const ref = useRef<HTMLIFrameElement | null>(null);
+  const [query, setQuery] = useState<PostMessageQuery>({
+    isPending: true,
+    height: 0,
+    error: null,
   });
 
-  const {
-    isPending: isReloading,
-    mutate,
-    isError: isReloadError,
-    error: reloadError,
-  } = useMutation({
-    mutationFn: () => onReloadIframe(ref.current),
-    mutationKey: ["preview-iframe", componentId],
-    retry: false,
-  });
+  const onThrowError = useCallback(
+    (error: PostMessageError) => {
+      if (timer.current) clearTimeout(timer.current);
 
-  async function onLoadIframe(
-    e: React.SyntheticEvent<HTMLIFrameElement, Event>
-  ) {
-    if (!e.target) return;
+      setQuery((prev) => ({
+        ...prev,
+        error,
+      }));
+    },
+    [timer]
+  );
 
-    const { contentWindow } = e.target as HTMLIFrameElement;
+  const onReloadIframe = useCallback(async () => {
+    setQuery((prev) => ({ ...prev, isPending: true, error: null }));
 
-    if (!contentWindow) return;
+    if (!ref.current || !ref.current.contentWindow) return;
 
-    const message = JSON.stringify(inputData);
+    const message = JSON.stringify({ action: "reload" });
 
-    contentWindow.postMessage(message, SANDBOX_URL);
-  }
+    ref.current.contentWindow.postMessage(message, SANDBOX_URL);
+    timer.current = setTimeout(() => {
+      onThrowError(new TimeOutError());
+    }, PREVIEW_TIMEOUT);
+  }, [onThrowError]);
+
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== SANDBOX_URL) return;
+
+      const data = JSON.parse(e.data) as ReceiveData;
+
+      if (timer.current) clearTimeout(timer.current);
+      if (data.error) {
+        onThrowError(new UnknownMessageError());
+
+        return;
+      }
+
+      if (data.action === "render") {
+        if (!data.height) {
+          onThrowError(new RenderError());
+
+          return;
+        }
+
+        setQuery({ isPending: false, height: data.height, error: null });
+
+        return;
+      }
+
+      if (data.action === "reload") {
+        setQuery((prev) => ({ ...prev, isPending: false, error: null }));
+
+        return;
+      }
+
+      onThrowError(new UnknownMessageError());
+    };
+
+    window.addEventListener("message", onMessage);
+    timer.current = setTimeout(() => {
+      onThrowError(new TimeOutError());
+    }, PREVIEW_TIMEOUT);
+
+    return () => {
+      window.removeEventListener("message", onMessage);
+
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, [onThrowError]);
+
+  const onLoadIframe = useCallback(
+    async (e: React.SyntheticEvent<HTMLIFrameElement, Event>) => {
+      if (!e.target) return;
+
+      const { contentWindow } = e.target as HTMLIFrameElement;
+
+      if (!contentWindow) return;
+
+      const message = JSON.stringify(inputData);
+
+      contentWindow.postMessage(message, SANDBOX_URL);
+    },
+    [inputData]
+  );
 
   return {
-    onLoadIframe,
-    isPending,
-    data,
-    isError,
     ref,
-    isReloading,
-    reload: mutate,
-    isReloadError,
-    reloadError,
-    error,
+    isPending: query.isPending,
+    height: query.height,
+    error: query.error,
+    setQuery,
+    onLoadIframe,
+    reload: onReloadIframe,
   };
 }

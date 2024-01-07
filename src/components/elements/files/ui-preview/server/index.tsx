@@ -26,7 +26,6 @@ export async function UIPreview({
     <ResizablePanelGroup className="px-2" direction="horizontal">
       <ResizablePanel className="min-w-64" defaultSize={100} minSize={30}>
         <PreviewIframe
-          componentId={objects[0].componentId}
           inputData={data}
           name={name}
           title={objects[0].componentId}
