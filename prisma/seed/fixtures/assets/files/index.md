@@ -1,15 +1,7 @@
 ## Installation
 
-### CLI
-
 ```bash
 npx shadcn-ui@latest add dialog
-```
-
-### Manual
-
-```bash
-npm install @shadcn/ui-dialog
 ```
 
 ## Usage
