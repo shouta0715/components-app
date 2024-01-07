@@ -3,6 +3,7 @@
 import { AlertCircle, MinusIcon, PlusIcon, RotateCw } from "lucide-react";
 import { useState } from "react";
 import { FallbackProps } from "react-error-boundary";
+import { PostMessageError } from "@/components/elements/files/ui-preview/error/errors";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -14,15 +15,25 @@ import { ModuleError } from "@/scripts/ui-preview/errors";
 type UIPreviewErrorProps = FallbackProps;
 
 function getErrorMessage(error: unknown) {
-  if (!(error instanceof ModuleError)) return "予期せぬエラーが発生しました。";
+  if (error instanceof ModuleError)
+    return "コードにエラーがある可能性があります。";
 
-  switch (error.module) {
-    case "TimeOut":
-      return "タイムアウトエラーです。重いコードの可能性があります。";
+  if (error instanceof PostMessageError) {
+    switch (error.module) {
+      case "TimeOut":
+        return "タイムアウトエラーです。重いコードを使用している可能性があります。";
 
-    default:
-      return "コードにエラーがある可能性があります。";
+      case "Render":
+        return "コードにエラーが有る可能性があります。";
+
+      case "Reload":
+        return "プレビューをリロードできませんでした。";
+      default:
+        return "予期しないエラーが発生しました。";
+    }
   }
+
+  return "予期しないエラーが発生しました。";
 }
 
 export function UIPreviewError({

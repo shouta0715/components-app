@@ -30,7 +30,7 @@ export type TransformedFile = {
 type ErrorMessages = typeof ERROR_MESSAGES;
 export type ErrorMessage = ErrorMessages[keyof ErrorMessages];
 
-type MessageAction = typeof RELOAD_ACTION | typeof RENDER_ACTION;
+export type MessageAction = typeof RELOAD_ACTION | typeof RENDER_ACTION;
 
 export type ExportStyle =
   | typeof EXPORT_DEFAULT_STYLE

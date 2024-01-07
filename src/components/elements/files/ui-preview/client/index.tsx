@@ -23,7 +23,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { SANDBOX_URL } from "@/lib/constant";
-import { CodeBundlerError, TimeOutError } from "@/scripts/ui-preview/errors";
 import { SuccessTransformedData } from "@/scripts/ui-preview/types";
 import { cn } from "@/utils";
 
@@ -31,7 +30,6 @@ type PreviewIframeProps = React.PropsWithoutRef<
   JSX.IntrinsicElements["iframe"]
 > & {
   inputData: SuccessTransformedData;
-  componentId: string;
   name: string;
 };
 
@@ -147,39 +145,19 @@ function FrameHeader({
 
 const PreviewIframe = ({
   inputData,
-  componentId,
   className,
   title,
   name,
   ...props
 }: PreviewIframeProps) => {
-  const {
-    onLoadIframe,
-    isPending,
-    data,
-    isError,
-    ref,
-    reload,
-    isReloading,
-    isReloadError,
-    error,
-    reloadError,
-  } = usePreviewIframe({
-    inputData,
-    componentId,
-  });
+  const { onLoadIframe, ref, reload, isPending, height, error } =
+    usePreviewIframe({
+      inputData,
+    });
+
+  if (error) throw error;
 
   const [collapsible, setCollapsible] = useState(true);
-
-  const isLoading = isPending || isReloading;
-
-  if (isError || isReloadError) {
-    if (error instanceof TimeOutError || reloadError instanceof TimeOutError) {
-      throw new TimeOutError();
-    }
-
-    throw new CodeBundlerError();
-  }
 
   return (
     <Collapsible
@@ -191,7 +169,7 @@ const PreviewIframe = ({
       <FrameHeader
         collapsible={collapsible}
         iframe={ref}
-        isLoading={isLoading}
+        isLoading={isPending}
         name={name}
         reload={reload}
       />
@@ -211,8 +189,8 @@ const PreviewIframe = ({
           sandbox="allow-scripts allow-same-origin"
           src={SANDBOX_URL}
           style={{
-            opacity: isLoading ? 0 : 1,
-            height: isLoading ? "0px" : data?.height,
+            opacity: isPending ? 0 : 1,
+            height: isPending ? "0px" : height,
           }}
           title={title}
         />
@@ -223,7 +201,7 @@ const PreviewIframe = ({
             </Button>
           </div>
         )}
-        {isLoading && <FrameLoading />}
+        {isPending && <FrameLoading />}
       </CollapsibleContent>
     </Collapsible>
   );
