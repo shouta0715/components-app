@@ -32,7 +32,7 @@ function LangIcon({ extension }: { extension: Extension }) {
 
 function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
   return (
-    <div className="relative h-[467px]  w-full overflow-scroll">
+    <div className="relative h-[467px] w-full overflow-scroll">
       <Code
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
         codeClassName="w-full"
@@ -42,6 +42,38 @@ function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
       >
         {children}
       </Code>
+    </div>
+  );
+}
+
+export function NormalBrightCode({
+  theme,
+  copy = true,
+  className,
+  children,
+  ...props
+}: Omit<BrightCodeProps, "lang"> &
+  Pick<BrightProps, "lang"> & {
+    copy?: boolean;
+  }) {
+  return (
+    <div className="relative">
+      <Code
+        codeClassName="pr-12"
+        {...props}
+        className={cn("text-sm relative", className)}
+        theme={theme ?? "github-dark"}
+      >
+        {children}
+      </Code>
+      {copy && (
+        <div className="pointer-events-none absolute inset-0 flex  h-12  w-full">
+          <CopyButton
+            className="pointer-events-auto my-auto ml-auto mr-4"
+            value={children}
+          />
+        </div>
+      )}
     </div>
   );
 }
