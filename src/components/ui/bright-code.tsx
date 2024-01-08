@@ -37,7 +37,7 @@ function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
         codeClassName="w-full"
         style={{ margin: 0 }}
-        theme={theme ?? "github-dark"}
+        theme={theme ?? "github-dark-dimmed"}
         {...props}
       >
         {children}
@@ -62,7 +62,7 @@ export function NormalBrightCode({
         codeClassName="pr-12"
         {...props}
         className={cn("text-sm relative", className)}
-        theme={theme ?? "github-dark"}
+        theme={theme ?? "github-dark-dimmed"}
       >
         {children}
       </Code>
@@ -106,9 +106,7 @@ export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
             className="absolute right-4 z-10 mx-2 my-2.5 sm:right-4 sm:-my-10"
             value={object.file}
           />
-          <BrightCode lang={object.extension} theme="github-dark">
-            {object.file}
-          </BrightCode>
+          <BrightCode lang={object.extension}>{object.file}</BrightCode>
         </TabsContent>
       ))}
     </Tabs>

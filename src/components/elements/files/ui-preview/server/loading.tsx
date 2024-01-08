@@ -5,7 +5,7 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function FrameLoading() {
-  return <Skeleton className="h-96 w-full rounded-md border" />;
+  return <Skeleton className="h-96 w-full rounded-md" />;
 }
 
 export function UIPreviewLoading({ name }: { name: string }) {
