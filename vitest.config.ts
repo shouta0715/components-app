@@ -19,11 +19,7 @@ export default defineConfig({
       reportsDirectory: "./coverage",
       exclude: ["**/node_modules/**", "**/vendor/**", "**/fabbrica/**"],
     },
-    exclude: [
-      ...configDefaults.exclude,
-      "src/**/e2e/**/*",
-      "*.config.{ts,js,tsx}",
-    ],
+    exclude: [...configDefaults.exclude, "e2e/**/*", "*.config.{ts,js,tsx}"],
   },
   resolve: { alias },
 });
