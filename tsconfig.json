@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "prisma",
-    "src/tests/mocks/setup.tss"
+    "src/tests/mocks/setup.ts",
+    ".storybook/**/*"
   ],
   "exclude": ["node_modules"]
 }
