@@ -175,7 +175,7 @@ const PreviewIframe = ({
       />
       <CollapsibleContent
         className={clsx(
-          "relative overflow-hidden p-2 sm:p-4",
+          "relative overflow-hidden",
           collapsible ? "" : "max-h-44"
         )}
         forceMount

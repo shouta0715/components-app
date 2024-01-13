@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import React from "react";
+import { ComponentDocument } from "@/components/elements/documents/component-document";
 import { FilePreviews } from "@/components/elements/files/file-previe";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
@@ -35,6 +36,8 @@ export default async function Page({ params }: Params) {
         <UserInfo creator={component.creator} />
 
         <FilePreviews files={component.files} name={component.name} />
+
+        <ComponentDocument>{component.document}</ComponentDocument>
       </div>
     </div>
   );

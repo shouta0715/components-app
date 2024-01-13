@@ -30,7 +30,7 @@ export function CopyButton({
   return (
     <button
       className={cn(
-        "text-muted-foreground bg-primary dark:bg-primary-foreground hover:bg-gray-800 p-2 rounded-md",
+        "text-muted dark:text-muted-foreground bg-primary dark:bg-primary-foreground hover:bg-gray-800 p-2 rounded-md",
         className
       )}
       disabled={copied}
@@ -40,7 +40,7 @@ export function CopyButton({
         if (!isToast) return;
 
         toast.success("COPIED!!", {
-          duration: 2000,
+          duration: 1000,
         });
       }}
       type="button"

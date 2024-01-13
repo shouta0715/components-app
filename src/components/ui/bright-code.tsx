@@ -32,16 +32,48 @@ function LangIcon({ extension }: { extension: Extension }) {
 
 function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
   return (
-    <div className="relative h-[467px]  w-full overflow-scroll">
+    <div className="relative h-[467px] w-full overflow-scroll">
       <Code
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
         codeClassName="w-full"
         style={{ margin: 0 }}
-        theme={theme ?? "github-dark"}
+        theme={theme ?? "github-dark-dimmed"}
         {...props}
       >
         {children}
       </Code>
+    </div>
+  );
+}
+
+export function NormalBrightCode({
+  theme,
+  copy = true,
+  className,
+  children,
+  ...props
+}: Omit<BrightCodeProps, "lang"> &
+  Pick<BrightProps, "lang"> & {
+    copy?: boolean;
+  }) {
+  return (
+    <div className="relative">
+      <Code
+        codeClassName="pr-12"
+        {...props}
+        className={cn("text-sm relative", className)}
+        theme={theme ?? "github-dark-dimmed"}
+      >
+        {children}
+      </Code>
+      {copy && (
+        <div className="pointer-events-none absolute inset-0 flex  h-12  w-full">
+          <CopyButton
+            className="pointer-events-auto my-auto ml-auto mr-4"
+            value={children}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -74,9 +106,7 @@ export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
             className="absolute right-4 z-10 mx-2 my-2.5 sm:right-4 sm:-my-10"
             value={object.file}
           />
-          <BrightCode lang={object.extension} theme="github-dark">
-            {object.file}
-          </BrightCode>
+          <BrightCode lang={object.extension}>{object.file}</BrightCode>
         </TabsContent>
       ))}
     </Tabs>
