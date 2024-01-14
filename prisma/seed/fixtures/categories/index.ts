@@ -110,6 +110,11 @@ const categoriesFixture: Prisma.CategoryCreateInput[] = [
     name: "Backdrop",
     description: "背景に覆いかぶさるバックドロップコンポーネント",
   },
+  {
+    id: "other",
+    name: "Other",
+    description: "その他のコンポーネント",
+  },
 ];
 
 export async function seedCategories(
