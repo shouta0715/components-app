@@ -7,7 +7,7 @@ export async function createDraftComponent(userId: string): Promise<Component> {
       name: "Untitled Component",
       draft: true,
       previewUrl: "",
-      categoryId: "",
+      categoryId: "other",
       creatorId: userId,
       document: "",
     },
