@@ -14,7 +14,7 @@ export const createDraftComp = async (): Promise<ActionResult> => {
 
     return {
       success: true,
-      redirect: `/components/${component.id}`,
+      redirect: `/components/${component.id}/edit`,
     };
   } catch (error) {
     if (error instanceof UnauthorizedError) {
