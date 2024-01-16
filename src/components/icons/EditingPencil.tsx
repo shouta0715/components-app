@@ -50,17 +50,17 @@ export function EditingPencil(props: React.SVGProps<SVGSVGElement>) {
       `}
         </style>
         <rect
+          className="stroke-primary"
           height="14"
           rx="1"
-          stroke="#0A0A30"
           strokeWidth="1.5"
           width="10"
           x="7"
           y="5"
         />
         <path
+          className="stroke-primary"
           d="M10 8.973h4m-4 3.64h2"
-          stroke="#265BFF"
           strokeLinecap="round"
           strokeWidth="1.5"
           style={{

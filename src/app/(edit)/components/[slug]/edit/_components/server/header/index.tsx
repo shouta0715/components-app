@@ -1,9 +1,10 @@
 import { ArrowBigUpDash } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { EditBreadcrumbs } from "@/app/(edit)/components/[slug]/edit/_components/client/breadcrumbs";
 import { ScrollButton } from "@/app/(edit)/components/[slug]/edit/_components/client/scroll-button";
 import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_components/client/sticky-trigger";
-import { EditBreadcrumbs } from "@/app/(edit)/components/[slug]/edit/_components/server/breadcrumbs";
+
 import { Icon } from "@/components/icons/Icon";
 
 export function EditHeader() {

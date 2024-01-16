@@ -18,7 +18,9 @@ import { cn } from "@/utils";
 const StatusIcon: {
   [K in EditStatusValue]: React.ReactNode;
 } = {
-  CREATED: <BadgeCheck className="size-4 text-green-500  sm:size-5" />,
+  CREATED: (
+    <BadgeCheck className="size-4 text-green-500 sm:size-5  dark:text-green-600" />
+  ),
   LOADING: (
     <Loader className="size-4 animate-spin text-muted-foreground sm:size-5" />
   ),
@@ -81,7 +83,8 @@ export function EditBreadcrumbs() {
 
                   <Link
                     aria-current={active ? "page" : undefined}
-                    aria-disabled={isLoading}
+                    aria-disabled={isLoading || !clickable}
+                    aria-label={name}
                     className={cn(
                       buttonVariants({
                         size: "sm",
@@ -92,7 +95,8 @@ export function EditBreadcrumbs() {
                       active
                         ? "text-primary hover:no-underline"
                         : "text-muted-foreground hover:text-primary",
-                      clickable ? "" : "pointer-events-none opacity-50"
+                      clickable ? "" : "pointer-events-none opacity-50",
+                      isLoading && active ? "opacity-100" : ""
                     )}
                     href={`${name.toLowerCase()}`}
                     tabIndex={clickable ? 0 : -1}
