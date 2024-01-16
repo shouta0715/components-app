@@ -26,7 +26,7 @@ export default async function RootLayout({
   modal: React.ReactNode;
 }) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html className="scroll-smooth" lang="ja" suppressHydrationWarning>
       <head />
       <body
         className={cn(
