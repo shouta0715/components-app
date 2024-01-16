@@ -1,5 +1,6 @@
 import { Provider } from "jotai";
-import React from "react";
+import { notFound } from "next/navigation";
+import React, { Suspense } from "react";
 import { HydrateEditAtom } from "@/app/(edit)/components/[slug]/edit/_components/client/hydrate-atom";
 import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_components/server/header";
 
@@ -8,6 +9,8 @@ import {
   EditStatus,
   FinishedEditStatus,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+import { getComponentCreatedStatus } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
+import { assertMine } from "@/lib/auth/handlers";
 import { Params } from "@/types/next";
 import { EditComp } from "@/types/prisma";
 
@@ -19,12 +22,13 @@ function getInitialEditStatus(data: EditComp): EditStatus {
       Summary: "EDITING",
     };
 
-  const isSummaryEditing = !name || name === "Untitled Component";
+  const { summaryCreated, filesCreated, documentCreated } =
+    getComponentCreatedStatus({ name, files, document });
 
   return {
-    Summary: isSummaryEditing ? "EDITING" : "SUCCESS",
-    Files: files.length ? "SUCCESS" : "EMPTY",
-    Document: document ? "SUCCESS" : "EMPTY",
+    Summary: summaryCreated ? "CREATED" : "EMPTY_EDITING",
+    Files: filesCreated ? "CREATED" : "EMPTY",
+    Document: documentCreated ? "CREATED" : "EMPTY",
   };
 }
 
@@ -35,11 +39,14 @@ export default async function Layout({
   children: React.ReactNode;
 } & Params) {
   const data = await cacheGetCompWithFiles(params.slug);
+  await assertMine(data.creatorId, notFound);
 
   return (
     <Provider>
       <HydrateEditAtom initialEditStatus={getInitialEditStatus(data)}>
-        <EditHeader data={data} />
+        <Suspense>
+          <EditHeader />
+        </Suspense>
         <div className="mt-10">{children}</div>
       </HydrateEditAtom>
     </Provider>
