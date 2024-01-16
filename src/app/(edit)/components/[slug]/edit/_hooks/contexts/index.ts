@@ -1,9 +1,14 @@
 import { atom } from "jotai";
 
-type Status = "SUCCESS" | "EDITING" | "LOADING" | "EMPTY";
-type EditingSteps = "Summary" | "Files" | "Document";
+export type EditStatusValue =
+  | "CREATED"
+  | "EDITING"
+  | "LOADING"
+  | "EMPTY"
+  | "EMPTY_EDITING";
+export type EditingSteps = "Summary" | "Files" | "Document";
 export type EditStatus = {
-  [key in EditingSteps]: Status;
+  [key in EditingSteps]: EditStatusValue;
 };
 export const InitialEditStatus: EditStatus = {
   Summary: "LOADING",
@@ -11,8 +16,8 @@ export const InitialEditStatus: EditStatus = {
   Document: "LOADING",
 };
 export const FinishedEditStatus: EditStatus = {
-  Summary: "SUCCESS",
-  Files: "SUCCESS",
-  Document: "SUCCESS",
+  Summary: "CREATED",
+  Files: "CREATED",
+  Document: "CREATED",
 };
 export const editStatusAtom = atom<EditStatus>(InitialEditStatus);
