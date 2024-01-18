@@ -1,18 +1,76 @@
-import { EditComp } from "@/types/prisma";
+import { createdStatus } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+import {
+  CheckEditStatusData,
+  EditDataStatus,
+  EditStatus,
+  EditStepStatus,
+  EditingSteps,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 
-export const getComponentCreatedStatus = (
-  data: Pick<EditComp, "name" | "files" | "document">
-): {
-  summaryCreated: boolean;
-  filesCreated: boolean;
-  documentCreated: boolean;
-} => {
-  const { name, files, document } = data;
-  const summaryCreated = !!name && name !== "Untitled Component";
+export function paramsToEditingStep(params?: string | null): EditingSteps {
+  switch (params) {
+    case "summary":
+      return "summary";
+    case "files":
+      return "files";
+    case "document":
+      return "document";
+    default:
+      return "summary";
+  }
+}
+
+function getTargetStatus(flag: boolean): EditStepStatus {
+  const dataStatus: EditDataStatus = flag ? "CREATED" : "EMPTY";
 
   return {
-    summaryCreated,
-    filesCreated: files.length !== 0,
-    documentCreated: !!document,
+    status: "EDITING",
+    dataStatus,
+  };
+}
+
+function getNotTargetStatus(flag: boolean): EditStepStatus {
+  const value = flag ? "CREATED" : "EMPTY";
+
+  return {
+    status: value,
+    dataStatus: value,
+  };
+}
+
+function getSectionFlag(
+  section: EditingSteps,
+  data: CheckEditStatusData
+): boolean {
+  switch (section) {
+    case "summary":
+      return !!data.name && data.name !== "Untitled Component";
+    case "files":
+      return data.fileLength > 0;
+    case "document":
+      return !!data.document;
+    default:
+      return false;
+  }
+}
+
+export const getInitialEditStatus = (
+  data: CheckEditStatusData,
+  section: EditingSteps
+): EditStatus => {
+  const { draft } = data;
+
+  if (!draft) {
+    return {
+      ...createdStatus,
+      summary: getTargetStatus(getSectionFlag("summary", data)),
+    };
+  }
+
+  return {
+    summary: getNotTargetStatus(getSectionFlag("summary", data)),
+    files: getNotTargetStatus(getSectionFlag("files", data)),
+    document: getNotTargetStatus(getSectionFlag("document", data)),
+    [section]: getTargetStatus(getSectionFlag(section, data)),
   };
 };
