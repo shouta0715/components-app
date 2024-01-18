@@ -1,18 +1,18 @@
 "use client";
 
 import clsx from "clsx";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { BadgeCheck, BoxSelect, ChevronRight, Loader } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import React from "react";
 import {
-  EditStatusValue,
-  EditingSteps,
+  editPaths,
   editStatusAtom,
+  onRedirectEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+import { EditStatusValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 import { EditingPencil } from "@/components/icons/EditingPencil";
 import { buttonVariants } from "@/components/ui/button";
+import { NavigateTabsTrigger, TabsList } from "@/components/ui/tabs";
 import { cn } from "@/utils";
 
 const StatusIcon: {
@@ -26,90 +26,80 @@ const StatusIcon: {
   ),
   EDITING: <EditingPencil className="size-6 sm:size-7" />,
   EMPTY: <BoxSelect className="size-4 text-muted-foreground  sm:size-5" />,
-  EMPTY_EDITING: <EditingPencil className="size-6 sm:size-7" />,
 };
 
-const paths: Array<{
-  name: EditingSteps;
-}> = [
-  {
-    name: "Summary",
-  },
-  {
-    name: "Files",
-  },
-  {
-    name: "Document",
-  },
-];
+function BreadcrumbsItem({
+  name,
+  i,
+  isPending,
+  status,
+}: (typeof editPaths)[number] & {
+  i: number;
+  isPending: boolean;
+  status: EditStatusValue;
+}) {
+  const onRedirect = useSetAtom(onRedirectEditAtom);
+  const active = status === "EDITING";
+
+  return (
+    <li>
+      <div className="flex items-center ">
+        {i !== 0 && (
+          <ChevronRight
+            className={clsx(
+              "h-5 w-5 text-muted-foreground",
+              isPending ? "opacity-50" : ""
+            )}
+          />
+        )}
+
+        <NavigateTabsTrigger
+          aria-label={name}
+          className={cn(
+            buttonVariants({
+              size: "sm",
+              variant: "link",
+              className:
+                "mx-2 sm:mx-4 text-xs h-auto p-0 sm:text-sm font-medium relative",
+            }),
+            active
+              ? "text-primary hover:no-underline"
+              : "text-muted-foreground hover:text-primary"
+          )}
+          disabled={isPending}
+          onClick={() => onRedirect(name)}
+          value={name}
+        >
+          {StatusIcon[status]}
+          <span className="mx-2">{name}</span>
+        </NavigateTabsTrigger>
+      </div>
+    </li>
+  );
+}
 
 export function EditBreadcrumbs() {
   const values = useAtomValue(editStatusAtom);
-  const pathname = usePathname();
-  const isLoading =
-    values.Summary === "LOADING" ||
-    values.Files === "LOADING" ||
-    values.Document === "LOADING";
+  const isPending =
+    values.summary.status === "LOADING" || values.files.status === "LOADING";
 
   return (
-    <div>
+    <TabsList className="block h-full bg-current p-0 text-transparent">
       <nav aria-label="Breadcrumb" className="flex">
-        <ol className="flex items-center space-x-4">
-          {paths.map(({ name }, i) => {
-            const lastPath = pathname.split("/").pop();
-            const active = lastPath === name.toLowerCase();
-            let canNext = true;
-
-            if (i !== 0) {
-              const prevPath = paths[i - 1].name;
-              canNext =
-                values[prevPath] !== "EMPTY" &&
-                values[prevPath] !== "EMPTY_EDITING";
-            }
-
-            const clickable = canNext && !isLoading;
-
+        <ul className="flex items-center">
+          {editPaths.map(({ name }, i) => {
             return (
-              <li key={name}>
-                <div className="flex items-center">
-                  {i !== 0 && (
-                    <ChevronRight
-                      className={clsx(
-                        "h-5 w-5 text-muted-foreground",
-                        clickable ? "" : "opacity-50"
-                      )}
-                    />
-                  )}
-
-                  <Link
-                    aria-current={active ? "page" : undefined}
-                    aria-disabled={isLoading || !clickable}
-                    aria-label={name}
-                    className={cn(
-                      buttonVariants({
-                        size: "sm",
-                        variant: "link",
-                        className:
-                          "ml-4 text-xs h-auto p-0 sm:text-sm font-medium relative",
-                      }),
-                      active
-                        ? "text-primary hover:no-underline"
-                        : "text-muted-foreground hover:text-primary",
-                      clickable ? "" : "pointer-events-none opacity-50",
-                      isLoading && active ? "opacity-100" : ""
-                    )}
-                    href={`${name.toLowerCase()}`}
-                    tabIndex={clickable ? 0 : -1}
-                  >
-                    {StatusIcon[values[name]]}
-                    <span className="mx-2">{name}</span>
-                  </Link>
-                </div>
-              </li>
+              <BreadcrumbsItem
+                key={name}
+                i={i}
+                isPending={isPending}
+                name={name}
+                status={values[name].status}
+              />
             );
           })}
-        </ol>
+        </ul>
       </nav>
-    </div>
+    </TabsList>
   );
 }
