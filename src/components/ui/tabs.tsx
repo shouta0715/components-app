@@ -1,9 +1,10 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import * as React from "react";
 
+import { useHistory } from "@/lib/next/hooks";
 import { cn } from "@/utils";
 
 const NavigateParamContext = React.createContext<string>("tab");
@@ -64,8 +65,7 @@ const NavigateTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, value, children, onClick, ...props }, ref) => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { replace } = useHistory();
   const params = React.useContext(NavigateParamContext);
 
   return (
@@ -76,18 +76,11 @@ const NavigateTabsTrigger = React.forwardRef<
         className
       )}
       onClick={(e) => {
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.set(params, value);
-        window.history.replaceState(
-          null,
-          "",
-          `${pathname}?${newParams.toString()}`
-        );
+        replace({ [params]: value });
         onClick?.(e);
       }}
       value={value}
       {...props}
-      aria-selected={searchParams.get(params) === value}
     >
       {children}
     </TabsPrimitive.Trigger>
