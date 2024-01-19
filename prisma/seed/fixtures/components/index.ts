@@ -13,6 +13,7 @@ function generateSeedComponents(
       const data: Prisma.ComponentCreateManyInput = {
         name: `${category.name} Component ${i}`,
         categoryId: category.id,
+        description: randomString(),
         draft: i % 10 === 0,
         creatorId: users[randomNum(0, users.length - 1)].id,
         document: getMarkdownText(),

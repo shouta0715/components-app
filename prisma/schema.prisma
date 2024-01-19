@@ -93,6 +93,7 @@ model Category {
 model Component {
   id         String   @id @default(cuid())
   name       String
+  description String?
   draft      Boolean  @default(true)
   document   String   @db.Text
   previewUrl String
