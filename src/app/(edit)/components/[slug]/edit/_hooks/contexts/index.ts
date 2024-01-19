@@ -53,6 +53,16 @@ export const editPaths: Array<{
 ];
 
 export const editStatusAtom = atom<EditStatus>(initialEditStatus);
+export const isPendingEditAtom = atom((get) => {
+  const prev = get(editStatusAtom);
+
+  const is =
+    prev.document.status === "LOADING" ||
+    prev.files.status === "LOADING" ||
+    prev.summary.status === "LOADING";
+
+  return is;
+});
 
 export const onRedirectEditAtom = atom(
   null,
