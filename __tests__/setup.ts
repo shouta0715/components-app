@@ -1,27 +1,40 @@
 import { loadEnvConfig } from "@next/env";
 import { PrismaClient } from "@prisma/client";
 import "@testing-library/jest-dom";
-import router from "next-router-mock";
+import mockRouter from "next-router-mock";
 import React from "react";
 import { beforeEach, vi } from "vitest";
 import { initialize } from "../src/tests/fabbrica";
 
 loadEnvConfig(`${process.cwd()}.env.test`);
 
-vi.mock("next/navigation", () => ({
-  // eslint-disable-next-line global-require
-  ...require("next-router-mock"),
-  usePathname: vi.fn().mockReturnValue("/"),
-  RedirectType: vi.fn().mockReturnValue("redirect"),
-  notFound: vi.fn().mockImplementation((): never => {
-    router.push("/404");
+vi.mock("next/navigation", async () => {
+  const actual = await vi.importActual("next/navigation");
 
-    return undefined as never;
-  }),
-}));
+  return {
+    ...actual,
+    usePathname: () => {
+      return mockRouter.pathname;
+    },
+    useRouter: vi.fn().mockReturnValue(mockRouter),
+    RedirectType: vi.fn().mockReturnValue("redirect"),
+    useSearchParams: () => {
+      const { query } = mockRouter;
+
+      return new URLSearchParams(
+        Object.entries(query).map(([key, value]) => [key, String(value)])
+      );
+    },
+    notFound: vi.fn().mockImplementation((): never => {
+      mockRouter.push("/404");
+
+      return undefined as never;
+    }),
+  };
+});
 
 beforeEach(() => {
-  router.setCurrentUrl("/");
+  mockRouter.setCurrentUrl("/");
 });
 
 const prisma = new PrismaClient();
