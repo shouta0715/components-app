@@ -1,6 +1,6 @@
 import { ArrowBigUpDash } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { EditSteps } from "@/app/(edit)/components/[slug]/edit/_components/client/breadcrumbs";
 import { ScrollButton } from "@/app/(edit)/components/[slug]/edit/_components/client/scroll-button";
 import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_components/client/sticky-trigger";
@@ -26,7 +26,9 @@ export function EditHeader() {
           <div aria-hidden className="mx-2 my-1 w-px bg-border" />
         </div>
 
-        <EditSteps />
+        <Suspense fallback={null}>
+          <EditSteps />
+        </Suspense>
 
         <div className="flex h-full">
           <div aria-hidden className="mx-2 my-1 w-px  bg-border" />
