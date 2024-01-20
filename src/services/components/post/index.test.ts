@@ -10,7 +10,7 @@ describe("POST Component RDB test", () => {
     const component = await createDraftComponent(user.id);
 
     expect(component).not.toBeUndefined();
-    expect(component.name).toBe("Untitled Component");
+    expect(component.name).toBe("");
     expect(component.draft).toBe(true);
     expect(component.previewUrl).toBe("");
     expect(component.categoryId).toBe("other");
