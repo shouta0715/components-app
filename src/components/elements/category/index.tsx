@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import {
   BentoBackground,
@@ -8,6 +7,7 @@ import {
   BentoHeader,
   BentoTitle,
 } from "@/components/ui/bento-grid";
+import { Image } from "@/components/ui/image";
 import { CategoriesByHome } from "@/types/prisma";
 import { getImageUrl } from "@/utils";
 
