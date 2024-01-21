@@ -1,4 +1,4 @@
-"server only";
+import "server-only";
 
 import clsx from "clsx";
 import { Menu } from "lucide-react";

@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { usePreviewIframe } from "@/components/elements/files/ui-preview/client/usePreviewIframe";
-import { FrameLoading } from "@/components/elements/files/ui-preview/server/loading";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -22,6 +21,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SANDBOX_URL } from "@/lib/constant";
 import { SuccessTransformedData } from "@/scripts/ui-preview/types";
 import { cn } from "@/utils";
@@ -201,7 +201,7 @@ const PreviewIframe = ({
             </Button>
           </div>
         )}
-        {isPending && <FrameLoading />}
+        {isPending && <Skeleton className="h-96 w-full rounded-md" />}
       </CollapsibleContent>
     </Collapsible>
   );

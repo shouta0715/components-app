@@ -1,4 +1,4 @@
-"server only";
+import "server-only";
 
 import React from "react";
 import { CategoryCommand } from "@/components/global/parts/category-command";

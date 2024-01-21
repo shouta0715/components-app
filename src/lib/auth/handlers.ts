@@ -1,4 +1,4 @@
-"server only";
+import "server-only";
 
 import { Session } from "next-auth";
 import { auth } from "@/lib/auth";
