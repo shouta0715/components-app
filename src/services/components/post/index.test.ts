@@ -13,7 +13,7 @@ describe("POST Component RDB test", () => {
     expect(component.name).toBe("");
     expect(component.draft).toBe(true);
     expect(component.previewUrl).toBe("");
-    expect(component.categoryId).toBe("other");
+    expect(component.categoryName).toBe("other");
     expect(component.creatorId).toBe(user.id);
     expect(component.document).toBe("");
   });

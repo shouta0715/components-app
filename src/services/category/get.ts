@@ -17,6 +17,32 @@ export const getCategories = async (
   return result;
 };
 
+export const searchCategories = async (
+  q: string | null,
+  take: number,
+  skip = 0
+): Promise<Pick<Category, "name">[]> => {
+  const result = await prisma.category.findMany({
+    where: {
+      name: {
+        contains: q || "",
+      },
+    },
+    orderBy: {
+      components: {
+        _count: "desc",
+      },
+    },
+    select: {
+      name: true,
+    },
+    take,
+    skip,
+  });
+
+  return result;
+};
+
 export const getCategoriesByHome = async (
   take: number,
   skip = 0

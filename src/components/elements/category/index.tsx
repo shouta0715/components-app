@@ -18,7 +18,7 @@ export async function Category({ category }: { category: CategoriesByHome }) {
     <BentoCard
       asLink
       cta="View"
-      href={`/categories/${category.id}`}
+      href={`/categories/${category.name}`}
       name={category.name}
     >
       <BentoBackground>
@@ -53,7 +53,7 @@ export function Categories({ categories }: { categories: CategoriesByHome[] }) {
   return (
     <BentoGrid className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-y-10 xl:grid-cols-3">
       {categories.map((category) => (
-        <Category key={category.id} category={category} />
+        <Category key={category.name} category={category} />
       ))}
     </BentoGrid>
   );

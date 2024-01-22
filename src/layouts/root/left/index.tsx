@@ -147,7 +147,7 @@ async function Categories() {
     <nav>
       {categories.map((category) => (
         <ActiveLink
-          key={category.id}
+          key={category.name}
           className={cn(
             buttonVariants({
               variant: "link",
@@ -156,7 +156,7 @@ async function Categories() {
               className: "justify-start px-0 block text-muted-foreground ",
             })
           )}
-          href={`/categories/${category.id}`}
+          href={`/categories/${category.name}`}
         >
           {category.name}
         </ActiveLink>

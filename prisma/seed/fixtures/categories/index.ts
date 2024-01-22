@@ -111,7 +111,6 @@ const categoriesFixture: Prisma.CategoryCreateInput[] = [
     description: "背景に覆いかぶさるバックドロップコンポーネント",
   },
   {
-    id: "other",
     name: "Other",
     description: "その他のコンポーネント",
   },
@@ -128,7 +127,12 @@ export async function seedCategories(
     return tx.category.findMany();
   }
   await tx.category.createMany({
-    data: categoriesFixture,
+    data: categoriesFixture.map((c) => {
+      return {
+        ...c,
+        name: c.name.toLowerCase(),
+      };
+    }),
   });
 
   return tx.category.findMany();

@@ -28,7 +28,6 @@ export const getComp = async (
       category: {
         select: {
           name: true,
-          id: true,
         },
       },
     },
@@ -65,7 +64,7 @@ export const getTopComps = async (
 > => {
   const components = await prisma.component.findMany({
     take,
-    distinct: ["categoryId"],
+    distinct: ["categoryName"],
     include: {
       previewImages: {
         take: 1,
@@ -100,7 +99,6 @@ export const getCompWithFiles = async (
       category: {
         select: {
           name: true,
-          id: true,
         },
       },
     },
@@ -129,7 +127,6 @@ export const getEditComp = async (id: string): Promise<EditComp> => {
       category: {
         select: {
           name: true,
-          id: true,
         },
       },
     },

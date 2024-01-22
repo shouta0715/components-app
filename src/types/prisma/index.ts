@@ -13,7 +13,7 @@ with Relations
 */
 
 type WithCreator = Pick<User, "id" | "name" | "image">;
-type WithCategory = Pick<Category, "id" | "name">;
+type WithCategory = Pick<Category, "name">;
 
 /*
 **************************

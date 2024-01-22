@@ -17,13 +17,16 @@ export default async function Page({ params }: Params) {
   const data = await cacheGetCompWithFiles(params.slug);
   await assertMine(data.creatorId, notFound);
 
-  const { name, description, categoryId, previewUrl } = data;
+  const { name, description, categoryName, previewUrl } = data;
 
   const summaryDefaultValues: EditSummaryInput = {
     name,
     description,
-    categoryId,
-    previewUrl,
+    categoryName: categoryName === "other" ? "" : categoryName,
+    previewUrl: {
+      type: "default",
+      value: previewUrl,
+    },
   };
 
   return (

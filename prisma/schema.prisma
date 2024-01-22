@@ -80,8 +80,7 @@ model Follow {
 }
 
 model Category {
-  id          String  @id @default(cuid())
-  name        String
+  name        String  @id
   description String?
 
   // MANY FILEDS
@@ -101,8 +100,8 @@ model Component {
   updatedAt  DateTime @updatedAt
 
   // RELATIONSHIPS
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  category  Category @relation(fields: [categoryName], references: [name])
+  categoryName String
 
   creatorId String
   creator   User   @relation(fields: [creatorId], references: [id])
@@ -115,8 +114,9 @@ model Component {
   likes         ComponentLike[]
 
   @@index([creatorId])
-  @@index([categoryId])
+  
   @@map("components")
+  @@index([categoryName])
 }
 
 enum Extension {
