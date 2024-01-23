@@ -1,13 +1,13 @@
 "use client";
 
-import { valibotResolver } from "@hookform/resolvers/valibot";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { Suspense } from "react";
 
-import {
-  EditSummaryInput,
-  editSummarySchema,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
+import { PreviewDropZone } from "@/app/(edit)/components/[slug]/edit/_components/client/drop-zones";
+
+import { CategoryForm } from "@/app/(edit)/components/[slug]/edit/_components/client/form/summary/category-selector";
+import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary";
+import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
+import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { InputLength } from "@/components/ui/input-length";
 import { Label } from "@/components/ui/label";
@@ -19,18 +19,38 @@ type EditSummaryFormProps = {
 
 export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
   const {
-    register,
     control,
-    formState: { errors },
-  } = useForm<EditSummaryInput>({
-    defaultValues,
-    mode: "onChange",
-    resolver: valibotResolver(editSummarySchema),
-  });
+    register,
+    errors,
+    onDropAccepted,
+    onDropRejected,
+    handleSubmit,
+    setValue,
+  } = useSummaryForm(defaultValues);
 
   return (
-    <form className="flex flex-col gap-8">
-      <fieldset className=" grid gap-3 ">
+    <form
+      className="flex flex-col gap-8"
+      onSubmit={handleSubmit((d) => {
+        console.log(d);
+      })}
+    >
+      {/* Category Input Form Server Components */}
+      <Suspense fallback="loading">
+        <fieldset>
+          <CategoryForm
+            control={control}
+            setCategory={(value) => setValue("categoryName", value)}
+          />
+          <ErrorMessage className="mt-1">
+            {errors.categoryName?.message}
+          </ErrorMessage>
+        </fieldset>
+      </Suspense>
+
+      {/* Name Input Form Client Components */}
+
+      <fieldset className="grid gap-3">
         <Label htmlFor="name" required>
           Name
           <InputLength
@@ -40,6 +60,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
             name="name"
           />
         </Label>
+
         <div className="mb-px border-b py-3 focus-within:mb-0 focus-within:border-b-2 focus-within:border-b-primary">
           <AutoSizeTextarea
             className="flex h-7 w-full resize-none items-center bg-background text-xl placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -54,6 +75,8 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
           <ErrorMessage className="mt-1">{errors.name?.message}</ErrorMessage>
         )}
       </fieldset>
+
+      {/* Description Input Form Client Components */}
       <fieldset className="grid gap-3">
         <Label htmlFor="description">
           Description
@@ -77,6 +100,24 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
           </ErrorMessage>
         )}
       </fieldset>
+
+      {/* Preview Image Input Form Client Components */}
+      <fieldset className="grid gap-3">
+        <Label htmlFor="categoryId" required>
+          Preview Image
+        </Label>
+        <PreviewDropZone
+          isError={errors.previewUrl?.value?.type === "min_length"}
+          onDropAccepted={onDropAccepted}
+          onDropRejected={onDropRejected}
+        />
+        {errors.previewUrl?.value?.message && (
+          <ErrorMessage className="mt-1">
+            {errors.previewUrl?.value?.message}
+          </ErrorMessage>
+        )}
+      </fieldset>
+      <Button type="submit">Save</Button>
     </form>
   );
 }

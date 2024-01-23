@@ -31,6 +31,12 @@ export type CategoriesByHome = {
   };
 } & Category;
 
+export type SearchCategory = Pick<Category, "name"> & {
+  _count: {
+    components: number;
+  };
+};
+
 /* 
 **************************
 Components

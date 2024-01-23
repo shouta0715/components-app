@@ -1,13 +1,14 @@
 import {
   Input,
-  cuid2,
+  blob,
+  literal,
   maxLength,
   minLength,
   nullable,
   object,
   string,
   toTrimmed,
-  url,
+  variant,
 } from "valibot";
 
 export const summaryNameSchema = string([
@@ -23,8 +24,23 @@ export const summaryDescriptionSchema = nullable(
 export const editSummarySchema = object({
   name: summaryNameSchema,
   description: summaryDescriptionSchema,
-  previewUrl: string([toTrimmed(), url()]),
-  categoryId: string([toTrimmed(), cuid2()]),
+  previewUrl: variant("type", [
+    object({
+      type: literal("input"),
+      value: blob(),
+    }),
+    object({
+      type: literal("default"),
+      value: string([
+        toTrimmed(),
+        minLength(1, "Preview用の画像を選択してください。"),
+      ]),
+    }),
+  ]),
+  categoryName: string([
+    toTrimmed(),
+    minLength(1, "カテゴリーを選択してください。"),
+  ]),
 });
 
 export type EditSummaryInput = Input<typeof editSummarySchema>;

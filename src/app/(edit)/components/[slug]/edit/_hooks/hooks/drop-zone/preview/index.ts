@@ -57,17 +57,18 @@ export function usePreviewDropZone({
     };
   }, [defaultValue, preview]);
 
-  const onDropAcceptedCallback = useRef(onDropAccepted);
   const onDropRejectedCallback = useRef(onDropRejected);
 
-  const onDropAcceptedPreview = React.useCallback((files: File[]) => {
-    const { createObjectURL } = window.URL || window.webkitURL;
+  const onDropAcceptedPreview = React.useCallback(
+    (files: File[]) => {
+      const { createObjectURL } = window.URL || window.webkitURL;
 
-    const file = files[0];
-    setPreview(createObjectURL(file));
-
-    onDropAcceptedCallback.current(file);
-  }, []);
+      const file = files[0];
+      setPreview(createObjectURL(file));
+      onDropAccepted(file);
+    },
+    [onDropAccepted]
+  );
 
   const { getRootProps, getInputProps, isDragReject, isDragActive } =
     useDropzone({

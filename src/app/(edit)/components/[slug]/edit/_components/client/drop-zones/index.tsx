@@ -2,6 +2,7 @@
 
 "use client";
 
+import clsx from "clsx";
 import { AlertCircle, ImageIcon } from "lucide-react";
 import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
@@ -17,6 +18,7 @@ import { cn, getImageUrl } from "@/utils";
 type DropInputZoneProps = {
   isDragReject: boolean;
   isDragActive: boolean;
+  isEmptyError: boolean;
   getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
   children?: React.ReactNode;
 };
@@ -24,6 +26,7 @@ type DropInputZoneProps = {
 function DropInputZone({
   isDragReject,
   isDragActive,
+  isEmptyError,
   getInputProps,
   children,
 }: DropInputZoneProps) {
@@ -39,9 +42,9 @@ function DropInputZone({
           htmlFor="preview"
         >
           <span
-            className={cn(
-              isDragReject &&
-                "text-muted-foreground transition-colors duration-150 font-normal"
+            className={clsx(
+              (isDragReject || isEmptyError) &&
+                "font-normal text-muted-foreground transition-colors duration-150"
             )}
           >
             Upload a file
@@ -62,6 +65,7 @@ function DropInputZone({
         className={cn(
           "text-xs leading-5 text-muted-foreground",
           isDragActive && "text-primary",
+          isEmptyError && "text-destructive",
           isDragReject && "text-destructive"
         )}
       >
@@ -110,8 +114,9 @@ export function PreviewDropZone({
   onDropAccepted,
   onDropRejected,
   defaultValue,
+  isError,
   ...option
-}: DropzoneProps) {
+}: DropzoneProps & { isError: boolean }) {
   const { isDragActive, isDragReject, getInputProps, getRootProps, preview } =
     usePreviewDropZone({
       defaultValue,
@@ -120,11 +125,14 @@ export function PreviewDropZone({
       ...option,
     });
 
+  const isEmptyError = isError && !isDragActive;
+
   return (
     <div
       className={cn(
         "flex justify-center rounded-lg border border-dashed border-border  pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-96 duration-150 cursor-pointer hover:border-primary hover:border-2 hover:border-dashed ",
         isDragActive && "border-primary border-2",
+        isEmptyError && "border-destructive border-2 hover:border-destructive",
         isDragReject && "border-destructive border-2 hover:border-destructive"
       )}
       role="button"
@@ -132,16 +140,28 @@ export function PreviewDropZone({
     >
       {preview ? (
         <>
-          <PreviewDropInputZone
-            {...{ isDragReject, isDragActive, getInputProps, preview }}
-          />
+          <PreviewDropInputZone {...{ preview, defaultValue }} />
           <div className="absolute bottom-4 z-10 flex flex-col items-center justify-center">
-            <DropInputZone {...{ isDragReject, isDragActive, getInputProps }} />
+            <DropInputZone
+              {...{
+                isEmptyError,
+                isDragReject,
+                isDragActive,
+                getInputProps,
+              }}
+            />
           </div>
         </>
       ) : (
-        <DropInputZone {...{ isDragReject, isDragActive, getInputProps }}>
-          {isDragReject ? (
+        <DropInputZone
+          {...{
+            isEmptyError,
+            isDragReject,
+            isDragActive,
+            getInputProps,
+          }}
+        >
+          {isDragReject || isEmptyError ? (
             <AlertCircle
               aria-hidden="true"
               className="mx-auto h-12 w-12 text-destructive"

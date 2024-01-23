@@ -17,6 +17,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     clearErrors,
     trigger,
     handleSubmit,
+    watch,
   } = useForm<EditSummaryInput>({
     defaultValues,
     mode: "onChange",
@@ -25,10 +26,13 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
 
   const onDropAccepted = useCallback(
     (file: File) => {
-      if (errors.previewUrl) clearErrors("previewUrl");
-      setValue("previewUrl", file);
+      if (errors.previewUrl?.value) clearErrors("previewUrl.value");
+      setValue("previewUrl", {
+        type: "input",
+        value: file,
+      });
     },
-    [clearErrors, errors.previewUrl, setValue]
+    [clearErrors, errors.previewUrl?.value, setValue]
   );
 
   const onDropRejected = useCallback(
@@ -43,7 +47,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
         message = `${extensions}形式はアップロードできません。PNG, JPG, GIF, WEBPのみアップロードできます`;
       }
 
-      setError("previewUrl", {
+      setError("previewUrl.value", {
         type: "manual",
         message,
       });
@@ -59,5 +63,8 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     onDropRejected,
     handleSubmit,
     trigger,
+    setValue,
+
+    watch,
   };
 }
