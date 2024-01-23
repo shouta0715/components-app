@@ -17,3 +17,5 @@ export const startMsw = (...handlers: RequestHandler[]) => {
 
   server.listen();
 };
+
+export const testBaseURL = "http://example:3000";

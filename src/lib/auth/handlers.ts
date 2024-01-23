@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Session } from "next-auth";
+import { Session, User } from "next-auth";
 import { auth } from "@/lib/auth";
 import { UnauthorizedError } from "@/lib/errors";
 import { assertUser } from "@/lib/validation";
@@ -24,4 +24,11 @@ export const assertMine = async (target: string, onError: () => never) => {
   } catch (error) {
     onError();
   }
+};
+
+export const getSessionUser = async (): Promise<User> => {
+  const session = await getSession();
+  assertUser(session.user);
+
+  return session.user;
 };

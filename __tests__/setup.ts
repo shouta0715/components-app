@@ -1,12 +1,9 @@
-import { loadEnvConfig } from "@next/env";
 import { PrismaClient } from "@prisma/client";
 import "@testing-library/jest-dom";
 import mockRouter from "next-router-mock";
 import React from "react";
 import { beforeEach, vi } from "vitest";
 import { initialize } from "../src/tests/fabbrica";
-
-loadEnvConfig(`${process.cwd()}.env.test`);
 
 vi.mock("next/navigation", async () => {
   const actual = await vi.importActual("next/navigation");
