@@ -32,6 +32,11 @@ vi.mock("next/navigation", async () => {
     }),
   };
 });
+vi.mock("server-only", () => {
+  return {
+    isServer: true,
+  };
+});
 
 beforeEach(() => {
   mockRouter.setCurrentUrl("/");
