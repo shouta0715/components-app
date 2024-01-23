@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
-import { Check, Loader2 } from "lucide-react";
+import { AlertTriangle, Check, Loader2 } from "lucide-react";
 import React, { Suspense, memo } from "react";
+import { CategoryFormDialog } from "@/components/elements/category/form";
 import { useSearchCategories } from "@/components/elements/category/select/useSearchCategories";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,7 +94,25 @@ function Categories({
         {isSearching ? (
           <SearchingLoader />
         ) : (
-          `${inputValue} は見つかりませんでした。新しく ${inputValue}を作成しますか？`
+          <div className="flex w-full flex-col  gap-4 overflow-hidden px-1.5 py-4">
+            <div className="flex justify-center">
+              <AlertTriangle className="h-8 w-8 text-muted-foreground" />
+            </div>
+
+            <div className="grid gap-2">
+              <p className="text-center text-muted-foreground">Not Found for</p>
+              <code className="line-clamp-1 max-w-full rounded-md bg-secondary p-2 text-destructive ">
+                {inputValue}
+              </code>
+            </div>
+            <CategoryFormDialog
+              defaultValue={inputValue}
+              onCreated={(category) => {
+                setCategory(category);
+                setOpen?.(false);
+              }}
+            />
+          </div>
         )}
       </CommandEmpty>
 

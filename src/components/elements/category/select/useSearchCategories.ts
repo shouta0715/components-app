@@ -26,7 +26,7 @@ async function fetchCategories(params: Params): Promise<FetchResult> {
 }
 
 function useQueryCategory(q: string) {
-  const { data, isPending, hasNextPage, fetchNextPage } =
+  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery({
       queryKey: ["categories", "search", { q }],
       queryFn: ({ pageParam }: { pageParam: Params }) => {
@@ -49,7 +49,7 @@ function useQueryCategory(q: string) {
   }, [data?.pages]);
 
   return {
-    isPending,
+    isPending: isPending || isFetchingNextPage,
     categories,
     hasMore: hasNextPage,
     fetchNextPage,
