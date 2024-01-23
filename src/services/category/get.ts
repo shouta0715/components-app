@@ -12,6 +12,11 @@ export const getCategories = async (
   const result = await prisma.category.findMany({
     take,
     skip,
+    orderBy: {
+      components: {
+        _count: "desc",
+      },
+    },
   });
 
   return result;

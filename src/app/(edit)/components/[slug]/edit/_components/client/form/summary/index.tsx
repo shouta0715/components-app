@@ -1,10 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 
-import { PreviewDropZone } from "@/app/(edit)/components/[slug]/edit/_components/client/drop-zones";
-
-import { CategoryForm } from "@/app/(edit)/components/[slug]/edit/_components/client/form/summary/category-selector";
+import {
+  CategoryFormLoader,
+  PreviewDropZoneLoader,
+} from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary";
 import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,26 @@ import { AutoSizeTextarea, Textarea } from "@/components/ui/textarea";
 type EditSummaryFormProps = {
   defaultValues: EditSummaryInput;
 };
+
+const DynamicCategoryForm = dynamic(
+  () =>
+    import(
+      "@/app/(edit)/components/[slug]/edit/_components/client/form/summary/category-selector"
+    ),
+  {
+    ssr: false,
+    loading: () => <CategoryFormLoader />,
+  }
+);
+
+const DynamicPreviewDropZone = dynamic(
+  () =>
+    import("@/app/(edit)/components/[slug]/edit/_components/client/drop-zones"),
+  {
+    ssr: false,
+    loading: () => <PreviewDropZoneLoader />,
+  }
+);
 
 export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
   const {
@@ -38,10 +60,12 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
       {/* Category Input Form Server Components */}
       <Suspense fallback="loading">
         <fieldset>
-          <CategoryForm
-            control={control}
-            setCategory={(value) => setValue("categoryName", value)}
-          />
+          <Suspense fallback={<CategoryFormLoader />}>
+            <DynamicCategoryForm
+              control={control}
+              setCategory={(value) => setValue("categoryName", value)}
+            />
+          </Suspense>
           <ErrorMessage className="mt-1">
             {errors.categoryName?.message}
           </ErrorMessage>
@@ -106,11 +130,14 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
         <Label htmlFor="categoryId" required>
           Preview Image
         </Label>
-        <PreviewDropZone
-          isError={errors.previewUrl?.value?.type === "min_length"}
-          onDropAccepted={onDropAccepted}
-          onDropRejected={onDropRejected}
-        />
+
+        <Suspense fallback={<PreviewDropZoneLoader />}>
+          <DynamicPreviewDropZone
+            isError={errors.previewUrl?.value?.type === "min_length"}
+            onDropAccepted={onDropAccepted}
+            onDropRejected={onDropRejected}
+          />
+        </Suspense>
         {errors.previewUrl?.value?.message && (
           <ErrorMessage className="mt-1">
             {errors.previewUrl?.value?.message}

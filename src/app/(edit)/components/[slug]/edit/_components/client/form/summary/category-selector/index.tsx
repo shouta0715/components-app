@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function CategoryForm({
+export default function CategoryForm({
   setCategory,
   control,
 }: {

@@ -110,7 +110,7 @@ function PreviewDropInputZone({ preview, defaultValue }: PreviewDropZoneProps) {
   );
 }
 
-export function PreviewDropZone({
+export default function PreviewDropZone({
   onDropAccepted,
   onDropRejected,
   defaultValue,
