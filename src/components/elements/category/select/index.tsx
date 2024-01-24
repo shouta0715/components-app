@@ -17,7 +17,7 @@ import { cn } from "@/utils";
 
 function SearchingLoader() {
   return (
-    <div className="grid gap-2 p-1">
+    <div className="grid gap-2 p-2">
       {Array.from({ length: 5 }).map((_, i) => (
         <Skeleton key={`searching-loader-${i}`} className="h-8 w-full" />
       ))}
@@ -94,7 +94,7 @@ function Categories({
         {isSearching ? (
           <SearchingLoader />
         ) : (
-          <div className="flex w-full flex-col  gap-4 overflow-hidden px-1.5 py-4">
+          <div className="flex w-full flex-col  gap-4 overflow-hidden px-2 py-4">
             <div className="flex justify-center">
               <AlertTriangle className="h-8 w-8 text-muted-foreground" />
             </div>
@@ -116,7 +116,7 @@ function Categories({
         )}
       </CommandEmpty>
 
-      <CommandGroup>
+      <CommandGroup className="p-2">
         {categories.map((category) => (
           <CategoryItem
             key={category.name}
@@ -128,7 +128,7 @@ function Categories({
         ))}
       </CommandGroup>
       {hasMore && (
-        <div className="mb-2 border-t  border-border px-1 pt-6">
+        <div className="mb-2 border-t border-border px-2 pt-6">
           <Button
             className="w-full rounded-full"
             disabled={isSearching}

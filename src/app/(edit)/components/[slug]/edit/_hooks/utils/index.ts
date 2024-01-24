@@ -20,6 +20,21 @@ export function paramsToEditingStep(params?: string | null): EditingSteps {
   }
 }
 
+export const getNextEditingStep = (
+  currentStep: EditingSteps
+): EditingSteps | "preview" => {
+  switch (currentStep) {
+    case "summary":
+      return "files";
+    case "files":
+      return "document";
+    case "document":
+      return "preview";
+    default:
+      return "summary";
+  }
+};
+
 function getTargetStatus(flag: boolean): EditStepStatus {
   const dataStatus: EditDataStatus = flag ? "CREATED" : "EMPTY";
 

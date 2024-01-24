@@ -35,7 +35,7 @@ export default function CategoryForm({
           <Label required>Category</Label>
           <Button
             aria-expanded={open}
-            className="mt-3 w-80 justify-between capitalize group-hover:bg-accent group-hover:text-accent-foreground"
+            className="mt-3 w-72 justify-between capitalize group-hover:bg-accent group-hover:text-accent-foreground sm:w-80"
             role="combobox"
             type="button"
             variant="outline"
@@ -45,7 +45,7 @@ export default function CategoryForm({
           </Button>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="max-h-80 min-h-48 w-80 overflow-auto p-0">
+      <PopoverContent className="max-h-80 min-h-48 w-72 overflow-auto p-0 sm:w-80">
         <SelectCategories
           onSelected={setCategory}
           setOpen={setOpen}

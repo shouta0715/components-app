@@ -53,6 +53,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
   return (
     <form
       className="flex flex-col gap-8"
+      id="summary-form"
       onSubmit={handleSubmit((d) => {
         console.log(d);
       })}
@@ -78,7 +79,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
         <Label htmlFor="name" required>
           Name
           <InputLength
-            className="mx-2"
+            className="ml-2"
             control={control}
             maxLength={50}
             name="name"
