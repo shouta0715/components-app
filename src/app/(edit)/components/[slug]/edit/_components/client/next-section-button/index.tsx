@@ -1,36 +1,37 @@
 "use client";
 
-import React, { forwardRef } from "react";
+import React from "react";
+import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
 import { EditingSteps } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
-import { getNextEditingStep } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
+
 import { Button, ButtonProps } from "@/components/ui/button";
-import { useHistory } from "@/lib/next/hooks";
 
 type NextSectionButtonProps = {
   currentSection: EditingSteps;
-  isDirty: boolean;
+  isDirty?: boolean;
 } & ButtonProps;
 
-export const NextSectionButton = forwardRef<
-  HTMLButtonElement,
-  NextSectionButtonProps
->(({ currentSection, isDirty, onClick, ...props }, ref) => {
-  const { replace } = useHistory();
+export const NextSectionButton = ({
+  currentSection,
+  children,
+  isDirty,
+  onClick,
+  ...props
+}: NextSectionButtonProps) => {
+  const { onNextSection } = useRedirectSectionHandler(currentSection);
+
+  const onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onNextSection();
+    onClick?.(e);
+  };
 
   return (
     <Button
-      ref={ref}
-      onClick={(e) => {
-        replace({
-          section: getNextEditingStep(currentSection),
-        });
-        onClick?.(e);
-      }}
+      onClick={isDirty ? undefined : onNext}
       type={isDirty ? "submit" : "button"}
       {...props}
-      value="files"
     >
-      保存して次へ
+      {children ?? isDirty ? "保存して次へ" : "次へ"}
     </Button>
   );
-});
+};

@@ -136,7 +136,9 @@ export default function PreviewDropZone({
         isDragReject && "border-destructive border-2 hover:border-destructive"
       )}
       role="button"
-      {...getRootProps()}
+      {...getRootProps({
+        accept: accepts.preview,
+      })}
     >
       {preview ? (
         <>

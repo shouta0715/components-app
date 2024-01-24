@@ -53,6 +53,16 @@ function getNotTargetStatus(flag: boolean): EditStepStatus {
   };
 }
 
+export function getCurrentEditingSteps(data: EditStatus): EditingSteps {
+  const keys = Object.keys(data) as EditingSteps[];
+
+  const currentStep = keys.find((key) => data[key].status === "EDITING");
+
+  if (!currentStep) throw new Error("No current step found");
+
+  return currentStep;
+}
+
 function getSectionFlag(
   section: EditingSteps,
   data: CheckEditStatusData

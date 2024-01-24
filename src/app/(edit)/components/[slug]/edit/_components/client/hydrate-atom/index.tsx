@@ -1,38 +1,48 @@
 "use client";
 
-import { useHydrateAtoms } from "jotai/utils";
-import { useSearchParams } from "next/navigation";
+import { useSetAtom } from "jotai";
 import React from "react";
-import { editStatusAtom } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
-import { CheckEditStatusData } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { onRedirectEditAtom } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
 import {
-  getInitialEditStatus,
-  paramsToEditingStep,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
+  useHydrateSection,
+  useInitializeSection,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
+import { EditingSteps } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+
+import { NavigateTabs } from "@/components/ui/tabs";
 import { EditComp } from "@/types/prisma";
 
-export function HydrateEditAtom({
+function EditSectionTab({
+  children,
+  section,
+}: {
+  children: React.ReactNode;
+  section: EditingSteps;
+}) {
+  const onRedirect = useSetAtom(onRedirectEditAtom);
+  useInitializeSection();
+
+  return (
+    <NavigateTabs<EditingSteps>
+      defaultValue="summary"
+      onValueChange={onRedirect}
+      params="section"
+      redirectType="manual"
+      value={section}
+    >
+      {children}
+    </NavigateTabs>
+  );
+}
+
+export function HydrateEditSection({
   children,
   data,
 }: {
   children: React.ReactNode;
   data: EditComp;
 }) {
-  const { name, draft, files, document } = data;
-  const checkStatusData: CheckEditStatusData = {
-    name,
-    document,
-    draft,
-    fileLength: files.length,
-  };
+  const { section } = useHydrateSection(data);
 
-  const searchParams = useSearchParams();
-
-  const section = paramsToEditingStep(searchParams.get("section"));
-
-  useHydrateAtoms(
-    new Map([[editStatusAtom, getInitialEditStatus(checkStatusData, section)]])
-  );
-
-  return children;
+  return <EditSectionTab section={section}>{children}</EditSectionTab>;
 }

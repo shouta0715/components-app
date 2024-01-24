@@ -7,7 +7,7 @@ import {
 } from "react-dropzone";
 
 export const accepts = {
-  preview: "image/*",
+  preview: ".png,.jpg,.jpeg,.gif,.webp",
   files: ".html,.css,.js,.ts,.jsx,.tsx.",
 };
 
@@ -24,7 +24,11 @@ function typeToAccept(type: keyof typeof accepts): Accept {
   switch (type) {
     case "preview":
       return {
-        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"],
+        "image/png": [".png"],
+        "image/jpg": [".jpg"],
+        "image/jpeg": [".jpeg"],
+        "image/gif": [".gif"],
+        "image/webp": [".webp"],
       };
     case "files":
       return {

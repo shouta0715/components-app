@@ -12,7 +12,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     register,
     control,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty, isLoading },
     setError,
     clearErrors,
     trigger,
@@ -27,6 +27,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
   const onDropAccepted = useCallback(
     (file: File) => {
       if (errors.previewUrl?.value) clearErrors("previewUrl.value");
+
       setValue("previewUrl", {
         type: "input",
         value: file,
@@ -64,7 +65,8 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     handleSubmit,
     trigger,
     setValue,
-
     watch,
+    isDirty,
+    isLoading,
   };
 }

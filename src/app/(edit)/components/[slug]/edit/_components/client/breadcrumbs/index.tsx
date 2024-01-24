@@ -3,18 +3,18 @@
 "use client";
 
 import clsx from "clsx";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { Check, Loader2 } from "lucide-react";
 import React from "react";
 import {
   editPaths,
   editStatusAtom,
   isPendingEditAtom,
-  onRedirectEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+import { useRedirectSection } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
 import { EditStatusValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 
-import { NavigateTabsTrigger, TabsList } from "@/components/ui/tabs";
+import { NavigateTabsTrigger } from "@/components/ui/tabs";
 
 function Step({
   name,
@@ -26,8 +26,7 @@ function Step({
   isPending: boolean;
   status: EditStatusValue;
 }) {
-  const onRedirect = useSetAtom(onRedirectEditAtom);
-  const active = status === "EDITING" || status === "LOADING";
+  const { onRedirect, active } = useRedirectSection(name);
 
   return (
     <>
@@ -41,7 +40,7 @@ function Step({
         className="group relative h-auto whitespace-normal p-0 font-medium text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
-        onClick={() => onRedirect(name)}
+        onClick={() => onRedirect()}
         role="tab"
         value={name}
       >
@@ -107,7 +106,7 @@ export function EditSteps() {
   return (
     <div className="h-full flex-1">
       <nav className="flex">
-        <TabsList className="flex h-auto items-center bg-current p-0 text-transparent">
+        <div className="flex h-auto items-center bg-current p-0 text-transparent">
           {editPaths.map(({ name }, i) => {
             return (
               <Step
@@ -119,7 +118,7 @@ export function EditSteps() {
               />
             );
           })}
-        </TabsList>
+        </div>
       </nav>
     </div>
   );

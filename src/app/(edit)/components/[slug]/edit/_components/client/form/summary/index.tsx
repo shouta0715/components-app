@@ -7,9 +7,9 @@ import {
   CategoryFormLoader,
   PreviewDropZoneLoader,
 } from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
+import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_components/client/next-section-button";
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary";
 import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
-import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { InputLength } from "@/components/ui/input-length";
 import { Label } from "@/components/ui/label";
@@ -42,8 +42,9 @@ const DynamicPreviewDropZone = dynamic(
 export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
   const {
     control,
-    register,
     errors,
+    isDirty,
+    register,
     onDropAccepted,
     onDropRejected,
     handleSubmit,
@@ -53,7 +54,6 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
   return (
     <form
       className="flex flex-col gap-8"
-      id="summary-form"
       onSubmit={handleSubmit((d) => {
         console.log(d);
       })}
@@ -145,7 +145,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
           </ErrorMessage>
         )}
       </fieldset>
-      <Button type="submit">Save</Button>
+      <NextSectionButton currentSection="summary" isDirty={isDirty} />
     </form>
   );
 }

@@ -10,7 +10,7 @@ import { Icon } from "@/components/icons/Icon";
 export function EditHeader() {
   return (
     <StickyTrigger
-      className="sticky top-4 rounded-full border bg-background px-2.5 md:px-4"
+      className="sticky top-4 z-20 rounded-full border bg-background px-2.5 md:px-4"
       margin={4}
       stickyClassName="shadow-md"
     >
