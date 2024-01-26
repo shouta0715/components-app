@@ -1,10 +1,10 @@
 "use client";
 
-import { Category } from "@prisma/client";
-import { CreditCard, Search, Settings, User } from "lucide-react";
+import { Search } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   CommandDialog,
   CommandEmpty,
@@ -12,11 +12,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
+import { SearchCategory } from "@/types/prisma";
 
-export function CategoryCommand({ categories }: { categories: Category[] }) {
+export function CategoryCommand({
+  categories,
+}: {
+  categories: SearchCategory[];
+}) {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -59,35 +62,37 @@ export function CategoryCommand({ categories }: { categories: Category[] }) {
         </kbd>
       </button>
       <CommandDialog onOpenChange={setOpen} open={open}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Categories">
             {categories.map((category) => (
-              <CommandItem key={category.id}>
-                <span>{category.name}</span>
+              <CommandItem key={category.name} className="!p-0">
+                <Link
+                  className="flex h-full flex-1 justify-between px-1.5 py-3 font-normal capitalize"
+                  href={`/categories/${category.name}`}
+                  prefetch={false}
+                >
+                  <span>{category.name}</span>
+                  <span className="text-muted-foreground">
+                    {category._count.components}種類
+                  </span>
+                </Link>
               </CommandItem>
             ))}
           </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Billing</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
         </CommandList>
+
+        <div className="mt-6 ">
+          <Link
+            className={buttonVariants({
+              className: "w-full",
+            })}
+            href="/categories"
+          >
+            もっと見る
+          </Link>
+        </div>
       </CommandDialog>
     </>
   );

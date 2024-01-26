@@ -22,7 +22,7 @@ export default async function Page({ params }: Params) {
           <span className="px-2">/</span>
           <Link
             className="px-0 text-current  sm:text-base"
-            href={`/categories/${component.category.id}`}
+            href={`/categories/${component.category.name}`}
           >
             {component.category.name}
           </Link>

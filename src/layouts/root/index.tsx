@@ -58,3 +58,19 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     </Providers>
   );
 };
+
+export const EditLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Providers>
+      <div className="flex min-h-screen flex-col">
+        <div>
+          <PreviewHeader />
+        </div>
+        <div className="mx-auto flex h-full w-full max-w-7xl flex-1 items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
+          <main className="flex-1">{children}</main>
+        </div>
+        <Footer />
+      </div>
+    </Providers>
+  );
+};

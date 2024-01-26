@@ -97,17 +97,17 @@ function IntroDuction() {
 
 const rankings = [
   {
-    name: "Top Creator",
+    name: "Creator",
     href: "/rankings/top-creator",
     icon: Users,
   },
   {
-    name: "Top Component",
+    name: "Component",
     href: "/rankings/top-component",
     icon: Code,
   },
   {
-    name: "Top Category",
+    name: "Category",
     href: "/rankings/top-category",
     icon: Tag,
   },
@@ -147,16 +147,17 @@ async function Categories() {
     <nav>
       {categories.map((category) => (
         <ActiveLink
-          key={category.id}
+          key={category.name}
           className={cn(
             buttonVariants({
               variant: "link",
               size: "sm",
               radius: "default",
-              className: "justify-start px-0 block text-muted-foreground ",
+              className:
+                "justify-start capitalize px-0 block text-muted-foreground ",
             })
           )}
-          href={`/categories/${category.id}`}
+          href={`/categories/${category.name}`}
         >
           {category.name}
         </ActiveLink>

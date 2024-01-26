@@ -3,13 +3,49 @@ import { Category } from "@prisma/client";
 import { toResCategoriesByHome } from "@/domain/categories";
 import { prisma } from "@/lib/client/prisma";
 
-import { CategoriesByHome } from "@/types/prisma";
+import { CategoriesByHome, SearchCategory } from "@/types/prisma";
 
 export const getCategories = async (
   take: number,
   skip = 0
 ): Promise<Category[]> => {
   const result = await prisma.category.findMany({
+    take,
+    skip,
+    orderBy: {
+      components: {
+        _count: "desc",
+      },
+    },
+  });
+
+  return result;
+};
+
+export const searchCategories = async (
+  q: string | null,
+  take: number,
+  skip = 0
+): Promise<SearchCategory[]> => {
+  const result = await prisma.category.findMany({
+    where: {
+      name: {
+        contains: q || "",
+      },
+    },
+    select: {
+      name: true,
+      _count: {
+        select: {
+          components: true,
+        },
+      },
+    },
+    orderBy: {
+      components: {
+        _count: "desc",
+      },
+    },
     take,
     skip,
   });

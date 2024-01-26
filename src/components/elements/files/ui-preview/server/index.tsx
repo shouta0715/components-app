@@ -1,3 +1,5 @@
+import "server-only";
+
 import React from "react";
 
 import { PreviewIframe } from "@/components/elements/files/ui-preview/client";

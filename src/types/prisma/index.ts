@@ -13,7 +13,7 @@ with Relations
 */
 
 type WithCreator = Pick<User, "id" | "name" | "image">;
-type WithCategory = Pick<Category, "id" | "name">;
+type WithCategory = Pick<Category, "name">;
 
 /*
 **************************
@@ -31,6 +31,12 @@ export type CategoriesByHome = {
   };
 } & Category;
 
+export type SearchCategory = Pick<Category, "name"> & {
+  _count: {
+    components: number;
+  };
+};
+
 /* 
 **************************
 Components
@@ -44,6 +50,12 @@ export type CompWithImgs = Component & {
 export type CompWithFiles = Component & {
   category: WithCategory;
   creator: WithCreator;
+  files: File[];
+};
+
+export type EditComp = Component & {
+  category: WithCategory;
+  creator: Pick<WithCreator, "id">;
   files: File[];
 };
 

@@ -1,4 +1,4 @@
-"server only";
+import "server-only";
 
 import { Code, BrightProps } from "bright";
 import React from "react";

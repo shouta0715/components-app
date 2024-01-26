@@ -52,7 +52,7 @@ async function generateSeedPreviewImages(
 
   const created = await Promise.all(
     component.map(async (target) => {
-      const category = categories.find((c) => c.id === target.categoryId);
+      const category = categories.find((c) => c.name === target.categoryName);
 
       if (!category) {
         throw new Error("Category not found");

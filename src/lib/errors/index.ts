@@ -1,8 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Prisma } from "@prisma/client";
 
-import { NextApiResponse } from "next";
-import { NextResponse } from "next/server";
 import { ValiError } from "valibot";
 
 /* eslint-disable max-classes-per-file */
@@ -11,7 +9,6 @@ export const errors = {
   401: { message: "Unauthorized" },
   403: { message: "Forbidden" },
   404: { message: "Not Found" },
-  405: { message: "Method Not Allowed" },
   500: { message: "Internal Server Error" },
 } as const;
 
@@ -64,12 +61,6 @@ export class NotFoundError extends HttpError {
   }
 }
 
-export class MethodNotAllowedError extends HttpError {
-  constructor() {
-    super(405);
-  }
-}
-
 export class InternalServerError extends HttpError {
   constructor() {
     super(500);
@@ -86,8 +77,6 @@ export const throwHttpErrorFromStatus = (status: ErrorType): never => {
       throw new ForbiddenError();
     case 404:
       throw new NotFoundError();
-    case 405:
-      throw new MethodNotAllowedError();
     case 500:
       throw new InternalServerError();
     default:
@@ -100,41 +89,46 @@ export const handleApiError = ({ error }: { error: unknown }) => {
     const status = 400;
     const { message } = errors[status];
 
-    return NextResponse.json({ message, status });
+    return Response.json({ message }, { status });
+  }
+
+  if (error instanceof UnauthorizedError) {
+    const status = 401;
+    const { message } = errors[status];
+
+    return Response.json({ message }, { status });
+  }
+
+  if (error instanceof ForbiddenError) {
+    const status = 403;
+    const { message } = errors[status];
+
+    return Response.json({ message }, { status });
   }
 
   if (error instanceof HttpError) {
     const { status, message } = error.throwMessage();
 
-    return NextResponse.json({ message }, { status });
+    return Response.json({ message }, { status });
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     const status = 404;
     const { message } = errors[status];
 
-    return NextResponse.json({ message }, { status });
+    return Response.json({ message }, { status });
   }
 
   if (error instanceof Prisma.PrismaClientValidationError) {
     const status = 404;
     const { message } = errors[status];
 
-    return NextResponse.json({ message }, { status });
+    return Response.json({ message }, { status });
   }
 
   const status = 500;
 
   const { message } = errors[status];
 
-  return NextResponse.json({ message }, { status });
-};
-
-export const notArrowedHandler = (res: NextApiResponse<Error>) => {
-  const status = 405;
-  const { message } = errors[status];
-  res.status(status).json({
-    message,
-    status,
-  });
+  return Response.json({ message }, { status });
 };

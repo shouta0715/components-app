@@ -4,10 +4,10 @@ import { prisma } from "@/lib/client/prisma";
 export async function createDraftComponent(userId: string): Promise<Component> {
   return prisma.component.create({
     data: {
-      name: "Untitled Component",
+      name: "",
       draft: true,
       previewUrl: "",
-      categoryId: "",
+      categoryName: "other",
       creatorId: userId,
       document: "",
     },

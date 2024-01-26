@@ -1,12 +1,8 @@
-"server only";
+import "server-only";
 
 import { Loader } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-
-export function FrameLoading() {
-  return <Skeleton className="h-96 w-full rounded-md" />;
-}
 
 export function UIPreviewLoading({ name }: { name: string }) {
   return (
@@ -33,7 +29,7 @@ export function UIPreviewLoading({ name }: { name: string }) {
           </p>
         </div>
         <div className="relative overflow-hidden p-2 sm:p-4">
-          <FrameLoading />
+          <Skeleton className="h-96 w-full rounded-md" />
         </div>
       </div>
     </div>

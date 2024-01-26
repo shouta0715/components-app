@@ -3,12 +3,12 @@ import Link from "next/link";
 import React from "react";
 
 import { createDraftComp } from "@/actions/components/create";
-import { Image } from "@/components/elements/images";
 import { AvatarLink } from "@/components/elements/users/avatar-link";
 import { AuthForm } from "@/components/ui/auth-form";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import { Carousel, CarouselSlider } from "@/components/ui/carousel";
+import { Image } from "@/components/ui/image";
 import { cache } from "@/lib/next/cache";
 import { getTopComps } from "@/services/components/get";
 import { cn, getImageUrl } from "@/utils";

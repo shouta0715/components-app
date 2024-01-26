@@ -8,6 +8,7 @@ import {
   CompWithFiles,
   CompWithImgs,
   ComponentWithParent,
+  EditComp,
 } from "@/types/prisma";
 
 export const getComp = async (
@@ -27,7 +28,6 @@ export const getComp = async (
       category: {
         select: {
           name: true,
-          id: true,
         },
       },
     },
@@ -64,7 +64,7 @@ export const getTopComps = async (
 > => {
   const components = await prisma.component.findMany({
     take,
-    distinct: ["categoryId"],
+    distinct: ["categoryName"],
     include: {
       previewImages: {
         take: 1,
@@ -99,7 +99,6 @@ export const getCompWithFiles = async (
       category: {
         select: {
           name: true,
-          id: true,
         },
       },
     },
@@ -110,6 +109,30 @@ export const getCompWithFiles = async (
 
     throw new NotFoundError();
   }
+
+  return component;
+};
+
+export const getEditComp = async (id: string): Promise<EditComp> => {
+  const component = await prisma.component.findUnique({
+    where: { id },
+    include: {
+      files: true,
+      previewImages: true,
+      creator: {
+        select: {
+          id: true,
+        },
+      },
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  if (!component) notFound();
 
   return component;
 };
