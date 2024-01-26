@@ -21,22 +21,24 @@ export const summaryDescriptionSchema = nullable(
   string([toTrimmed(), maxLength(200, "説明は200文字以下で入力してください。")])
 );
 
+export const summaryPreviewUrlSchema = variant("type", [
+  object({
+    type: literal("input"),
+    value: blob(),
+  }),
+  object({
+    type: literal("default"),
+    value: string([
+      toTrimmed(),
+      minLength(1, "Preview用の画像を選択してください。"),
+    ]),
+  }),
+]);
+
 export const editSummarySchema = object({
   name: summaryNameSchema,
   description: summaryDescriptionSchema,
-  previewUrl: variant("type", [
-    object({
-      type: literal("input"),
-      value: blob(),
-    }),
-    object({
-      type: literal("default"),
-      value: string([
-        toTrimmed(),
-        minLength(1, "Preview用の画像を選択してください。"),
-      ]),
-    }),
-  ]),
+  previewUrl: summaryPreviewUrlSchema,
   categoryName: string([
     toTrimmed(),
     minLength(1, "カテゴリーを選択してください。"),

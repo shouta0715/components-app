@@ -28,10 +28,11 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     (file: File) => {
       if (errors.previewUrl?.value) clearErrors("previewUrl.value");
 
-      setValue("previewUrl", {
-        type: "input",
-        value: file,
-      });
+      setValue(
+        "previewUrl",
+        { type: "input", value: file },
+        { shouldDirty: true }
+      );
     },
     [clearErrors, errors.previewUrl?.value, setValue]
   );

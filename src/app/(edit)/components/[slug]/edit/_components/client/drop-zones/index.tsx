@@ -6,11 +6,21 @@ import clsx from "clsx";
 import { AlertCircle, ImageIcon } from "lucide-react";
 import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
+import { Area } from "react-easy-crop";
 import {
   DropzoneProps,
-  accepts,
   usePreviewDropZone,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/drop-zone/preview";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
+import { ImageCropper } from "@/components/elements/cropper";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Image } from "@/components/ui/image";
 import { Label } from "@/components/ui/label";
 import { cn, getImageUrl } from "@/utils";
@@ -110,75 +120,153 @@ function PreviewDropInputZone({ preview, defaultValue }: PreviewDropZoneProps) {
   );
 }
 
+function PreviewImageCropper({
+  preview,
+  onCompleted,
+  onCropCanceled,
+  open,
+  setOpen,
+  cropArea,
+}: {
+  open: boolean;
+  setOpen: (flag: boolean) => void;
+  preview: string | undefined;
+  onCompleted: () => Promise<void>;
+  onCropCanceled: () => void;
+  cropArea: (area: Area) => void;
+}) {
+  return (
+    <AlertDialog
+      onOpenChange={(flag) => {
+        setOpen(flag);
+        if (!flag) onCropCanceled();
+      }}
+      open={open}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Crop Preview Image</AlertDialogTitle>
+          <ImageCropper
+            image={preview}
+            onCropComplete={(_, area) => {
+              cropArea(area);
+            }}
+          />
+          <div className="flex justify-end gap-4">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                onCompleted().then(() => {
+                  setOpen(false);
+                });
+              }}
+            >
+              Crop
+            </AlertDialogAction>
+          </div>
+        </AlertDialogHeader>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 export default function PreviewDropZone({
   onDropAccepted,
   onDropRejected,
   defaultValue,
   isError,
   ...option
-}: DropzoneProps & { isError: boolean }) {
-  const { isDragActive, isDragReject, getInputProps, getRootProps, preview } =
-    usePreviewDropZone({
-      defaultValue,
-      onDropAccepted,
-      onDropRejected,
-      ...option,
-    });
+}: DropzoneProps & {
+  isError: boolean;
+}) {
+  const {
+    isDragActive,
+    isDragReject,
+    previews,
+    open,
+    cropArea,
+    setOpen,
+    getInputProps,
+    getRootProps,
+    onCompleted,
+    onCropCanceled,
+  } = usePreviewDropZone({
+    defaultValue,
+    onDropAccepted,
+    onDropRejected,
+    ...option,
+  });
 
   const isEmptyError = isError && !isDragActive;
 
   return (
-    <div
-      className={cn(
-        "flex justify-center rounded-lg border border-dashed border-border  pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-96 duration-150 cursor-pointer",
-        isDragActive && "border-primary border-2",
-        isEmptyError && "border-destructive border-2 hover:border-destructive",
-        isDragReject && "border-destructive border-2 hover:border-destructive"
-      )}
-      role="button"
-      {...getRootProps({
-        accept: accepts.preview,
-      })}
-    >
-      {preview ? (
-        <>
-          <PreviewDropInputZone {...{ preview, defaultValue }} />
-          <div className="absolute bottom-4 z-10 flex flex-col items-center justify-center">
-            <DropInputZone
-              {...{
-                isEmptyError,
-                isDragReject,
-                isDragActive,
-                getInputProps,
-              }}
+    <>
+      <PreviewImageCropper
+        cropArea={(area) => {
+          cropArea.current = area;
+        }}
+        onCompleted={onCompleted}
+        onCropCanceled={onCropCanceled}
+        open={open}
+        preview={previews.crop}
+        setOpen={setOpen}
+      />
+
+      <div
+        className={cn(
+          "flex justify-center rounded-lg border border-dashed border-border  pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-96 duration-150 cursor-pointer",
+          isDragActive && "border-primary border-2",
+          isEmptyError &&
+            "border-destructive border-2 hover:border-destructive",
+          isDragReject && "border-destructive border-2 hover:border-destructive"
+        )}
+        role="button"
+        {...getRootProps({
+          accept: accepts.preview,
+        })}
+      >
+        {previews.preview ? (
+          <>
+            <PreviewDropInputZone
+              {...{ preview: previews.preview, defaultValue }}
             />
-          </div>
-        </>
-      ) : (
-        <DropInputZone
-          {...{
-            isEmptyError,
-            isDragReject,
-            isDragActive,
-            getInputProps,
-          }}
-        >
-          {isDragReject || isEmptyError ? (
-            <AlertCircle
-              aria-hidden="true"
-              className="mx-auto h-12 w-12 text-destructive"
-            />
-          ) : (
-            <ImageIcon
-              aria-hidden="true"
-              className={cn(
-                "mx-auto h-12 w-12 text-gray-300 transition-colors duration-150 dark:text-gray-400",
-                isDragActive && "text-primary dark:text-primary"
-              )}
-            />
-          )}
-        </DropInputZone>
-      )}
-    </div>
+            <div className="absolute bottom-4 z-10 flex flex-col items-center justify-center">
+              <DropInputZone
+                {...{
+                  isEmptyError,
+                  isDragReject,
+                  isDragActive,
+                  getInputProps,
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <DropInputZone
+            {...{
+              isEmptyError,
+              isDragReject,
+              isDragActive,
+              getInputProps,
+            }}
+          >
+            {isDragReject || isEmptyError ? (
+              <AlertCircle
+                aria-hidden="true"
+                className="mx-auto h-12 w-12 text-destructive"
+              />
+            ) : (
+              <ImageIcon
+                aria-hidden="true"
+                className={cn(
+                  "mx-auto h-12 w-12 text-gray-300 transition-colors duration-150 dark:text-gray-400",
+                  isDragActive && "text-primary dark:text-primary"
+                )}
+              />
+            )}
+          </DropInputZone>
+        )}
+      </div>
+    </>
   );
 }

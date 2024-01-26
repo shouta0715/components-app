@@ -1,15 +1,9 @@
 import React, { useRef } from "react";
-import {
-  Accept,
-  DropzoneOptions,
-  FileRejection,
-  useDropzone,
-} from "react-dropzone";
-
-export const accepts = {
-  preview: ".png,.jpg,.jpeg,.gif,.webp",
-  files: ".html,.css,.js,.ts,.jsx,.tsx.",
-};
+import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
+import { Area } from "react-easy-crop";
+import { toast } from "sonner";
+import { typeToAccept } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
+import { getCroppedImg } from "@/components/elements/cropper/cropper-trimming";
 
 export type DropzoneProps = {
   onDropAccepted: (files: File) => void;
@@ -20,47 +14,100 @@ export type DropzoneProps = {
   "onDropAccepted" | "accept" | "maxFiles" | "maxSize" | "onDropRejected"
 >;
 
-function typeToAccept(type: keyof typeof accepts): Accept {
-  switch (type) {
-    case "preview":
+type Previews = {
+  preview?: string;
+  crop?: string;
+};
+
+function useCropper({
+  onDropAccepted,
+  setPreviews,
+}: {
+  onDropAccepted: (files: File) => void;
+  setPreviews: React.Dispatch<React.SetStateAction<Previews>>;
+  previews: Previews;
+}) {
+  const [open, setOpen] = React.useState(false);
+
+  const cropArea = React.useRef<Area>();
+
+  // Crop Function
+  const onCropCompleted = React.useCallback(
+    (url: string, file: File) => {
+      setPreviews((ps) => ({
+        ...ps,
+        preview: url,
+      }));
+
+      onDropAccepted(file);
+    },
+    [onDropAccepted, setPreviews]
+  );
+
+  const onCropCanceled = React.useCallback(() => {
+    setPreviews((ps) => {
+      const { crop } = ps;
+
+      if (crop) URL.revokeObjectURL(crop);
+
       return {
-        "image/png": [".png"],
-        "image/jpg": [".jpg"],
-        "image/jpeg": [".jpeg"],
-        "image/gif": [".gif"],
-        "image/webp": [".webp"],
+        ...ps,
+        crop: undefined,
       };
-    case "files":
-      return {
-        "text/html": [".html"],
-        "text/css": [".css"],
-        "text/javascript": [".js"],
-        "text/typescript": [".ts"],
-        "application/javascript": [".jsx", ".js"],
-        "application/typescript": [".tsx", ".ts"],
-      };
-    default:
-      throw new Error("Invalid type");
-  }
+    });
+  }, [setPreviews]);
+
+  return {
+    onCropCompleted,
+    onCropCanceled,
+    open,
+    cropArea,
+    setOpen,
+  };
 }
 
 export function usePreviewDropZone({
   onDropAccepted,
   onDropRejected,
+
   defaultValue,
   ...option
 }: DropzoneProps) {
-  const [preview, setPreview] = React.useState(defaultValue);
+  const [previews, setPreviews] = React.useState<Previews>({
+    crop: undefined,
+    preview: defaultValue ?? undefined,
+  });
+  const { onCropCompleted, onCropCanceled, open, setOpen, cropArea } =
+    useCropper({
+      onDropAccepted,
+      setPreviews,
+      previews,
+    });
 
+  const onCompleted = React.useCallback(async () => {
+    if (!cropArea.current) return;
+    if (!previews.crop) return;
+    try {
+      const croppedImage = await getCroppedImg(previews.crop, cropArea.current);
+
+      onCropCompleted(croppedImage.url, croppedImage.file);
+    } catch {
+      toast.error("画像をトリミングできませんでした。");
+    }
+  }, [cropArea, onCropCompleted, previews.crop]);
+
+  // Revoke Object URL
   React.useEffect(() => {
     return () => {
-      if (!preview) return;
-      if (preview === defaultValue) return;
+      const { preview, crop } = previews;
 
-      URL.revokeObjectURL(preview);
+      if (crop) URL.revokeObjectURL(crop);
+
+      if (preview) URL.revokeObjectURL(preview);
     };
-  }, [defaultValue, preview]);
+  }, [previews]);
 
+  // Preview Drop Zone
   const onDropRejectedCallback = useRef(onDropRejected);
 
   const onDropAcceptedPreview = React.useCallback(
@@ -68,10 +115,13 @@ export function usePreviewDropZone({
       const { createObjectURL } = window.URL || window.webkitURL;
 
       const file = files[0];
-      setPreview(createObjectURL(file));
-      onDropAccepted(file);
+      setPreviews((ps) => ({
+        ...ps,
+        crop: createObjectURL(file),
+      }));
+      setOpen(true);
     },
-    [onDropAccepted]
+    [setOpen]
   );
 
   const { getRootProps, getInputProps, isDragReject, isDragActive } =
@@ -85,10 +135,15 @@ export function usePreviewDropZone({
     });
 
   return {
-    getRootProps,
-    getInputProps,
     isDragReject,
     isDragActive,
-    preview,
+    previews,
+    open,
+    cropArea,
+    setOpen,
+    getRootProps,
+    getInputProps,
+    onCropCanceled,
+    onCompleted,
   };
 }

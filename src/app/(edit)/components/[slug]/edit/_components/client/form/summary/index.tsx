@@ -64,7 +64,9 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
           <Suspense fallback={<CategoryFormLoader />}>
             <DynamicCategoryForm
               control={control}
-              setCategory={(value) => setValue("categoryName", value)}
+              setCategory={(value) => {
+                setValue("categoryName", value, { shouldDirty: true });
+              }}
             />
           </Suspense>
           <ErrorMessage className="mt-1">
