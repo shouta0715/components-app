@@ -18,10 +18,10 @@ export const NextSectionButton = ({
   onClick,
   ...props
 }: NextSectionButtonProps) => {
-  const { onNextSection } = useRedirectSectionHandler(currentSection);
+  const { onNextSection } = useRedirectSectionHandler();
 
   const onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onNextSection();
+    onNextSection(currentSection);
     onClick?.(e);
   };
 
