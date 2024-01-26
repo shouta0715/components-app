@@ -40,7 +40,7 @@ function Step({
         className="group relative h-auto whitespace-normal p-0 font-medium text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
-        onClick={() => onRedirect()}
+        onClick={() => onRedirect(name)}
         role="tab"
         value={name}
       >

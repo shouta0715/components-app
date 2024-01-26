@@ -83,7 +83,8 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.0",
     "uuid": "^9.0.1",
-    "valibot": "^0.22.0"
+    "valibot": "^0.22.0",
+    "vaul": "^0.8.9"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",

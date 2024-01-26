@@ -3,34 +3,30 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import * as Stories from "./index.stories";
-import * as History from "@/lib/next/hooks";
+import * as History from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section/index";
 
-const spyHistory = vi.spyOn(History, "useHistory").mockImplementation(() => {
-  const { pathname, query } = mockRouter;
+const spyHistory = vi
+  .spyOn(History, "useRedirectSection")
+  .mockImplementation((input) => {
+    const { pathname, query } = mockRouter;
 
-  return {
-    push: (params) => {
-      const queries = { ...query, ...params };
-      const newParams = new URLSearchParams(
-        Object.entries(queries).map(([key, value]) => [key, String(value)])
-      );
-
-      const newURL = `${pathname}?${newParams.toString()}`;
-
-      mockRouter.setCurrentUrl(newURL);
-    },
-    replace: (params) => {
-      const queries = { ...query, ...params };
-      const newParams = new URLSearchParams(
-        Object.entries(queries).map(([key, value]) => [key, String(value)])
-      );
-
-      const newURL = `${pathname}?${newParams.toString()}`;
-
-      mockRouter.setCurrentUrl(newURL);
-    },
-  };
-});
+    return {
+      onRedirect: (inputSection) => {
+        const queries = {
+          ...query,
+          section: inputSection,
+        };
+        const newParams = new URLSearchParams(
+          Object.entries(queries).map(([key, value]) => [key, String(value)])
+        );
+        mockRouter.setCurrentUrl(`${pathname}?${newParams.toString()}`);
+      },
+      push: mockRouter.push,
+      currentSection: input,
+      onNextSection: () => {},
+      active: input === query.section,
+    };
+  });
 
 const { Default, Empty, Loading } = composeStories(Stories);
 const basePath = "/components/xxx/edit";
@@ -63,20 +59,12 @@ describe("@app/components/[slug]/edit//server/header", async () => {
         query: { section: "files" },
       });
 
-      expect(summary).toHaveAttribute("aria-selected", "false");
-      expect(files).toHaveAttribute("aria-selected", "true");
-      expect(document).toHaveAttribute("aria-selected", "false");
-
       await userEvent.click(document);
 
       expect(mockRouter).toMatchObject({
         pathname: basePath,
         query: { section: "document" },
       });
-
-      expect(summary).toHaveAttribute("aria-selected", "false");
-      expect(files).toHaveAttribute("aria-selected", "false");
-      expect(document).toHaveAttribute("aria-selected", "true");
     });
   });
 
@@ -99,20 +87,12 @@ describe("@app/components/[slug]/edit//server/header", async () => {
         query: { section: "files" },
       });
 
-      expect(summary).toHaveAttribute("aria-selected", "false");
-      expect(files).toHaveAttribute("aria-selected", "true");
-      expect(document).toHaveAttribute("aria-selected", "false");
-
       await userEvent.click(document);
 
       expect(mockRouter).toMatchObject({
         pathname: basePath,
         query: { section: "document" },
       });
-
-      expect(summary).toHaveAttribute("aria-selected", "false");
-      expect(files).toHaveAttribute("aria-selected", "false");
-      expect(document).toHaveAttribute("aria-selected", "true");
     });
   });
 

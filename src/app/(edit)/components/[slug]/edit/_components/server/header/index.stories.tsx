@@ -9,7 +9,7 @@ import {
   EditingSteps,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 import { getInitialEditStatus } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
-import { NavigateTabs } from "@/components/ui/tabs";
+import { NavigateTabs, TabsList } from "@/components/ui/tabs";
 import { TestAtomProvider, setupNextParameter } from "@/tests/mocks/story";
 
 const defaultData: CheckEditStatusData = {
@@ -47,7 +47,9 @@ function createDecorators(
         ]}
       >
         <NavigateTabs defaultValue="summary" params="section">
-          <Story />
+          <TabsList className="block h-auto items-center bg-transparent p-0 text-primary">
+            <Story />
+          </TabsList>
         </NavigateTabs>
       </TestAtomProvider>
     );

@@ -17,22 +17,28 @@ import {
 import { useHistory } from "@/lib/next/hooks";
 import { EditComp } from "@/types/prisma";
 
-export const useRedirectSectionHandler = (inputSection: EditingSteps) => {
+export const useRedirectSectionHandler = () => {
   const { push } = useHistory();
 
   // 次のセクションに進む
-  const onNextSection = useCallback(() => {
-    push({
-      section: getNextEditingStep(inputSection),
-    });
-  }, [inputSection, push]);
+  const onNextSection = useCallback(
+    (inputSection: EditingSteps) => {
+      push({
+        section: getNextEditingStep(inputSection),
+      });
+    },
+    [push]
+  );
 
   // 指定のセクションにリダイレクト
-  const onRedirect = useCallback(() => {
-    push({
-      section: inputSection,
-    });
-  }, [inputSection, push]);
+  const onRedirect = useCallback(
+    (inputSection: EditingSteps) => {
+      push({
+        section: inputSection,
+      });
+    },
+    [push]
+  );
 
   return {
     push,
@@ -42,8 +48,7 @@ export const useRedirectSectionHandler = (inputSection: EditingSteps) => {
 };
 
 export function useRedirectSection(inputSection: EditingSteps) {
-  const { push, onNextSection, onRedirect } =
-    useRedirectSectionHandler(inputSection);
+  const { push, onNextSection, onRedirect } = useRedirectSectionHandler();
 
   const searchParams = useSearchParams();
 
