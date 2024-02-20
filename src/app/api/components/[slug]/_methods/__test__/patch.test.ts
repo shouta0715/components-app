@@ -33,14 +33,14 @@ describe("PATCH Component API test", () => {
       vi.restoreAllMocks();
     });
 
-    test("should return 204", async () => {
+    test("should return 200", async () => {
       const req = new NextRequest(url, {
         method: "PATCH",
         body: JSON.stringify(input),
       });
       const res = await updateComponentHandler(req, { params: { slug: "1" } });
 
-      expect(res.status).toBe(204);
+      expect(res.status).toBe(200);
     });
 
     test("should call updateComponent", async () => {
