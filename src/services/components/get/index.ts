@@ -1,15 +1,10 @@
-import { User } from "@prisma/client";
+import { Component, User } from "@prisma/client";
 
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/client/prisma";
 import { NotFoundError } from "@/lib/errors";
-import {
-  CompWithFiles,
-  CompWithImgs,
-  ComponentWithParent,
-  EditComp,
-} from "@/types/prisma";
+import { CompWithFiles, ComponentWithParent, EditComp } from "@/types/prisma";
 
 export const getComp = async (
   id: string,
@@ -42,12 +37,9 @@ export const getComp = async (
   return component;
 };
 
-export const getCompWithImages = async (id: string): Promise<CompWithImgs> => {
+export const getCompWithImages = async (id: string): Promise<Component> => {
   const component = await prisma.component.findUnique({
     where: { id },
-    include: {
-      previewImages: true,
-    },
   });
 
   if (!component) throw new NotFoundError();
@@ -57,18 +49,11 @@ export const getCompWithImages = async (id: string): Promise<CompWithImgs> => {
 
 export const getTopComps = async (
   take: number
-): Promise<
-  (CompWithImgs & {
-    creator: User;
-  })[]
-> => {
+): Promise<(Component & { creator: User })[]> => {
   const components = await prisma.component.findMany({
     take,
     distinct: ["categoryName"],
     include: {
-      previewImages: {
-        take: 1,
-      },
       creator: true,
     },
     orderBy: {
@@ -118,7 +103,6 @@ export const getEditComp = async (id: string): Promise<EditComp> => {
     where: { id },
     include: {
       files: true,
-      previewImages: true,
       creator: {
         select: {
           id: true,

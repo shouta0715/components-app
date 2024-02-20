@@ -6,7 +6,7 @@ import { seedComponentSets } from "./fixtures/componentSet";
 import { seedFiles } from "./fixtures/files";
 import { seedFollows } from "./fixtures/follow";
 import { seedComponentLikes, seedComponentSetLikes } from "./fixtures/likes";
-import { seedPreviewImages } from "./fixtures/preview";
+
 import { seedReviews } from "./fixtures/reviews";
 import { seedUser } from "./fixtures/users";
 
@@ -18,7 +18,6 @@ async function transaction(tx: Prisma.TransactionClient) {
   const components = await seedComponents(tx, categories, users);
   const componentSets = await seedComponentSets(tx, users);
   await seedFiles(tx, components);
-  await seedPreviewImages(tx, components, categories);
   await seedComponentLikes(tx, components, users);
   await seedComponentSetLikes(tx, componentSets, users);
   await seedReviews(tx, components, componentSets, users);

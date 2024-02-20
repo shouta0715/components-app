@@ -33,11 +33,9 @@ async function TopComponent() {
         dots
       >
         {components.map((comp) => {
-          const image = comp.previewImages?.[0];
-
           return (
             <CarouselSlider
-              key={image?.id}
+              key={comp.previewUrl}
               className="group"
               href={`/components/${comp.id}`}
             >
@@ -52,7 +50,7 @@ async function TopComponent() {
                   fill
                   priority
                   sizes="100%"
-                  src={getImageUrl(image?.objectId as string)}
+                  src={getImageUrl(comp.previewUrl)}
                 />
 
                 <div className="absolute bottom-6 left-2 z-20 grid gap-1">

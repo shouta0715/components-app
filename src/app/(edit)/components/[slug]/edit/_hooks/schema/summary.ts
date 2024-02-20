@@ -35,14 +35,16 @@ export const summaryPreviewUrlSchema = variant("type", [
   }),
 ]);
 
+export const summaryCategoryNameSchema = string([
+  toTrimmed(),
+  minLength(1, "カテゴリーを選択してください。"),
+]);
+
 export const editSummarySchema = object({
   name: summaryNameSchema,
   description: summaryDescriptionSchema,
   previewUrl: summaryPreviewUrlSchema,
-  categoryName: string([
-    toTrimmed(),
-    minLength(1, "カテゴリーを選択してください。"),
-  ]),
+  categoryName: summaryCategoryNameSchema,
 });
 
 export type EditSummaryInput = Input<typeof editSummarySchema>;
