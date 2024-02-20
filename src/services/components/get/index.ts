@@ -124,3 +124,14 @@ export const getEditComp = async (id: string): Promise<EditComp> => {
 export const getComponentCount = async (): Promise<number> => {
   return prisma.component.count();
 };
+
+export const getComponentCreatorId = async (id: string): Promise<string> => {
+  const component = await prisma.component.findUnique({
+    where: { id },
+    select: { creatorId: true },
+  });
+
+  if (!component) throw new NotFoundError();
+
+  return component.creatorId;
+};
