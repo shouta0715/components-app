@@ -9,6 +9,7 @@ export type DropzoneProps = {
   onDropAccepted: (files: File) => void;
   onDropRejected: (files: FileRejection[]) => void;
   defaultValue?: string;
+  isLoading: boolean;
 } & Omit<
   DropzoneOptions,
   "onDropAccepted" | "accept" | "maxFiles" | "maxSize" | "onDropRejected"
@@ -69,7 +70,7 @@ function useCropper({
 export function usePreviewDropZone({
   onDropAccepted,
   onDropRejected,
-
+  isLoading,
   defaultValue,
   ...option
 }: DropzoneProps) {
@@ -132,6 +133,7 @@ export function usePreviewDropZone({
       accept: typeToAccept("preview"),
       maxFiles: 1,
       maxSize: 10 * 1024 * 1024,
+      disabled: isLoading,
     });
 
   return {
