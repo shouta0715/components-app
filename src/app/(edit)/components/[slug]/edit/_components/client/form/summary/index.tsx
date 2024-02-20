@@ -44,23 +44,19 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
     control,
     errors,
     isDirty,
+    isPending,
     register,
     onDropAccepted,
     onDropRejected,
-    handleSubmit,
+    onSubmitHandler,
     setValue,
   } = useSummaryForm(defaultValues);
 
   return (
-    <form
-      className="flex flex-col gap-8"
-      onSubmit={handleSubmit((d) => {
-        console.log(d);
-      })}
-    >
+    <form className="flex flex-col gap-8" onSubmit={onSubmitHandler}>
       {/* Category Input Form Server Components */}
       <Suspense fallback="loading">
-        <fieldset>
+        <fieldset disabled={isPending}>
           <Suspense fallback={<CategoryFormLoader />}>
             <DynamicCategoryForm
               control={control}
@@ -77,7 +73,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
 
       {/* Name Input Form Client Components */}
 
-      <fieldset className="grid gap-3">
+      <fieldset className="grid gap-3" disabled={isPending}>
         <Label htmlFor="name" required>
           Name
           <InputLength
@@ -104,7 +100,7 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
       </fieldset>
 
       {/* Description Input Form Client Components */}
-      <fieldset className="grid gap-3">
+      <fieldset className="grid gap-3" disabled={isPending}>
         <Label htmlFor="description">
           Description
           <InputLength
@@ -129,14 +125,20 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
       </fieldset>
 
       {/* Preview Image Input Form Client Components */}
-      <fieldset className="grid gap-3">
+      <fieldset className="grid gap-3" disabled={isPending}>
         <Label htmlFor="categoryId" required>
           Preview Image
         </Label>
 
         <Suspense fallback={<PreviewDropZoneLoader />}>
           <DynamicPreviewDropZone
+            defaultValue={
+              defaultValues.previewUrl.type === "default"
+                ? defaultValues.previewUrl.value
+                : ""
+            }
             isError={errors.previewUrl?.value?.type === "min_length"}
+            isLoading={isPending}
             onDropAccepted={onDropAccepted}
             onDropRejected={onDropRejected}
           />
@@ -147,7 +149,11 @@ export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
           </ErrorMessage>
         )}
       </fieldset>
-      <NextSectionButton currentSection="summary" isDirty={isDirty} />
+      <NextSectionButton
+        currentSection="summary"
+        isDirty={isDirty}
+        isLoading={isPending}
+      />
     </form>
   );
 }
