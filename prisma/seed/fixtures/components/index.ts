@@ -21,7 +21,7 @@ async function generateSeedComponents(
           draft: i % 10 === 0,
           creatorId: users[randomNum(0, users.length - 1)].id,
           document: getMarkdownText(),
-          previewUrl: image.id,
+          previewUrl: `${image.id}.png`,
         };
 
         return data;
