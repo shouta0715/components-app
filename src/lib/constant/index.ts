@@ -30,3 +30,12 @@ Next.js Constants
 
 export const REDIRECT_PUSH = RedirectType.push as const;
 export const REDIRECT_REPLACE = RedirectType.replace as const;
+
+/*
+*********************************************
+S3 Constants
+*********************************************
+*/
+
+// 10mb
+export const S3_MAX_FILE_SIZE = 10485760 as const;

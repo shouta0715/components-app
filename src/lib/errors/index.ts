@@ -67,7 +67,7 @@ export class InternalServerError extends HttpError {
   }
 }
 
-export const throwHttpErrorFromStatus = (status: ErrorType): never => {
+export const throwHttpErrorFromStatus = (status: ErrorType | number): never => {
   switch (status) {
     case 400:
       throw new BadRequestError();
