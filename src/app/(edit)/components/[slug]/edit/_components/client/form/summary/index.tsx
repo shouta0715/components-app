@@ -9,11 +9,11 @@ import {
 } from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
 import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_components/client/next-section-button";
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary";
-import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { InputLength } from "@/components/ui/input-length";
 import { Label } from "@/components/ui/label";
 import { AutoSizeTextarea, Textarea } from "@/components/ui/textarea";
+import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 type EditSummaryFormProps = {
   defaultValues: EditSummaryInput;

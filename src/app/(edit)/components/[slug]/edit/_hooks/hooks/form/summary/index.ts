@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import {
   EditSummaryInput,
   editSummarySchema,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
+} from "@/lib/schema/client/edit/summary";
 
 export function useSummaryForm(defaultValues: EditSummaryInput) {
   const {
