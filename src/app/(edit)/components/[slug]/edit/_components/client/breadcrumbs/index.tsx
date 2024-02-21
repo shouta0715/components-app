@@ -9,27 +9,101 @@ import React from "react";
 import {
   editPaths,
   editStatusAtom,
+  isEditingAtom,
   isPendingEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
 import { useRedirectSection } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
-import { EditStatusValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import {
+  EditStatusValue,
+  EditingSteps,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { NavigateTabsTrigger } from "@/components/ui/tabs";
+
+function getNextLabel(name: EditingSteps) {
+  switch (name) {
+    case "summary":
+      return "ファイル";
+    case "files":
+      return "ドキュメント";
+    case "document":
+      return "プレビュー";
+    default:
+      return "";
+  }
+}
+
+function Alert({
+  onRedirect,
+  name,
+  setOpenAlert,
+  open,
+}: {
+  name: EditingSteps;
+  setOpenAlert: (value: boolean) => void;
+  open: boolean;
+  onRedirect: () => void;
+}) {
+  return (
+    <AlertDialog onOpenChange={setOpenAlert} open={open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-base">
+            編集中の内容があります。{getNextLabel(name)}に移動しますか？
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            このまま移動すると、保存していない内容が失われます。
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>キャンセル</AlertDialogCancel>
+          <Button
+            className="font-bold"
+            onClick={onRedirect}
+            variant="destructive"
+          >
+            移動する
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
 function Step({
   name,
   i,
   isPending,
   status,
-}: (typeof editPaths)[number] & {
+  isEditing,
+}: {
+  name: EditingSteps;
   i: number;
   isPending: boolean;
   status: EditStatusValue;
+  isEditing: boolean;
 }) {
+  const [openAlert, setOpenAlert] = React.useState(false);
   const { onRedirect, active } = useRedirectSection(name);
 
   return (
     <>
+      <Alert
+        name={name}
+        onRedirect={() => onRedirect(name)}
+        open={openAlert}
+        setOpenAlert={setOpenAlert}
+      />
       <NavigateTabsTrigger
         aria-busy={isPending}
         aria-controls={`tabs-${name}`}
@@ -40,14 +114,20 @@ function Step({
         className="group relative h-auto whitespace-normal p-0 font-medium text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
-        onClick={() => onRedirect(name)}
+        onClick={() => {
+          if (isEditing) {
+            setOpenAlert(true);
+          } else {
+            onRedirect(name);
+          }
+        }}
         role="tab"
         value={name}
       >
         <span className="flex items-center p-2 text-sm font-medium sm:px-4">
           {status === "CREATED" ? (
             <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-green-500 text-white sm:size-9 dark:bg-green-600 ">
-              <Check className="hidden sm:block" />
+              <Check className="hidden  sm:block" />
               <span className="sm:hidden">
                 {name.slice(0, 1).toUpperCase()}
               </span>
@@ -102,6 +182,7 @@ function Step({
 export function EditSteps() {
   const values = useAtomValue(editStatusAtom);
   const isPending = useAtomValue(isPendingEditAtom);
+  const isEditing = useAtomValue(isEditingAtom);
 
   return (
     <div className="h-full flex-1">
@@ -112,6 +193,7 @@ export function EditSteps() {
               <Step
                 key={name}
                 i={i}
+                isEditing={isEditing}
                 isPending={isPending}
                 name={name}
                 status={values[name].status}
