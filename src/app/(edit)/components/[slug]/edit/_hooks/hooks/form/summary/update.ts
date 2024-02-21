@@ -33,59 +33,67 @@ export function useComponentUpdater({
     data: EditSummaryInput,
     updateInput?: ComponentUpdateInput
   ) {
-    setEditStatus((prev) => ({
-      ...prev,
-      summary: { ...prev.summary, status: "LOADING" },
-    }));
+    try {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "LOADING" },
+      }));
 
-    let previewUrl: string;
+      let previewUrl: string;
 
-    if (data.previewUrl.type !== "default") {
-      const id = data.previewUrl.value
-        ? await replacementImage(data.previewUrl.value, slug)
-        : await uploadImage(data.previewUrl.value);
-      previewUrl = id;
-    } else {
-      previewUrl = data.previewUrl.value;
+      if (data.previewUrl.type !== "default") {
+        const id = data.previewUrl.value
+          ? await replacementImage(data.previewUrl.value, slug)
+          : await uploadImage(data.previewUrl.value);
+        previewUrl = id;
+      } else {
+        previewUrl = data.previewUrl.value;
+      }
+
+      const input: Omit<
+        Required<ComponentUpdateInput>,
+        "draft" | "document"
+      > = {
+        name: data.name,
+        description: data.description,
+        categoryName: data.categoryName,
+        previewUrl,
+      };
+
+      const changedDataValues = Object.fromEntries(
+        Object.entries(input).filter(([key, value]) => {
+          if (key !== "previewUrl")
+            return value !== defaultValues[key as keyof EditSummaryInput];
+
+          return value !== defaultValues.previewUrl.value;
+        })
+      );
+
+      await mutateAsync({
+        ...changedDataValues,
+        ...updateInput,
+      });
+
+      const newPreviewUrl = {
+        type: "default",
+        value: input.previewUrl,
+      } as const;
+
+      reset({
+        ...data,
+        previewUrl: newPreviewUrl,
+      });
+
+      setAtomValues((prev) => ({
+        ...prev,
+        summary: { ...data, previewUrl: newPreviewUrl },
+      }));
+    } finally {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "EDITING" },
+      }));
     }
-
-    const input: Omit<Required<ComponentUpdateInput>, "draft" | "document"> = {
-      name: data.name,
-      description: data.description,
-      categoryName: data.categoryName,
-      previewUrl,
-    };
-
-    const changedDataValues = Object.fromEntries(
-      Object.entries(input).filter(([key, value]) => {
-        if (key !== "previewUrl")
-          return value !== defaultValues[key as keyof EditSummaryInput];
-
-        return value !== defaultValues.previewUrl.value;
-      })
-    );
-
-    await mutateAsync({
-      ...changedDataValues,
-      ...updateInput,
-    });
-
-    setEditStatus((prev) => ({
-      ...prev,
-      summary: { ...prev.summary, status: "EDITING" },
-    }));
-
-    const newPreviewUrl = { type: "default", value: input.previewUrl } as const;
-
-    reset({
-      ...data,
-      previewUrl: newPreviewUrl,
-    });
-
-    setAtomValues((prev) => ({
-      ...prev,
-      summary: { ...data, previewUrl: newPreviewUrl },
-    }));
   }
 
   return { onSubmit, isMutating, isUploading };

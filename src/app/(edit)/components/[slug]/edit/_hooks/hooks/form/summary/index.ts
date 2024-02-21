@@ -2,6 +2,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
   editValueStatesAtom,
   isEditingAtom,
@@ -64,6 +65,16 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
 
   async function handleDuringSave(input?: ComponentUpdateInput) {
     const data = getValues();
+    const hasError = Object.keys(errors).length > 0;
+
+    if (hasError) {
+      const errorsFields = Object.keys(errors);
+      toast.error(
+        `変更するには、${errorsFields.join(", ")} を入力してください。`
+      );
+
+      return;
+    }
     await onSubmit(data, input);
   }
 
