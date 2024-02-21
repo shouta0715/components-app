@@ -94,5 +94,6 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     isPending,
     handleDuringSave,
     defaultValuesForm,
+    reset,
   };
 }

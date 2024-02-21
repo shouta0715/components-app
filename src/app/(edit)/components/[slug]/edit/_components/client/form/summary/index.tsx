@@ -57,6 +57,7 @@ export function EditSummaryForm({
     onSubmitHandler,
     setValue,
     handleDuringSave,
+    reset,
   } = useSummaryForm(defaultValues);
 
   const defaultPreviewUrl =
@@ -70,6 +71,7 @@ export function EditSummaryForm({
         draft={draft}
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
+        onReset={() => reset()}
       />
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
         {/* Category Input Form Server Components */}
