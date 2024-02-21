@@ -8,6 +8,7 @@ import {
   useMutateImage,
   useMutateSummary,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/summary";
+import { replacementImage } from "@/lib/aws/handlers";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { Params } from "@/types/next";
@@ -40,7 +41,9 @@ export function useComponentUpdater({
     let previewUrl: string;
 
     if (data.previewUrl.type !== "default") {
-      const id = await uploadImage(data.previewUrl.value);
+      const id = data.previewUrl.value
+        ? await replacementImage(data.previewUrl.value, slug)
+        : await uploadImage(data.previewUrl.value);
       previewUrl = id;
     } else {
       previewUrl = data.previewUrl.value;

@@ -135,3 +135,22 @@ export const getComponentCreatorId = async (id: string): Promise<string> => {
 
   return component.creatorId;
 };
+
+export const getComponentPreview = async (
+  id: string
+): Promise<{
+  previewUrl: string;
+  creatorId: string;
+}> => {
+  const component = await prisma.component.findUnique({
+    where: { id },
+    select: { previewUrl: true, creatorId: true },
+  });
+
+  if (!component) throw new NotFoundError();
+
+  return {
+    previewUrl: component.previewUrl,
+    creatorId: component.creatorId,
+  };
+};
