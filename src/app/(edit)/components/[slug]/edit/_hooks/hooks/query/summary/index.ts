@@ -19,13 +19,7 @@ async function updateSummary({
     body: JSON.stringify(input),
   });
 
-  if (!res.ok) {
-    throwHttpErrorFromStatus(res.status);
-  }
-
-  const data = (await res.json()) as { success: boolean };
-
-  return data;
+  if (!res.ok) throwHttpErrorFromStatus(res.status);
 }
 
 export function useMutateSummary(slug: string) {

@@ -36,3 +36,17 @@ export async function uploadImage(file: File | Blob) {
 
   return `${data.id}.${ex}`;
 }
+
+export async function deleteImage(id: string) {
+  const res = await fetch(`/api/images/components/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) throwHttpErrorFromStatus(res.status);
+}
+
+export async function replacementImage(file: File | Blob, id: string) {
+  await deleteImage(id);
+
+  return uploadImage(file);
+}

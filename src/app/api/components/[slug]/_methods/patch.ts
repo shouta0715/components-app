@@ -23,7 +23,7 @@ const handler = async (req: Request, { params }: Params) => {
 
     await updateComponent(params.slug, body);
 
-    return Response.json({ success: true }, { status: 200 });
+    return new Response(null, { status: 204 });
   } catch (error) {
     return handleApiError({ error });
   }
