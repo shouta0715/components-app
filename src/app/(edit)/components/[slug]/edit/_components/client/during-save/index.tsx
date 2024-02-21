@@ -1,3 +1,5 @@
+"use client";
+
 import { Check } from "lucide-react";
 import React from "react";
 import { TogglePublish } from "@/app/(edit)/components/[slug]/edit/_components/client/form/draft";
@@ -6,7 +8,7 @@ import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_components/c
 import { Button } from "@/components/ui/button";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 
-export function DuringComponentSave({
+function DuringComponentSave({
   draft,
   isDirty,
   handleDuringSave,
@@ -56,3 +58,5 @@ export function DuringComponentSave({
     </StickyTrigger>
   );
 }
+
+export default DuringComponentSave;
