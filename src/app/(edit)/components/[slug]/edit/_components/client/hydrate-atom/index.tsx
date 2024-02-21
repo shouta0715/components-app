@@ -1,8 +1,7 @@
 "use client";
 
-import { useSetAtom } from "jotai";
 import React from "react";
-import { onRedirectEditAtom } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+
 import {
   useHydrateSection,
   useInitializeSection,
@@ -19,13 +18,11 @@ function EditSectionTab({
   children: React.ReactNode;
   section: EditingSteps;
 }) {
-  const onRedirect = useSetAtom(onRedirectEditAtom);
   useInitializeSection();
 
   return (
     <NavigateTabs<EditingSteps>
       defaultValue="summary"
-      onValueChange={onRedirect}
       params="section"
       redirectType="manual"
       value={section}

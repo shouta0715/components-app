@@ -1,11 +1,13 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { FileRejection } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import {
   editStatusAtom,
+  editValueStatesAtom,
+  isEditingAtom,
   isPendingEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
 import {
@@ -22,6 +24,8 @@ import { Params } from "@/types/next";
 export function useSummaryForm(defaultValues: EditSummaryInput) {
   const { slug } = useParams<Params["params"]>();
   const setEditStatus = useSetAtom(editStatusAtom);
+  const [{ summary }, setAtomValues] = useAtom(editValueStatesAtom);
+  const setIsEditing = useSetAtom(isEditingAtom);
   const isPendingAtom = useAtomValue(isPendingEditAtom);
 
   const {
@@ -36,10 +40,16 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     watch,
     reset,
   } = useForm<EditSummaryInput>({
-    defaultValues,
+    defaultValues: summary || defaultValues,
     mode: "onChange",
     resolver: valibotResolver(editSummarySchema),
   });
+
+  useEffect(() => {
+    setIsEditing(isDirty);
+
+    return () => setIsEditing(false);
+  }, [isDirty, setIsEditing]);
 
   const { mutateAsync, isPending: isMutating } = useMutateSummary(slug);
   const { mutateAsync: uploadImage, isPending: isUploading } = useMutateImage();
@@ -92,7 +102,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
       previewUrl = data.previewUrl.value;
     }
 
-    const input: ComponentUpdateInput = {
+    const input: Omit<Required<ComponentUpdateInput>, "draft" | "document"> = {
       name: data.name,
       description: data.description,
       categoryName: data.categoryName,
@@ -108,10 +118,17 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
       summary: { ...prev.summary, status: "EDITING" },
     }));
 
+    const newPreviewUrl = { type: "default", value: input.previewUrl } as const;
+
     reset({
       ...data,
-      previewUrl: { type: "default", value: input.previewUrl },
+      previewUrl: newPreviewUrl,
     });
+
+    setAtomValues((prev) => ({
+      ...prev,
+      summary: { ...data, previewUrl: newPreviewUrl },
+    }));
   });
 
   const isPending = isMutating || isLoading || isPendingAtom || isUploading;

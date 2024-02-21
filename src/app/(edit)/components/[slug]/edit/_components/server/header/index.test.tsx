@@ -4,6 +4,9 @@ import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import * as Stories from "./index.stories";
 import * as History from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section/index";
+import * as media from "@/components/elements/category/form/useCategoryForm";
+
+vi.spyOn(media, "useMediaQuery").mockImplementation(() => true);
 
 const spyHistory = vi
   .spyOn(History, "useRedirectSection")
@@ -42,11 +45,11 @@ describe("@app/components/[slug]/edit//server/header", async () => {
 
   describe("Default", async () => {
     test("default selected tab should be summary", async () => {
-      const { getByRole } = render(<Default />);
+      const { findByRole } = render(<Default />);
 
-      const summary = getByRole("tab", { name: "summary" });
-      const files = getByRole("tab", { name: "files" });
-      const document = getByRole("tab", { name: "document" });
+      const summary = await findByRole("tab", { name: "summary" });
+      const files = await findByRole("tab", { name: "files" });
+      const document = await findByRole("tab", { name: "document" });
 
       expect(summary).toHaveAttribute("aria-selected", "true");
       expect(files).toHaveAttribute("aria-selected", "false");
@@ -70,11 +73,11 @@ describe("@app/components/[slug]/edit//server/header", async () => {
 
   describe("Empty", async () => {
     test("default selected tab should be summary", async () => {
-      const { getByRole } = render(<Empty />);
+      const { findByRole } = render(<Empty />);
 
-      const summary = getByRole("tab", { name: "summary" });
-      const files = getByRole("tab", { name: "files" });
-      const document = getByRole("tab", { name: "document" });
+      const summary = await findByRole("tab", { name: "summary" });
+      const files = await findByRole("tab", { name: "files" });
+      const document = await findByRole("tab", { name: "document" });
 
       expect(summary).toHaveAttribute("aria-selected", "true");
       expect(files).toHaveAttribute("aria-selected", "false");
@@ -98,11 +101,11 @@ describe("@app/components/[slug]/edit//server/header", async () => {
 
   describe("Loading", async () => {
     test("if loading, all tabs should be disabled", async () => {
-      const { getByRole } = render(<Loading />);
+      const { findByRole } = render(<Loading />);
 
-      const summary = getByRole("tab", { name: "summary" });
-      const files = getByRole("tab", { name: "files" });
-      const document = getByRole("tab", { name: "document" });
+      const summary = await findByRole("tab", { name: "summary" });
+      const files = await findByRole("tab", { name: "files" });
+      const document = await findByRole("tab", { name: "document" });
 
       expect(summary).toBeDisabled();
       expect(files).toBeDisabled();
