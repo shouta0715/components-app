@@ -9,12 +9,11 @@ import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_components/c
 import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const DynamicSteps = dynamic(
+const DynamicComponentBreadcrumbs = dynamic(
   () =>
     import(
       "@/app/(edit)/components/[slug]/edit/_components/client/breadcrumbs"
     ),
-
   {
     ssr: false,
     loading: () => <Skeleton className="my-2 h-10 flex-1" />,
@@ -37,7 +36,7 @@ export function EditHeader() {
         </div>
 
         <Suspense fallback={<Skeleton className="my-2 h-10 flex-1" />}>
-          <DynamicSteps />
+          <DynamicComponentBreadcrumbs />
         </Suspense>
 
         <div className="flex h-full">
