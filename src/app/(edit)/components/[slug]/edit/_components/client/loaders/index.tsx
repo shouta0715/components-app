@@ -30,7 +30,7 @@ export function PreviewDropZoneLoader({ text = "Loading Preview Uploader" }) {
 
         {/* Input Zone */}
         <div className="mt-4 flex text-sm leading-6 text-muted-foreground">
-          <span className="flex cursor-pointer items-center">
+          <span className="flex items-center">
             <span>{text}</span>
           </span>
         </div>

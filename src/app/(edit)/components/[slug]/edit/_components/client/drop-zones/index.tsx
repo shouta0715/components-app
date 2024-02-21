@@ -251,8 +251,7 @@ export default function PreviewDropZone({
 
       <div
         className={cn(
-          "flex justify-center rounded-lg border border-dashed border-border  pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-96 duration-150 cursor-pointe",
-
+          "flex justify-center rounded-lg border border-dashed border-border  pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-96 duration-150 cursor-pointer",
           isDragActive && "border-primary border-2",
           isEmptyError &&
             "border-destructive border-2 hover:border-destructive",
