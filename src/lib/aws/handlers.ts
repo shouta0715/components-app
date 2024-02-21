@@ -42,7 +42,6 @@ export async function deleteImage(id: string) {
     method: "DELETE",
   });
 
-  console.log(res);
   if (!res.ok) throwHttpErrorFromStatus(res.status);
 }
 
