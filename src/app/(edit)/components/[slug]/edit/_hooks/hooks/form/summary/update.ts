@@ -65,12 +65,10 @@ export function useComponentUpdater({
       })
     );
 
-    const { success } = await mutateAsync({
+    await mutateAsync({
       ...changedDataValues,
       ...updateInput,
     });
-
-    if (!success) return;
 
     setEditStatus((prev) => ({
       ...prev,
