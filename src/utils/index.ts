@@ -31,10 +31,10 @@ export const getContentType = (type: Extension) => {
   return "text/typescript";
 };
 
-export const getImageUrl = (id: string, extension = "png") => {
-  const endpoint = process.env.AWS_S3_ENDPOINT;
+export const getImageUrl = (id: string) => {
+  const endpoint = process.env.NEXT_PUBLIC_AWS_S3_ENDPOINT;
 
-  return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}.${extension}`;
+  return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}`;
 };
 
 export const getDisplayName = (name?: string | null, slice?: number) => {

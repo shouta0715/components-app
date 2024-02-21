@@ -17,4 +17,8 @@ describe("POST Component RDB test", () => {
     expect(component.creatorId).toBe(user.id);
     expect(component.document).toBe("");
   });
+
+  describe("updateComponent", () => {
+    test("update all fields", async () => {});
+  });
 });

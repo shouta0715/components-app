@@ -109,7 +109,6 @@ model Component {
   // MANY FILEDS
   files         File[]
   componentSets ComponentSet[]
-  previewImages ComponentPreviewImage[]
   reviews       ComponentReview[]
   likes         ComponentLike[]
 
@@ -168,18 +167,6 @@ enum Responsive {
   desktop
 }
 
-model ComponentPreviewImage {
-  id         Int        @id @default(autoincrement())
-  objectId   String
-  responsive Responsive
-
-  // RELATIONSHIPS
-  componentId String
-  Component   Component @relation(fields: [componentId], references: [id])
-
-  @@index([componentId])
-  @@map("componentPreviewImages")
-}
 
 model ComponentReview {
   id        String   @id @default(cuid())

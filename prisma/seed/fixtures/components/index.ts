@@ -2,27 +2,32 @@
 
 import { Category, Component, Prisma, User } from "@prisma/client";
 import { getMarkdownText } from "../lib/loadMarkdown";
+import { uploadImage } from "../lib/uploadimage";
 import { randomNum, randomString } from "@/utils/random";
 
-function generateSeedComponents(
+async function generateSeedComponents(
   categories: Category[],
   users: User[]
-): Prisma.ComponentCreateManyInput[] {
-  const created = categories.map((category) => {
-    return Array.from({ length: randomNum(1, 50) }).map((_, i) => {
-      const data: Prisma.ComponentCreateManyInput = {
-        name: `${category.name} Component ${i}`,
-        categoryName: category.name,
-        description: randomString(),
-        draft: i % 10 === 0,
-        creatorId: users[randomNum(0, users.length - 1)].id,
-        document: getMarkdownText(),
-        previewUrl: randomString(),
-      };
+): Promise<Prisma.ComponentCreateManyInput[]> {
+  const created = await Promise.all(
+    categories.map(async (category) => {
+      const image = await uploadImage(category.name);
 
-      return data;
-    });
-  });
+      return Array.from({ length: randomNum(1, 25) }).map((_, i) => {
+        const data: Prisma.ComponentCreateManyInput = {
+          name: `${category.name} Component ${i}`,
+          categoryName: category.name,
+          description: randomString(),
+          draft: i % 10 === 0,
+          creatorId: users[randomNum(0, users.length - 1)].id,
+          document: getMarkdownText(),
+          previewUrl: `${image.id}.png`,
+        };
+
+        return data;
+      });
+    })
+  );
 
   return created.flat();
 }
@@ -40,7 +45,7 @@ export async function seedComponents(
     return tx.component.findMany();
   }
 
-  const values = generateSeedComponents(categories, users);
+  const values = await generateSeedComponents(categories, users);
 
   await tx.component.createMany({ data: values });
 

@@ -1,7 +1,6 @@
 import { File } from "@prisma/client";
 
-import { getSignedFileUrl } from "@/lib/client/s3";
-import { OBJECT_PUBLIC_BASE_URL, PUBLIC_BUCKET_NAME } from "@/lib/constant";
+import { OBJECT_PUBLIC_BASE_URL } from "@/lib/constant";
 import { validate } from "@/lib/validation";
 
 import { Extension, extensions } from "@/types/file";
@@ -10,35 +9,6 @@ export type FileObject = {
   file: string;
   extension: Extension;
   componentId: string;
-};
-
-export const getSignedFile = async (
-  id: string,
-  extension: Extension,
-  componentId: string
-): Promise<FileObject> => {
-  const filename = `${id}.${extension}`;
-  const url = await getSignedFileUrl(filename, PUBLIC_BUCKET_NAME);
-
-  const response = await fetch(url, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      tags: ["files", `files/${id}`],
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to get file");
-  }
-
-  const file = await response.text();
-
-  return {
-    file,
-    extension,
-    componentId,
-  };
 };
 
 export const getNotSignedFile = async (

@@ -1,73 +1,120 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useCallback } from "react";
-import { FileRejection } from "react-dropzone";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import {
+  editValueStatesAtom,
+  isEditingAtom,
+  isPendingEditAtom,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+
+import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary/image";
+import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary/update";
+import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
 import {
   EditSummaryInput,
   editSummarySchema,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
+} from "@/lib/schema/client/edit/summary";
+import { ComponentUpdateInput } from "@/lib/schema/server/component";
 
 export function useSummaryForm(defaultValues: EditSummaryInput) {
+  const { summary } = useAtomValue(editValueStatesAtom);
+  const { onNextSection } = useRedirectSectionHandler();
+
+  const setIsEditing = useSetAtom(isEditingAtom);
+  const isPendingAtom = useAtomValue(isPendingEditAtom);
+
   const {
     register,
     control,
     setValue,
-    formState: { errors, isDirty, isLoading },
+    formState: { errors, isDirty, isLoading, defaultValues: defaultValuesForm },
     setError,
     clearErrors,
     trigger,
     handleSubmit,
     watch,
+    reset,
+    getValues,
   } = useForm<EditSummaryInput>({
-    defaultValues,
+    defaultValues: summary || defaultValues,
     mode: "onChange",
     resolver: valibotResolver(editSummarySchema),
   });
 
-  const onDropAccepted = useCallback(
-    (file: File) => {
-      if (errors.previewUrl?.value) clearErrors("previewUrl.value");
+  useEffect(() => {
+    setIsEditing(isDirty);
 
-      setValue(
-        "previewUrl",
-        { type: "input", value: file },
-        { shouldDirty: true }
+    return () => setIsEditing(false);
+  }, [isDirty, setIsEditing]);
+
+  const defaultPreviewUrl =
+    defaultValuesForm?.previewUrl?.type === "default"
+      ? defaultValuesForm?.previewUrl.value
+      : "";
+
+  const { onDropAccepted, onDropRejected, previews, setPreviews } =
+    useUpdatePreview({
+      setError,
+      clearErrors,
+      setValue,
+      errors,
+      defaultValue: defaultPreviewUrl,
+    });
+
+  const { onSubmit, isMutating, isUploading } = useComponentUpdater({
+    defaultValues,
+    reset,
+  });
+
+  const onSubmitHandler = handleSubmit(async (data) => {
+    await onSubmit(data);
+    onNextSection("summary");
+  });
+
+  async function handleDuringSave(input?: ComponentUpdateInput) {
+    const data = getValues();
+    const hasError = Object.keys(errors).length > 0;
+
+    if (hasError) {
+      const errorsFields = Object.keys(errors);
+      toast.error(
+        `変更するには、${errorsFields.join(", ")} を入力してください。`
       );
-    },
-    [clearErrors, errors.previewUrl?.value, setValue]
-  );
 
-  const onDropRejected = useCallback(
-    (files: FileRejection[]) => {
-      let message = "";
+      return;
+    }
+    await onSubmit(data, input);
+  }
 
-      if (files.length > 1) {
-        message = "アップロードできる写真は1枚だけです";
-      } else {
-        const extensions = files[0].file.name.split(".")[1].toUpperCase();
+  function onReset() {
+    reset();
+    setPreviews({
+      crop: undefined,
+      preview: defaultPreviewUrl,
+    });
+  }
 
-        message = `${extensions}形式はアップロードできません。PNG, JPG, GIF, WEBPのみアップロードできます`;
-      }
-
-      setError("previewUrl.value", {
-        type: "manual",
-        message,
-      });
-    },
-    [setError]
-  );
+  const isPending = isMutating || isLoading || isPendingAtom || isUploading;
 
   return {
-    register,
     control,
     errors,
+    isDirty,
+    isPending,
+    defaultValuesForm,
+    defaultPreviewUrl,
+    previews,
     onDropAccepted,
     onDropRejected,
-    handleSubmit,
+    onSubmitHandler,
     trigger,
     setValue,
     watch,
-    isDirty,
-    isLoading,
+    register,
+    handleDuringSave,
+    onReset,
+    setPreviews,
   };
 }

@@ -12,7 +12,7 @@ import { CategoriesByHome } from "@/types/prisma";
 import { getImageUrl } from "@/utils";
 
 export async function Category({ category }: { category: CategoriesByHome }) {
-  const { previewImages } = category.components;
+  const { previewUrl } = category.components;
 
   return (
     <BentoCard
@@ -31,7 +31,7 @@ export async function Category({ category }: { category: CategoriesByHome }) {
               fill
               priority
               sizes="100%"
-              src={`${getImageUrl(previewImages[0].objectId)}`}
+              src={`${getImageUrl(previewUrl)}`}
             />
           </figure>
         </div>

@@ -8,9 +8,9 @@ import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_components/serv
 import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_components/server/summary";
 import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_hooks/cache";
 
-import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
 import { TabsContent, TabsList } from "@/components/ui/tabs";
 import { assertMine } from "@/lib/auth/handlers";
+import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { Params } from "@/types/next";
 
 export default async function Page({ params }: Params) {
@@ -39,7 +39,10 @@ export default async function Page({ params }: Params) {
 
           <div className="mt-8">
             <TabsContent value="summary">
-              <EditSummary defaultValues={summaryDefaultValues} />
+              <EditSummary
+                defaultValues={summaryDefaultValues}
+                draft={data.draft}
+              />
             </TabsContent>
             <TabsContent value="files">
               <EditFile />

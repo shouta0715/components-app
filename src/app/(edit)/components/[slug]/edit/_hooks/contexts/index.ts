@@ -3,6 +3,9 @@ import {
   EditStatus,
   EditingSteps,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { EditDocumentInput } from "@/lib/schema/client/edit/document";
+import { EditFilesInput } from "@/lib/schema/client/edit/files";
+import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 function getObjectKeys<T extends object>(obj: T): Array<keyof T> {
   return Object.keys(obj) as Array<keyof T>;
@@ -53,6 +56,7 @@ export const editPaths: Array<{
 ];
 
 export const editStatusAtom = atom<EditStatus>(initialEditStatus);
+
 export const isPendingEditAtom = atom((get) => {
   const prev = get(editStatusAtom);
 
@@ -60,6 +64,16 @@ export const isPendingEditAtom = atom((get) => {
     prev.document.status === "LOADING" ||
     prev.files.status === "LOADING" ||
     prev.summary.status === "LOADING";
+
+  return is;
+});
+
+export const canPublishAtom = atom((get) => {
+  const prev = get(editStatusAtom);
+  const is =
+    prev.document.dataStatus === "CREATED" &&
+    prev.files.dataStatus === "CREATED" &&
+    prev.summary.dataStatus === "CREATED";
 
   return is;
 });
@@ -91,3 +105,25 @@ export const onRedirectEditAtom = atom(
     });
   }
 );
+
+/** *********************
+  
+  Edit States
+ 
+********************** */
+
+type EditValueStates = {
+  summary: EditSummaryInput | null;
+
+  files: EditFilesInput | null;
+
+  document: EditDocumentInput | null;
+};
+
+export const editValueStatesAtom = atom<EditValueStates>({
+  summary: null,
+  files: null,
+  document: null,
+});
+
+export const isEditingAtom = atom<boolean>(false);

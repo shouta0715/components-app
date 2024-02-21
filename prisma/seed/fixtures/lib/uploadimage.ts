@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
-import { getSignedPostUrl } from "@/lib/client/s3";
+import { getSignedPostUrl } from "./s3";
 
 function loadFiles(name: string = "index"): Buffer {
   const baseFolder = `${process.cwd()}/prisma/seed/fixtures/assets/images`;

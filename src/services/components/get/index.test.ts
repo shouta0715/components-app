@@ -10,7 +10,6 @@ import {
 import {
   defineCategoryFactory,
   defineComponentFactory,
-  defineComponentPreviewImageFactory,
   defineFileFactory,
   defineUserFactory,
 } from "@/tests/fabbrica";
@@ -66,22 +65,10 @@ describe("GET Component RDB Test", async () => {
     });
 
     const wont = await component.create();
-    const previewImages = defineComponentPreviewImageFactory({
-      defaultData: async () => ({
-        Component: {
-          connect: {
-            id: wont.id,
-          },
-        },
-      }),
-    });
-
-    await previewImages.createList(3);
 
     const should = await getCompWithImages(wont.id);
 
     expect(should).toStrictEqual(should);
-    expect(should.previewImages).toHaveLength(3);
   });
 
   test("if getComponentWithImages is null throw on NotFoundError", async () => {

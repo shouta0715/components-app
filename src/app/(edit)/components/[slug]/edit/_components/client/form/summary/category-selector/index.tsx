@@ -3,7 +3,6 @@
 import { ChevronsUpDown } from "lucide-react";
 import React from "react";
 import { Control, useWatch } from "react-hook-form";
-import { EditSummaryInput } from "@/app/(edit)/components/[slug]/edit/_hooks/schema/summary";
 import { SelectCategories } from "@/components/elements/category/select";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 export default function CategoryForm({
   setCategory,

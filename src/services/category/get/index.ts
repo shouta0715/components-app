@@ -68,7 +68,7 @@ export const getCategoriesByHome = async (
         take: 1,
         select: {
           id: true,
-          previewImages: true,
+          previewUrl: true,
         },
         orderBy: {
           likes: {

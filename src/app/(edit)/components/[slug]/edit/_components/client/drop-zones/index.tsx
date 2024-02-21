@@ -7,6 +7,7 @@ import { AlertCircle, ImageIcon } from "lucide-react";
 import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
 import { Area } from "react-easy-crop";
+import { PreviewDropZoneLoader } from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
 import {
   DropzoneProps,
   usePreviewDropZone,
@@ -29,6 +30,7 @@ type DropInputZoneProps = {
   isDragReject: boolean;
   isDragActive: boolean;
   isEmptyError: boolean;
+  isLoading: boolean;
   getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
   children?: React.ReactNode;
 };
@@ -37,6 +39,7 @@ function DropInputZone({
   isDragReject,
   isDragActive,
   isEmptyError,
+  isLoading,
   getInputProps,
   children,
 }: DropInputZoneProps) {
@@ -46,45 +49,60 @@ function DropInputZone({
       {children}
 
       {/* Input Zone */}
-      <div className="mt-4 flex text-sm leading-6 text-muted-foreground">
-        <Label
-          className="flex cursor-pointer items-center font-semibold text-primary hover:underline hover:underline-offset-4"
-          htmlFor="preview"
-        >
-          <span
-            className={clsx(
-              (isDragReject || isEmptyError) &&
-                "font-normal text-muted-foreground transition-colors duration-150"
+
+      {!isLoading && (
+        <div className="mt-4 flex text-sm leading-6 text-muted-foreground">
+          <Label
+            aria-label="Upload a file"
+            className={cn(
+              "flex cursor-pointer items-center font-semibold text-primary hover:underline hover:underline-offset-4"
             )}
+            htmlFor="preview"
           >
-            Upload a file
-          </span>
-          <input
-            {...getInputProps({
-              id: "preview",
-              type: "file",
-              name: "preview",
-              accept: accepts.preview,
-              "aria-label": "Upload a file",
-            })}
-          />
-        </Label>
-        <p className="pl-1">or drag and drop</p>
-      </div>
-      <p
-        className={cn(
-          "text-xs leading-5 text-muted-foreground",
-          isDragActive && "text-primary",
-          isEmptyError && "text-destructive",
-          isDragReject && "text-destructive"
-        )}
-      >
-        {isDragReject ? (
-          <span className="font-medium">File type not accepted</span>
-        ) : (
-          <span>PNG, JPG, GIF up to 10MB</span>
-        )}
-      </p>
+            <span
+              className={clsx(
+                (isDragReject || isEmptyError) &&
+                  "font-normal text-muted-foreground transition-colors duration-150"
+              )}
+            >
+              Upload a file
+            </span>
+            <input
+              aria-disabled={isLoading}
+              disabled={isLoading}
+              {...getInputProps({
+                disabled: isLoading,
+                id: "preview",
+                type: "file",
+                name: "preview",
+                accept: accepts.preview,
+                "aria-label": "Upload a file",
+              })}
+            />
+          </Label>
+          <p className="pl-1">or drag and drop</p>
+        </div>
+      )}
+      {isLoading ? (
+        <p className="text-xs leading-5 text-muted-foreground">
+          Uploading Preview Image...
+        </p>
+      ) : (
+        <p
+          className={cn(
+            "text-xs leading-5 text-muted-foreground",
+            isDragActive && "text-primary",
+            isEmptyError && "text-destructive",
+            isDragReject && "text-destructive"
+          )}
+        >
+          {isDragReject ? (
+            <span className="font-medium">File type not accepted</span>
+          ) : (
+            <span>PNG, JPG, GIF up to 10MB</span>
+          )}
+        </p>
+      )}
     </div>
   );
 }
@@ -92,13 +110,23 @@ function DropInputZone({
 type PreviewDropZoneProps = {
   preview: string;
   defaultValue?: string;
+  isLoading: boolean;
 };
 
-function PreviewDropInputZone({ preview, defaultValue }: PreviewDropZoneProps) {
+function PreviewDropInputZone({
+  preview,
+  defaultValue,
+  isLoading,
+}: PreviewDropZoneProps) {
   const isDefault = preview === defaultValue;
 
   return (
-    <div className="relative h-full w-full max-w-96 items-end justify-end sm:w-2/3">
+    <div
+      className={clsx(
+        "relative h-full w-full max-w-96 items-end justify-end sm:w-2/3",
+        isLoading && "cursor-not-allowed opacity-50"
+      )}
+    >
       <div
         aria-hidden
         className="absolute z-10 h-full w-full [backgroundImage:linear-gradient(180deg,transparent_0_30%,hsl(var(--background))_85%_100%)]"
@@ -175,6 +203,9 @@ export default function PreviewDropZone({
   onDropRejected,
   defaultValue,
   isError,
+  isLoading,
+  previews,
+  setPreviews,
   ...option
 }: DropzoneProps & {
   isError: boolean;
@@ -182,7 +213,6 @@ export default function PreviewDropZone({
   const {
     isDragActive,
     isDragReject,
-    previews,
     open,
     cropArea,
     setOpen,
@@ -192,12 +222,19 @@ export default function PreviewDropZone({
     onCropCanceled,
   } = usePreviewDropZone({
     defaultValue,
+    isLoading,
     onDropAccepted,
     onDropRejected,
+    previews,
+    setPreviews,
     ...option,
   });
 
   const isEmptyError = isError && !isDragActive;
+
+  if (isLoading && !previews.preview) {
+    return <PreviewDropZoneLoader text="Uploading Preview Image" />;
+  }
 
   return (
     <>
@@ -218,21 +255,25 @@ export default function PreviewDropZone({
           isDragActive && "border-primary border-2",
           isEmptyError &&
             "border-destructive border-2 hover:border-destructive",
-          isDragReject && "border-destructive border-2 hover:border-destructive"
+          isDragReject &&
+            "border-destructive border-2 hover:border-destructive",
+          isLoading && "cursor-not-allowed"
         )}
         role="button"
         {...getRootProps({
           accept: accepts.preview,
+          disabled: isLoading,
         })}
       >
         {previews.preview ? (
           <>
             <PreviewDropInputZone
-              {...{ preview: previews.preview, defaultValue }}
+              {...{ preview: previews.preview, defaultValue, isLoading }}
             />
             <div className="absolute bottom-4 z-10 flex flex-col items-center justify-center">
               <DropInputZone
                 {...{
+                  isLoading,
                   isEmptyError,
                   isDragReject,
                   isDragActive,
@@ -244,6 +285,7 @@ export default function PreviewDropZone({
         ) : (
           <DropInputZone
             {...{
+              isLoading,
               isEmptyError,
               isDragReject,
               isDragActive,

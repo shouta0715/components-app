@@ -1,10 +1,4 @@
-import {
-  Category,
-  Component,
-  ComponentPreviewImage,
-  File,
-  User,
-} from "@prisma/client";
+import { Category, Component, File, User } from "@prisma/client";
 
 /*
 **************************
@@ -24,7 +18,7 @@ Categories
 export type CategoriesByHome = {
   components: {
     id: string;
-    previewImages: ComponentPreviewImage[];
+    previewUrl: string;
   };
   _count: {
     components: number;
@@ -42,10 +36,6 @@ export type SearchCategory = Pick<Category, "name"> & {
 Components
 ************************** 
 */
-
-export type CompWithImgs = Component & {
-  previewImages?: ComponentPreviewImage[];
-};
 
 export type CompWithFiles = Component & {
   category: WithCategory;

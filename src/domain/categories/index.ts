@@ -1,10 +1,10 @@
-import { Category, ComponentPreviewImage } from "@prisma/client";
+import { Category } from "@prisma/client";
 import { CategoriesByHome } from "@/types/prisma";
 
 type InputCategoriesByHome = {
   components: {
     id: string;
-    previewImages: ComponentPreviewImage[];
+    previewUrl: string;
   }[];
   _count: {
     components: number;

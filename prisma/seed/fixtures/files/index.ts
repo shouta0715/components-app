@@ -5,7 +5,7 @@ import path from "path";
 
 import { $Enums, Component, File, Prisma } from "@prisma/client";
 
-import { getSignedPostUrl } from "@/lib/client/s3";
+import { getSignedPostUrl } from "../lib/s3";
 
 import { randomNum } from "@/utils/random";
 
