@@ -1,19 +1,29 @@
 import { ArrowBigUpDash } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { EditSteps } from "@/app/(edit)/components/[slug]/edit/_components/client/breadcrumbs";
+
 import { ScrollButton } from "@/app/(edit)/components/[slug]/edit/_components/client/scroll-button";
 import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_components/client/sticky-trigger";
 
 import { Icon } from "@/components/icons/Icon";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const DynamicSteps = dynamic(
+  () =>
+    import(
+      "@/app/(edit)/components/[slug]/edit/_components/client/breadcrumbs"
+    ),
+
+  {
+    ssr: false,
+    loading: () => <Skeleton className="my-2 h-10 flex-1" />,
+  }
+);
 
 export function EditHeader() {
   return (
-    <StickyTrigger
-      className="sticky top-4 z-20 rounded-full border bg-background px-2.5 md:px-4"
-      margin={4}
-      stickyClassName="shadow-md"
-    >
+    <StickyTrigger className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border  bg-background px-2.5 sm:-mx-6 md:px-4 lg:-mx-8">
       <div className="flex h-full items-center justify-between">
         <div className="flex h-full">
           <Link
@@ -26,8 +36,8 @@ export function EditHeader() {
           <div aria-hidden className="mx-2 my-1 w-px bg-border" />
         </div>
 
-        <Suspense fallback={null}>
-          <EditSteps />
+        <Suspense fallback={<Skeleton className="my-2 h-10 flex-1" />}>
+          <DynamicSteps />
         </Suspense>
 
         <div className="flex h-full">

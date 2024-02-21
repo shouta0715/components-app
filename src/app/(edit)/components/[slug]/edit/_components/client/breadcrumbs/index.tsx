@@ -4,20 +4,30 @@
 
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { Check, Loader2 } from "lucide-react";
-import React from "react";
+import { CheckCircle2, CircleDashed, Loader2, Pencil } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import React, { Suspense } from "react";
 import {
   editPaths,
   editStatusAtom,
   isEditingAtom,
   isPendingEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
-import { useRedirectSection } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
 import {
+  useRedirectSection,
+  useRedirectSectionHandler,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
+import {
+  EditStatus,
   EditStatusValue,
   EditingSteps,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 
+import {
+  getNextEditingStep,
+  paramsToEditingStep,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
+import { useMediaQuery } from "@/components/elements/category/form/useCategoryForm";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -28,28 +38,22 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { NavigateTabsTrigger } from "@/components/ui/tabs";
-
-function getNextLabel(name: EditingSteps) {
-  switch (name) {
-    case "summary":
-      return "ファイル";
-    case "files":
-      return "ドキュメント";
-    case "document":
-      return "プレビュー";
-    default:
-      return "";
-  }
-}
 
 function Alert({
   onRedirect,
-  name,
   setOpenAlert,
   open,
 }: {
-  name: EditingSteps;
   setOpenAlert: (value: boolean) => void;
   open: boolean;
   onRedirect: () => void;
@@ -59,7 +63,7 @@ function Alert({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="text-base">
-            編集中の内容があります。{getNextLabel(name)}に移動しますか？
+            保存していない内容があります。本当に移動しますか？
           </AlertDialogTitle>
           <AlertDialogDescription>
             このまま移動すると、保存していない内容が失われます。
@@ -69,7 +73,10 @@ function Alert({
           <AlertDialogCancel>キャンセル</AlertDialogCancel>
           <Button
             className="font-bold"
-            onClick={onRedirect}
+            onClick={() => {
+              onRedirect();
+              setOpenAlert(false);
+            }}
             variant="destructive"
           >
             移動する
@@ -82,13 +89,11 @@ function Alert({
 
 function Step({
   name,
-  i,
   isPending,
   status,
   isEditing,
 }: {
   name: EditingSteps;
-  i: number;
   isPending: boolean;
   status: EditStatusValue;
   isEditing: boolean;
@@ -99,11 +104,11 @@ function Step({
   return (
     <>
       <Alert
-        name={name}
         onRedirect={() => onRedirect(name)}
         open={openAlert}
         setOpenAlert={setOpenAlert}
       />
+
       <NavigateTabsTrigger
         aria-busy={isPending}
         aria-controls={`tabs-${name}`}
@@ -111,7 +116,7 @@ function Step({
         aria-disabled={isPending}
         aria-label={name}
         aria-selected={active}
-        className="group relative h-auto whitespace-normal p-0 font-medium text-primary data-[state=active]:shadow-none"
+        className="group relative  min-w-0 flex-1 overflow-hidden rounded-none bg-background p-4 text-center text-sm font-medium capitalize text-muted-foreground focus:z-10 data-[state=active]:text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
         onClick={() => {
@@ -124,84 +129,165 @@ function Step({
         role="tab"
         value={name}
       >
-        <span className="flex items-center p-2 text-sm font-medium sm:px-4">
-          {status === "CREATED" ? (
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-green-500 text-white sm:size-9 dark:bg-green-600 ">
-              <Check className="hidden  sm:block" />
-              <span className="sm:hidden">
-                {name.slice(0, 1).toUpperCase()}
-              </span>
-            </span>
-          ) : status === "LOADING" ? (
-            <span className="flex size-7 shrink-0 animate-spin items-center justify-center rounded-full sm:size-9 ">
-              <Loader2 className="text-primary" />
-              <span className="sr-only">{name}を読み込み中</span>
-            </span>
-          ) : status === "EDITING" ? (
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-primary sm:size-9">
-              <span className="text-xs text-primary sm:text-sm">
-                {name.slice(0, 1).toUpperCase()}
-              </span>
-            </span>
-          ) : status === "EMPTY" ? (
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-border group-hover:border-primary sm:size-9">
-              <span className="text-xs text-muted-foreground group-hover:text-primary sm:text-sm">
-                {name.slice(0, 1).toUpperCase()}
-              </span>
-            </span>
-          ) : null}
-
-          <span
-            className={clsx(
-              "ml-1 text-sm font-medium capitalize sm:ml-2.5 md:ml-4",
-              active
-                ? "block text-primary"
-                : "hidden text-muted-foreground group-hover:text-primary sm:block",
-              isPending ? "text-muted-foreground" : ""
-            )}
-          >
-            {isPending && active ? "Saving..." : name}
-          </span>
-        </span>
-      </NavigateTabsTrigger>
-      {i !== editPaths.length - 1 && (
-        <svg
+        {status === "CREATED" ? (
+          <CheckCircle2 className="mr-2 size-6 fill-green-500 text-green-50" />
+        ) : status === "EDITING" ? (
+          <Pencil className="mr-2 size-6 text-primary" />
+        ) : status === "LOADING" ? (
+          <Loader2 className="mr-2 size-6 text-primary" />
+        ) : status === "EMPTY" ? (
+          <CircleDashed className="mr-2 size-6 text-muted-foreground" />
+        ) : null}
+        {name}
+        <span
           aria-hidden="true"
-          className="h-full w-2 shrink-0 text-gray-300 sm:w-6"
-          fill="currentColor"
-          preserveAspectRatio="none"
-          viewBox="0 0 24 44"
-        >
-          <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-        </svg>
-      )}
+          className={clsx(
+            active ? "bg-destructive" : "bg-transparent",
+            "absolute inset-x-0 bottom-0 h-0.5"
+          )}
+        />
+      </NavigateTabsTrigger>
     </>
   );
 }
 
-export function EditSteps() {
+function SelectStep({
+  name,
+  isPending,
+  status,
+  active,
+}: {
+  name: EditingSteps;
+  isPending: boolean;
+  status: EditStatusValue;
+  active: boolean;
+}) {
+  return (
+    <SelectItem className="w-full flex-1" disabled={isPending} value={name}>
+      <span className="flex items-center">
+        {status === "CREATED" ? (
+          <CheckCircle2 className="mr-2 size-6 fill-green-500 text-green-50" />
+        ) : status === "EDITING" ? (
+          <Pencil className="mr-2 size-6 text-primary" />
+        ) : status === "LOADING" ? (
+          <Loader2 className="mr-2 size-6 text-primary" />
+        ) : status === "EMPTY" ? (
+          <CircleDashed className="mr-2 size-6 text-muted-foreground" />
+        ) : null}
+        <span
+          className={clsx(
+            "capitalize",
+            active ? " font-semibold text-primary" : "text-muted-foreground"
+          )}
+        >
+          {name}
+        </span>
+      </span>
+    </SelectItem>
+  );
+}
+
+function SelectStepper({
+  isEditing,
+  isPending,
+  values,
+}: {
+  isEditing: boolean;
+  isPending: boolean;
+  values: EditStatus;
+}) {
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const { onRedirect } = useRedirectSectionHandler();
+  const searchParams = useSearchParams();
+  const currentSection = paramsToEditingStep(searchParams.get("section"));
+  const nextSection = getNextEditingStep(currentSection);
+
+  return (
+    <>
+      <Alert
+        onRedirect={() =>
+          onRedirect(nextSection === "preview" ? "document" : nextSection)
+        }
+        open={openAlert}
+        setOpenAlert={setOpenAlert}
+      />
+      <Select
+        defaultValue={currentSection}
+        onValueChange={(value: EditingSteps) => {
+          if (isEditing) {
+            setOpenAlert(true);
+          } else {
+            onRedirect(value);
+          }
+        }}
+      >
+        <SelectTrigger className="flex rounded-none border-none capitalize focus:ring-0 [&_span]:flex-1">
+          <SelectValue
+            className="flex flex-1 text-primary"
+            placeholder="選択してください"
+          />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>編集する内容を選択してください</SelectLabel>
+
+            {editPaths.map(({ name }) => {
+              return (
+                <SelectStep
+                  key={name}
+                  active={currentSection === name}
+                  isPending={isPending}
+                  name={name}
+                  status={values[name].status}
+                />
+              );
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </>
+  );
+}
+
+function EditSteps() {
   const values = useAtomValue(editStatusAtom);
   const isPending = useAtomValue(isPendingEditAtom);
   const isEditing = useAtomValue(isEditingAtom);
+  const isDesktop = useMediaQuery("(min-width: 640px)");
 
   return (
     <div className="h-full flex-1">
       <nav className="flex">
-        <div className="flex h-auto items-center bg-current p-0 text-transparent">
-          {editPaths.map(({ name }, i) => {
-            return (
-              <Step
-                key={name}
-                i={i}
+        {isDesktop ? (
+          <div className="hidden flex-1 grid-cols-3 divide-x divide-border sm:grid">
+            <Suspense>
+              {editPaths.map(({ name }) => {
+                return (
+                  <Step
+                    key={name}
+                    isEditing={isEditing}
+                    isPending={isPending}
+                    name={name}
+                    status={values[name].status}
+                  />
+                );
+              })}
+            </Suspense>
+          </div>
+        ) : (
+          <div className="flex-1 py-2 sm:hidden">
+            <Suspense>
+              <SelectStepper
                 isEditing={isEditing}
                 isPending={isPending}
-                name={name}
-                status={values[name].status}
+                values={values}
               />
-            );
-          })}
-        </div>
+            </Suspense>
+          </div>
+        )}
       </nav>
     </div>
   );
 }
+
+export default EditSteps;
