@@ -39,7 +39,10 @@ export default async function Page({ params }: Params) {
 
           <div className="mt-8">
             <TabsContent value="summary">
-              <EditSummary defaultValues={summaryDefaultValues} />
+              <EditSummary
+                defaultValues={summaryDefaultValues}
+                draft={data.draft}
+              />
             </TabsContent>
             <TabsContent value="files">
               <EditFile />

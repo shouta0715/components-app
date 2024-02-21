@@ -8,6 +8,7 @@ import {
   PreviewDropZoneLoader,
 } from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
 import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_components/client/next-section-button";
+import { DuringComponentSave } from "@/app/(edit)/components/[slug]/edit/_components/server/during-save";
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { InputLength } from "@/components/ui/input-length";
@@ -17,6 +18,7 @@ import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 type EditSummaryFormProps = {
   defaultValues: EditSummaryInput;
+  draft: boolean;
 };
 
 const DynamicCategoryForm = dynamic(
@@ -39,121 +41,134 @@ const DynamicPreviewDropZone = dynamic(
   }
 );
 
-export function EditSummaryForm({ defaultValues }: EditSummaryFormProps) {
+export function EditSummaryForm({
+  defaultValues,
+  draft,
+}: EditSummaryFormProps) {
   const {
     control,
     errors,
     isDirty,
     isPending,
+    defaultValuesForm,
     register,
     onDropAccepted,
     onDropRejected,
     onSubmitHandler,
     setValue,
+    handleDuringSave,
   } = useSummaryForm(defaultValues);
 
+  const defaultPreviewUrl =
+    defaultValuesForm?.previewUrl?.type === "default"
+      ? defaultValuesForm?.previewUrl.value
+      : "";
+
   return (
-    <form className="flex flex-col gap-8" onSubmit={onSubmitHandler}>
-      {/* Category Input Form Server Components */}
-      <Suspense fallback="loading">
-        <fieldset disabled={isPending}>
-          <Suspense fallback={<CategoryFormLoader />}>
-            <DynamicCategoryForm
+    <>
+      <DuringComponentSave
+        draft={draft}
+        handleDuringSave={handleDuringSave}
+        isDirty={isDirty}
+      />
+      <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
+        {/* Category Input Form Server Components */}
+        <Suspense fallback="loading">
+          <fieldset disabled={isPending}>
+            <Suspense fallback={<CategoryFormLoader />}>
+              <DynamicCategoryForm
+                control={control}
+                setCategory={(value) => {
+                  setValue("categoryName", value, { shouldDirty: true });
+                }}
+              />
+            </Suspense>
+            <ErrorMessage className="mt-1">
+              {errors.categoryName?.message}
+            </ErrorMessage>
+          </fieldset>
+        </Suspense>
+
+        {/* Name Input Form Client Components */}
+
+        <fieldset className="grid gap-3" disabled={isPending}>
+          <Label htmlFor="name" required>
+            Name
+            <InputLength
+              className="ml-2"
               control={control}
-              setCategory={(value) => {
-                setValue("categoryName", value, { shouldDirty: true });
-              }}
+              maxLength={50}
+              name="name"
+            />
+          </Label>
+
+          <div className="mb-px border-b py-3 focus-within:mb-0 focus-within:border-b-2 focus-within:border-b-primary">
+            <AutoSizeTextarea
+              className="flex h-7 w-full resize-none items-center bg-background text-xl placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              defaultValue={defaultValuesForm?.name}
+              placeholder="Untitled Component"
+              {...register("name")}
+              maxRows={4}
+              minRows={1}
+            />
+          </div>
+          {errors.name?.message && (
+            <ErrorMessage className="mt-1">{errors.name?.message}</ErrorMessage>
+          )}
+        </fieldset>
+
+        {/* Description Input Form Client Components */}
+        <fieldset className="grid gap-3" disabled={isPending}>
+          <Label htmlFor="description">
+            Description
+            <InputLength
+              className="mx-2"
+              control={control}
+              maxLength={200}
+              name="description"
+            />
+          </Label>
+          <Textarea
+            className="min-h-32"
+            defaultValue={defaultValuesForm?.description ?? ""}
+            id="description"
+            placeholder="description"
+            {...register("description")}
+          />
+          {errors.description?.message && (
+            <ErrorMessage className="mt-1">
+              {errors.description?.message}
+            </ErrorMessage>
+          )}
+        </fieldset>
+
+        {/* Preview Image Input Form Client Components */}
+        <fieldset className="grid gap-3" disabled={isPending}>
+          <Label htmlFor="categoryId" required>
+            Preview Image
+          </Label>
+
+          <Suspense fallback={<PreviewDropZoneLoader />}>
+            <DynamicPreviewDropZone
+              defaultValue={defaultPreviewUrl}
+              isError={errors.previewUrl?.value?.type === "min_length"}
+              isLoading={isPending}
+              onDropAccepted={onDropAccepted}
+              onDropRejected={onDropRejected}
             />
           </Suspense>
-          <ErrorMessage className="mt-1">
-            {errors.categoryName?.message}
-          </ErrorMessage>
+          {errors.previewUrl?.value?.message && (
+            <ErrorMessage className="mt-1">
+              {errors.previewUrl?.value?.message}
+            </ErrorMessage>
+          )}
         </fieldset>
-      </Suspense>
-
-      {/* Name Input Form Client Components */}
-
-      <fieldset className="grid gap-3" disabled={isPending}>
-        <Label htmlFor="name" required>
-          Name
-          <InputLength
-            className="ml-2"
-            control={control}
-            maxLength={50}
-            name="name"
-          />
-        </Label>
-
-        <div className="mb-px border-b py-3 focus-within:mb-0 focus-within:border-b-2 focus-within:border-b-primary">
-          <AutoSizeTextarea
-            className="flex h-7 w-full resize-none items-center bg-background text-xl placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            defaultValue={defaultValues.name}
-            placeholder="Untitled Component"
-            {...register("name")}
-            maxRows={4}
-            minRows={1}
-          />
-        </div>
-        {errors.name?.message && (
-          <ErrorMessage className="mt-1">{errors.name?.message}</ErrorMessage>
-        )}
-      </fieldset>
-
-      {/* Description Input Form Client Components */}
-      <fieldset className="grid gap-3" disabled={isPending}>
-        <Label htmlFor="description">
-          Description
-          <InputLength
-            className="mx-2"
-            control={control}
-            maxLength={200}
-            name="description"
-          />
-        </Label>
-        <Textarea
-          className="min-h-32"
-          defaultValue={defaultValues.description ?? ""}
-          id="description"
-          placeholder="description"
-          {...register("description")}
+        <NextSectionButton
+          currentSection="summary"
+          isDirty={isDirty}
+          isLoading={isPending}
         />
-        {errors.description?.message && (
-          <ErrorMessage className="mt-1">
-            {errors.description?.message}
-          </ErrorMessage>
-        )}
-      </fieldset>
-
-      {/* Preview Image Input Form Client Components */}
-      <fieldset className="grid gap-3" disabled={isPending}>
-        <Label htmlFor="categoryId" required>
-          Preview Image
-        </Label>
-
-        <Suspense fallback={<PreviewDropZoneLoader />}>
-          <DynamicPreviewDropZone
-            defaultValue={
-              defaultValues.previewUrl.type === "default"
-                ? defaultValues.previewUrl.value
-                : ""
-            }
-            isError={errors.previewUrl?.value?.type === "min_length"}
-            isLoading={isPending}
-            onDropAccepted={onDropAccepted}
-            onDropRejected={onDropRejected}
-          />
-        </Suspense>
-        {errors.previewUrl?.value?.message && (
-          <ErrorMessage className="mt-1">
-            {errors.previewUrl?.value?.message}
-          </ErrorMessage>
-        )}
-      </fieldset>
-      <NextSectionButton
-        currentSection="summary"
-        isDirty={isDirty}
-        isLoading={isPending}
-      />
-    </form>
+      </form>
+    </>
   );
 }

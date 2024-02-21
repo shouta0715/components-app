@@ -4,12 +4,13 @@ import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 type EditSummaryProps = {
   defaultValues: EditSummaryInput;
+  draft: boolean;
 };
 
-export function EditSummary({ defaultValues }: EditSummaryProps) {
+export function EditSummary({ defaultValues, draft }: EditSummaryProps) {
   return (
     <div>
-      <EditSummaryForm defaultValues={defaultValues} />
+      <EditSummaryForm defaultValues={defaultValues} draft={draft} />
     </div>
   );
 }
