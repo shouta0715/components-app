@@ -71,19 +71,17 @@ export function EditSummaryForm({
     isDirty,
     isPending,
     defaultValuesForm,
+    previews,
+    defaultPreviewUrl,
     register,
     onDropAccepted,
     onDropRejected,
     onSubmitHandler,
     setValue,
     handleDuringSave,
-    reset,
+    onReset,
+    setPreviews,
   } = useSummaryForm(defaultValues);
-
-  const defaultPreviewUrl =
-    defaultValuesForm?.previewUrl?.type === "default"
-      ? defaultValuesForm?.previewUrl.value
-      : "";
 
   return (
     <>
@@ -91,7 +89,8 @@ export function EditSummaryForm({
         draft={draft}
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
-        onReset={() => reset()}
+        isPending={isPending}
+        onReset={onReset}
       />
 
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
@@ -178,6 +177,8 @@ export function EditSummaryForm({
               isLoading={isPending}
               onDropAccepted={onDropAccepted}
               onDropRejected={onDropRejected}
+              previews={previews}
+              setPreviews={setPreviews}
             />
           </Suspense>
           {errors.previewUrl?.value?.message && (

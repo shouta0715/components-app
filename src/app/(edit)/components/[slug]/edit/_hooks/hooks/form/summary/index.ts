@@ -47,12 +47,19 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     return () => setIsEditing(false);
   }, [isDirty, setIsEditing]);
 
-  const { onDropAccepted, onDropRejected } = useUpdatePreview({
-    setError,
-    clearErrors,
-    setValue,
-    errors,
-  });
+  const defaultPreviewUrl =
+    defaultValuesForm?.previewUrl?.type === "default"
+      ? defaultValuesForm?.previewUrl.value
+      : "";
+
+  const { onDropAccepted, onDropRejected, previews, setPreviews } =
+    useUpdatePreview({
+      setError,
+      clearErrors,
+      setValue,
+      errors,
+      defaultValue: defaultPreviewUrl,
+    });
 
   const { onSubmit, isMutating, isUploading } = useComponentUpdater({
     defaultValues,
@@ -78,22 +85,33 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     await onSubmit(data, input);
   }
 
+  function onReset() {
+    reset();
+    setPreviews({
+      crop: undefined,
+      preview: defaultPreviewUrl,
+    });
+  }
+
   const isPending = isMutating || isLoading || isPendingAtom || isUploading;
 
   return {
-    register,
     control,
     errors,
+    isDirty,
+    isPending,
+    defaultValuesForm,
+    defaultPreviewUrl,
+    previews,
     onDropAccepted,
     onDropRejected,
     onSubmitHandler,
     trigger,
     setValue,
     watch,
-    isDirty,
-    isPending,
+    register,
     handleDuringSave,
-    defaultValuesForm,
-    reset,
+    onReset,
+    setPreviews,
   };
 }

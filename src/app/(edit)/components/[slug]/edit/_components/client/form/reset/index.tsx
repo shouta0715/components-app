@@ -53,9 +53,11 @@ function Alert({
 export function ResetFormButton({
   onReset,
   isDirty,
+  isPending,
 }: {
   onReset: () => void;
   isDirty: boolean;
+  isPending: boolean;
 }) {
   const [alert, setAlert] = React.useState(false);
 
@@ -64,7 +66,7 @@ export function ResetFormButton({
       <Alert onConfirm={onReset} onOpenChange={setAlert} open={alert} />
       <Button
         className="h-auto py-2 text-xs font-semibold transition-all"
-        disabled={!isDirty}
+        disabled={!isDirty || isPending}
         onClick={() => setAlert(true)}
         variant="destructive"
       >

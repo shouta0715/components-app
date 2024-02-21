@@ -11,11 +11,13 @@ import { ComponentUpdateInput } from "@/lib/schema/server/component";
 function DuringComponentSave({
   draft,
   isDirty,
+  isPending,
   handleDuringSave,
   onReset,
 }: {
   draft: boolean;
   isDirty: boolean;
+  isPending: boolean;
   handleDuringSave: (input: ComponentUpdateInput) => Promise<void>;
   onReset: () => void;
 }) {
@@ -23,15 +25,17 @@ function DuringComponentSave({
 
   const onSubmit = async () => {
     await handleDuringSave({ draft: !publish });
-
-    setPublish(!publish);
   };
 
   const isChanged = isDirty || publish !== !draft;
 
   return (
     <StickyTrigger className="sticky top-[57px] z-20 -mx-4 -mt-8 flex items-center justify-between border-b border-border bg-background px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
-      <ResetFormButton isDirty={isDirty} onReset={onReset} />
+      <ResetFormButton
+        isDirty={isDirty}
+        isPending={isPending}
+        onReset={onReset}
+      />
       <div className="flex w-full items-center justify-end gap-x-4">
         <div className="flex h-full items-center justify-end">
           <TogglePublish onChangePublish={setPublish} publish={publish} />
@@ -39,7 +43,7 @@ function DuringComponentSave({
         <div className="flex items-center justify-between">
           <Button
             className="h-auto py-2 text-xs font-semibold transition-all"
-            disabled={!isChanged}
+            disabled={!isChanged || isPending}
             onClick={onSubmit}
             size="sm"
             type="button"

@@ -20,7 +20,7 @@ export function CategoryFormLoader() {
 
 export function PreviewDropZoneLoader({ text = "Loading Preview Uploader" }) {
   return (
-    <Skeleton className="relative flex h-96 cursor-pointer justify-center rounded-lg  border border-dashed border-border px-4 pb-5 pt-10 sm:px-0 ">
+    <Skeleton className="relative flex h-96 justify-center rounded-lg  border border-dashed border-border px-4 pb-5 pt-10 sm:px-0 ">
       <div className="flex flex-col items-center justify-center">
         {/* children is Icons */}
         <Loader

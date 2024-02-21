@@ -10,6 +10,8 @@ export type DropzoneProps = {
   onDropRejected: (files: FileRejection[]) => void;
   defaultValue?: string;
   isLoading: boolean;
+  previews: Previews;
+  setPreviews: React.Dispatch<React.SetStateAction<Previews>>;
 } & Omit<
   DropzoneOptions,
   "onDropAccepted" | "accept" | "maxFiles" | "maxSize" | "onDropRejected"
@@ -71,13 +73,10 @@ export function usePreviewDropZone({
   onDropAccepted,
   onDropRejected,
   isLoading,
-  defaultValue,
+  previews,
+  setPreviews,
   ...option
 }: DropzoneProps) {
-  const [previews, setPreviews] = React.useState<Previews>({
-    crop: undefined,
-    preview: defaultValue ?? undefined,
-  });
   const { onCropCompleted, onCropCanceled, open, setOpen, cropArea } =
     useCropper({
       onDropAccepted,
@@ -122,7 +121,7 @@ export function usePreviewDropZone({
       }));
       setOpen(true);
     },
-    [setOpen]
+    [setOpen, setPreviews]
   );
 
   const { getRootProps, getInputProps, isDragReject, isDragActive } =

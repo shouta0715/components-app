@@ -204,6 +204,8 @@ export default function PreviewDropZone({
   defaultValue,
   isError,
   isLoading,
+  previews,
+  setPreviews,
   ...option
 }: DropzoneProps & {
   isError: boolean;
@@ -211,7 +213,6 @@ export default function PreviewDropZone({
   const {
     isDragActive,
     isDragReject,
-    previews,
     open,
     cropArea,
     setOpen,
@@ -224,6 +225,8 @@ export default function PreviewDropZone({
     isLoading,
     onDropAccepted,
     onDropRejected,
+    previews,
+    setPreviews,
     ...option,
   });
 

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { FileRejection } from "react-dropzone";
 import {
   FieldErrors,
@@ -8,19 +8,31 @@ import {
 } from "react-hook-form";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
+type Previews = {
+  preview?: string;
+  crop?: string;
+};
+
 type UseUpdatePreviewProps = {
   setError: UseFormSetError<EditSummaryInput>;
   clearErrors: UseFormClearErrors<EditSummaryInput>;
   setValue: UseFormSetValue<EditSummaryInput>;
   errors: FieldErrors<EditSummaryInput>;
+  defaultValue?: string;
 };
 
 export function useUpdatePreview({
   setError,
   clearErrors,
   setValue,
+  defaultValue,
   errors,
 }: UseUpdatePreviewProps) {
+  const [previews, setPreviews] = useState<Previews>({
+    crop: undefined,
+    preview: defaultValue ?? undefined,
+  });
+
   const onDropAccepted = useCallback(
     (file: File) => {
       if (errors.previewUrl?.value) clearErrors("previewUrl.value");
@@ -57,5 +69,7 @@ export function useUpdatePreview({
   return {
     onDropAccepted,
     onDropRejected,
+    previews,
+    setPreviews,
   };
 }
