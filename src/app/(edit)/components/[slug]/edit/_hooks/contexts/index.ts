@@ -68,6 +68,16 @@ export const isPendingEditAtom = atom((get) => {
   return is;
 });
 
+export const canPublishAtom = atom((get) => {
+  const prev = get(editStatusAtom);
+  const is =
+    prev.document.dataStatus === "CREATED" &&
+    prev.files.dataStatus === "CREATED" &&
+    prev.summary.dataStatus === "CREATED";
+
+  return is;
+});
+
 export const onRedirectEditAtom = atom(
   null,
   (get, set, value: EditingSteps) => {
