@@ -11,6 +11,7 @@ import {
 
 import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary/image";
 import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/summary/update";
+import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
 import {
   EditSummaryInput,
   editSummarySchema,
@@ -19,6 +20,7 @@ import { ComponentUpdateInput } from "@/lib/schema/server/component";
 
 export function useSummaryForm(defaultValues: EditSummaryInput) {
   const { summary } = useAtomValue(editValueStatesAtom);
+  const { onNextSection } = useRedirectSectionHandler();
 
   const setIsEditing = useSetAtom(isEditingAtom);
   const isPendingAtom = useAtomValue(isPendingEditAtom);
@@ -68,6 +70,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
 
   const onSubmitHandler = handleSubmit(async (data) => {
     await onSubmit(data);
+    onNextSection("summary");
   });
 
   async function handleDuringSave(input?: ComponentUpdateInput) {

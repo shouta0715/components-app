@@ -6,6 +6,7 @@ import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_
 import { EditingSteps } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 
 import { Button, ButtonProps } from "@/components/ui/button";
+import { cn } from "@/utils";
 
 function getText(
   isLoading: boolean,
@@ -16,9 +17,9 @@ function getText(
 
   if (isLoading) return "Loading...";
 
-  if (isDirty) return "保存して次へ";
+  if (isDirty) return "保存して次のセクションへ";
 
-  return "次へ";
+  return "次のセクションへ";
 }
 
 type NextSectionButtonProps = {
@@ -32,8 +33,9 @@ export const NextSectionButton = ({
   children,
   isDirty,
   isLoading,
-  onClick,
   disabled,
+  className,
+  onClick,
   ...props
 }: NextSectionButtonProps) => {
   const { onNextSection } = useRedirectSectionHandler();
@@ -45,6 +47,7 @@ export const NextSectionButton = ({
 
   return (
     <Button
+      className={cn("w-52 ml-auto font-semibold", className)}
       disabled={isLoading || disabled}
       onClick={isDirty ? undefined : onNext}
       type={isDirty ? "submit" : "button"}
