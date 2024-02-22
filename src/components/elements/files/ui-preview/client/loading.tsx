@@ -1,5 +1,3 @@
-import "server-only";
-
 import { Loader } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
