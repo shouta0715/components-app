@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
+  editStatusAtom,
   editValueStatesAtom,
   isEditingAtom,
   isPendingEditAtom,
@@ -24,6 +25,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
 
   const setIsEditing = useSetAtom(isEditingAtom);
   const isPendingAtom = useAtomValue(isPendingEditAtom);
+  const setEditStatus = useSetAtom(editStatusAtom);
 
   const {
     register,
@@ -70,20 +72,23 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
 
   const onSubmitHandler = handleSubmit(async (data) => {
     await onSubmit(data);
+    setEditStatus((prev) => ({
+      ...prev,
+      summary: { ...prev.summary, dataStatus: "CREATED" },
+    }));
     onNextSection("summary");
   });
 
   async function handleDuringSave(input?: ComponentUpdateInput) {
     const data = getValues();
-    const hasError = Object.keys(errors).length > 0;
+    const errorsFields = Object.keys(errors);
+    const hasError = errorsFields.length > 0;
 
     if (!hasError) {
       await onSubmit(data, input);
 
       return;
     }
-
-    const errorsFields = Object.keys(errors);
 
     const validKeys = Object.keys(data).filter(
       (key) => !errorsFields.includes(key)
