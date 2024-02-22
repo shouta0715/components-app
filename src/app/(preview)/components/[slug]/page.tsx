@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import React from "react";
+import { MultipleBrightCode } from "@/components/elements/code/server/bright-code";
 import { ComponentDocument } from "@/components/elements/documents/component-document";
-import { FilePreviews } from "@/components/elements/files/file-previe";
+import { FilePreviews } from "@/components/elements/files/file-preview";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
 import { getCompWithFiles } from "@/services/components/get";
@@ -12,6 +13,8 @@ export default async function Page({ params }: Params) {
   const component = await getCompWithFiles(params.slug, true);
 
   if (component.draft) notFound();
+
+  const objects = await getFiles(component.files);
 
   return (
     <div className="grid gap-8">
@@ -37,8 +40,9 @@ export default async function Page({ params }: Params) {
         <UserInfo creator={component.creator} />
 
         <FilePreviews
-          getObject={async () => getFiles(component.files)}
+          CodeComponent={MultipleBrightCode}
           name={component.name}
+          objects={objects}
         />
 
         <ComponentDocument>{component.document}</ComponentDocument>

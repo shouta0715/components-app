@@ -1,12 +1,12 @@
-import "server-only";
-
 import React, { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
-import { MultipleBrightCode } from "@/components/elements/code/server/bright-code";
+import { MultipleBrightCode as ClientMultipleBrightCode } from "@/components/elements/code/client/bright-code";
+import { MultipleBrightCode as ServerMultipleBrightCode } from "@/components/elements/code/server/bright-code";
+import { UIPreview } from "@/components/elements/files/ui-preview";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
-import { UIPreview } from "@/components/elements/files/ui-preview/server";
 
+import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
 import {
   NavigateTabs,
@@ -14,16 +14,21 @@ import {
   TabsContent,
   TabsList,
 } from "@/components/ui/tabs";
+import { transformCode } from "@/scripts/ui-preview";
 import { FileObject } from "@/services/files/get";
 
-export async function FilePreviews({
-  getObject,
+export function FilePreviews({
+  objects,
   name,
+  CodeComponent,
 }: {
-  getObject: () => Promise<FileObject[]>;
+  objects: FileObject[];
   name: string;
+  CodeComponent:
+    | typeof ClientMultipleBrightCode
+    | typeof ServerMultipleBrightCode;
 }) {
-  const objects = await getObject();
+  const getData = transformCode(objects);
 
   return (
     <NavigateTabs className="grid gap-8" defaultValue="preview">
@@ -53,13 +58,17 @@ export async function FilePreviews({
       </TabsList>
       <TabsContent value="preview">
         <ErrorBoundary FallbackComponent={UIPreviewError}>
-          <Suspense fallback={null}>
-            <UIPreview name={name} objects={objects} />
+          <Suspense fallback={<UIPreviewLoading name={name} />}>
+            <UIPreview
+              getData={getData}
+              name={name}
+              tittle={objects[0].componentId}
+            />
           </Suspense>
         </ErrorBoundary>
       </TabsContent>
       <TabsContent value="code">
-        <MultipleBrightCode objects={objects} />
+        <CodeComponent objects={objects} />
       </TabsContent>
     </NavigateTabs>
   );
