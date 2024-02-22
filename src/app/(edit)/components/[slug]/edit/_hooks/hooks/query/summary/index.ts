@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
+import { DeepPartial } from "react-hook-form";
 import { toast } from "sonner";
-import { uploadImage } from "@/lib/aws/handlers";
+import { replacementImage, uploadImage } from "@/lib/aws/handlers";
 import { throwHttpErrorFromStatus } from "@/lib/errors";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 
@@ -38,9 +39,25 @@ export function useMutateSummary(slug: string) {
   return { mutateAsync, isPending };
 }
 
+async function imageUploader({
+  file,
+  slug,
+  prevValue,
+}: {
+  file: File | Blob;
+  slug: string;
+  prevValue?: string | DeepPartial<File> | DeepPartial<Blob>;
+}) {
+  if (prevValue) {
+    return replacementImage(file, slug);
+  }
+
+  return uploadImage(file);
+}
+
 export const useMutateImage = () => {
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: uploadImage,
+    mutationFn: imageUploader,
     onError: () => {
       toast.error("画像をアップロードできませんでした", {
         description: "環境が良いところで再度お試しください",

@@ -64,7 +64,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     });
 
   const { onSubmit, isMutating, isUploading } = useComponentUpdater({
-    defaultValues,
+    defaultValues: defaultValuesForm,
     reset,
   });
 
