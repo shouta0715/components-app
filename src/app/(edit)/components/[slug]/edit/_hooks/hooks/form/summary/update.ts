@@ -9,6 +9,8 @@ import {
   useMutateImage,
   useMutateSummary,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/summary";
+import { SummaryUpdateInputValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { getComponentChangedValues } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { Params } from "@/types/next";
@@ -53,24 +55,14 @@ export function useComponentUpdater({
         previewUrl = data.previewUrl.value;
       }
 
-      const input: Omit<
-        Required<ComponentUpdateInput>,
-        "draft" | "document"
-      > = {
+      const input: SummaryUpdateInputValue = {
         name: data.name,
         description: data.description,
         categoryName: data.categoryName,
         previewUrl,
       };
 
-      const changedDataValues = Object.fromEntries(
-        Object.entries(input).filter(([key, value]) => {
-          if (key !== "previewUrl")
-            return value !== defaultValues?.[key as keyof EditSummaryInput];
-
-          return value !== defaultValues?.previewUrl?.value;
-        })
-      );
+      const changedDataValues = getComponentChangedValues(input, defaultValues);
 
       await mutateAsync({
         ...changedDataValues,

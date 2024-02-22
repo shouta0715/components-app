@@ -1,3 +1,4 @@
+import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { EditComp } from "@/types/prisma";
 
 export type EditStatusValue = "CREATED" | "EDITING" | "LOADING" | "EMPTY";
@@ -18,3 +19,8 @@ export type CheckEditStatusData = Pick<
 > & {
   fileLength: number;
 };
+
+export type SummaryUpdateInputValue = Omit<
+  Required<ComponentUpdateInput>,
+  "draft" | "document"
+>;

@@ -1,3 +1,4 @@
+import { DeepPartial } from "react-hook-form";
 import { createdStatus } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
 import {
   CheckEditStatusData,
@@ -5,7 +6,9 @@ import {
   EditStatus,
   EditStepStatus,
   EditingSteps,
+  SummaryUpdateInputValue,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 export function paramsToEditingStep(params?: string | null): EditingSteps {
   switch (params) {
@@ -98,4 +101,18 @@ export const getInitialEditStatus = (
     document: getNotTargetStatus(getSectionFlag("document", data)),
     [section]: getTargetStatus(getSectionFlag(section, data)),
   };
+};
+
+export const getComponentChangedValues = (
+  input: SummaryUpdateInputValue,
+  defaultValues?: Readonly<DeepPartial<EditSummaryInput>>
+) => {
+  return Object.fromEntries(
+    Object.entries(input).filter(([key, value]) => {
+      if (key !== "previewUrl")
+        return value !== defaultValues?.[key as keyof EditSummaryInput];
+
+      return value !== defaultValues?.previewUrl?.value;
+    })
+  );
 };

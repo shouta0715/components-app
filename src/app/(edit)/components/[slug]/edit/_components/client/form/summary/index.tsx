@@ -101,7 +101,10 @@ export function EditSummaryForm({
               <DynamicCategoryForm
                 control={control}
                 setCategory={(value) => {
-                  setValue("categoryName", value, { shouldDirty: true });
+                  setValue("categoryName", value, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
                 }}
               />
             </Suspense>
