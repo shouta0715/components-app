@@ -7,13 +7,13 @@ import {
 } from "react";
 import Markdown, { ExtraProps } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { NormalBrightCode } from "@/components/elements/code/server/bright-code";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { NormalBrightCode } from "@/components/ui/bright-code";
 import { cn } from "@/utils";
 
 type ReactMarkdownProps = ComponentProps<typeof Markdown> & {

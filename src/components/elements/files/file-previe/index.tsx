@@ -3,10 +3,10 @@ import "server-only";
 import React, { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
+import { MultipleBrightCode } from "@/components/elements/code/server/bright-code";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 import { UIPreview } from "@/components/elements/files/ui-preview/server";
 
-import { MultipleBrightCode } from "@/components/ui/bright-code";
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
 import {
   NavigateTabs,
