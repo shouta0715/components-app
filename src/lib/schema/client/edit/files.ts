@@ -1,20 +1,30 @@
 import { Extension } from "@prisma/client";
 import {
   array,
+  blob,
   enum_,
   Input,
-  minLength,
+  literal,
+  maxSize,
   object,
   string,
-  toTrimmed,
-  url,
+  variant,
 } from "valibot";
 
-export const editFileSchema = object({
-  name: string([toTrimmed(), minLength(1, "1文字以上入力してください。")]),
-  extension: enum_(Extension),
-  objectId: string([toTrimmed(), url()]),
-});
+export const editFileSchema = variant("type", [
+  object({
+    type: literal("input"),
+    // 1mb
+    value: blob("ファイルを選択してください。", [
+      maxSize(1024 * 1024, "ファイルのサイズは1MBまでです。"),
+    ]),
+  }),
+  object({
+    type: literal("default"),
+    objectId: string(),
+    extension: enum_(Extension),
+  }),
+]);
 
 export type EditFileInput = Input<typeof editFileSchema>;
 

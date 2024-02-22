@@ -31,7 +31,7 @@ export const getExtensionToMimeType = (extension: Extension): MIMETYPE => {
     case "css":
       return "text/css";
     case "js":
-      return "application/javascript";
+      return "text/javascript";
 
     default:
       throw new CodeBundlerError();
