@@ -1,8 +1,10 @@
-import "server-only";
+"use client";
 
-import { Code, BrightProps } from "bright";
-import React from "react";
+/* eslint-disable react/no-array-index-key */
 
+import { highlight } from "@code-hike/lighter";
+import { BrightProps } from "bright";
+import { use } from "react";
 import { LangIcon } from "@/components/elements/code/common";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,27 +12,72 @@ import { FileObject } from "@/services/files/get";
 import { Extension } from "@/types/file";
 import { cn } from "@/utils";
 
-// TODO: MIT License https://github.com/PKief/vscode-material-icon-theme/blob/master/LICENSE.md
+type CodeProps = {
+  children: string;
+  lang: BrightProps["lang"];
+  theme?: BrightProps["theme"];
+  codeClassName?: string;
+  preClassName?: string;
+  className?: string;
+};
 
 type BrightCodeProps = {
-  className?: string;
   theme?: BrightProps["theme"];
   lang: Extension;
   children: string;
-};
+  wrapperClassName?: string;
+} & CodeProps;
 
-function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
+function Code({
+  children,
+  lang,
+  theme,
+  codeClassName,
+  preClassName,
+  className,
+}: CodeProps) {
+  const {
+    lines,
+    style,
+    lang: language,
+  } = use(highlight(children, lang, theme ?? "github-dark-dimmed"));
+
   return (
-    <div className="relative h-[467px] w-full overflow-scroll">
-      <Code
-        className={cn("text-sm min-w-full absolute overflow-auto", className)}
-        codeClassName="w-full"
-        style={{ margin: 0 }}
-        theme={theme ?? "github-dark-dimmed"}
-        {...props}
+    <div className={cn("text-sm min-w-full absolute overflow-auto", className)}>
+      <pre
+        className={cn("py-4", preClassName, language)}
+        style={{ backgroundColor: style.background }}
       >
-        {children}
-      </Code>
+        <code className={cn("w-full", codeClassName)}>
+          {lines.map((tokenLine, i) => (
+            <div key={`line-${i}`} className="px-4">
+              <span>
+                {tokenLine.map((token, j) => {
+                  return (
+                    <span key={`inner-line-${j}`} style={token.style}>
+                      {token.content}
+                    </span>
+                  );
+                })}
+              </span>
+              {i < lines.length - 1 && "\n"}
+            </div>
+          ))}
+        </code>
+      </pre>
+    </div>
+  );
+}
+
+function BrightCode({ children, wrapperClassName, ...props }: BrightCodeProps) {
+  return (
+    <div
+      className={cn(
+        "relative h-[467px] w-full overflow-scroll",
+        wrapperClassName
+      )}
+    >
+      <Code {...props}>{children}</Code>
     </div>
   );
 }
@@ -48,10 +95,10 @@ export function NormalBrightCode({
   return (
     <div className="relative">
       <Code
-        codeClassName="pr-12"
-        {...props}
         className={cn("text-sm relative", className)}
+        codeClassName="pr-12"
         theme={theme ?? "github-dark-dimmed"}
+        {...props}
       >
         {children}
       </Code>
