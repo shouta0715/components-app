@@ -37,7 +37,7 @@ function getResultFile(extension: string): TransformedFile {
       return {
         content: "file;\n",
         extension: "js",
-        mimeType: "application/javascript",
+        mimeType: "text/javascript",
         originallyExtension: "js",
       };
 
@@ -45,7 +45,7 @@ function getResultFile(extension: string): TransformedFile {
       return {
         content: "file;\n",
         extension: "js",
-        mimeType: "application/javascript",
+        mimeType: "text/javascript",
         originallyExtension: "ts",
       };
 
@@ -53,7 +53,7 @@ function getResultFile(extension: string): TransformedFile {
       return {
         content: "function e(){}export{e as Example};\n",
         extension: "js",
-        mimeType: "application/javascript",
+        mimeType: "text/javascript",
         originallyExtension: "tsx",
       };
 
@@ -61,7 +61,7 @@ function getResultFile(extension: string): TransformedFile {
       return {
         content: "function e(){}export{e as Example};\n",
         extension: "js",
-        mimeType: "application/javascript",
+        mimeType: "text/javascript",
         originallyExtension: "jsx",
       };
 
