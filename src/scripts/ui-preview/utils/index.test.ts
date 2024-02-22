@@ -71,7 +71,7 @@ describe("scripts/ui-preview/utils", async () => {
     test("js", async () => {
       const result = getExtensionToMimeType("js");
 
-      expect(result).toBe("application/javascript");
+      expect(result).toBe("text/javascript");
     });
 
     test("other", async () => {
