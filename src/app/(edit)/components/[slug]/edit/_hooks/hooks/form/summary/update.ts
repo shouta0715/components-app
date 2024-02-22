@@ -1,5 +1,6 @@
 import { useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
+import { DeepPartial } from "react-hook-form";
 import {
   editStatusAtom,
   editValueStatesAtom,
@@ -8,13 +9,14 @@ import {
   useMutateImage,
   useMutateSummary,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/summary";
-import { replacementImage } from "@/lib/aws/handlers";
+import { SummaryUpdateInputValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { getComponentChangedValues } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { Params } from "@/types/next";
 
 type UseComponentUpdaterProps = {
-  defaultValues: EditSummaryInput;
+  defaultValues?: Readonly<DeepPartial<EditSummaryInput>>;
   reset: (data: EditSummaryInput) => void;
 };
 
@@ -42,32 +44,25 @@ export function useComponentUpdater({
       let previewUrl: string;
 
       if (data.previewUrl.type !== "default") {
-        const id = data.previewUrl.value
-          ? await replacementImage(data.previewUrl.value, slug)
-          : await uploadImage(data.previewUrl.value);
+        const id = await uploadImage({
+          file: data.previewUrl.value,
+          slug,
+          prevValue: defaultValues?.previewUrl?.value,
+        });
+
         previewUrl = id;
       } else {
         previewUrl = data.previewUrl.value;
       }
 
-      const input: Omit<
-        Required<ComponentUpdateInput>,
-        "draft" | "document"
-      > = {
+      const input: SummaryUpdateInputValue = {
         name: data.name,
         description: data.description,
         categoryName: data.categoryName,
         previewUrl,
       };
 
-      const changedDataValues = Object.fromEntries(
-        Object.entries(input).filter(([key, value]) => {
-          if (key !== "previewUrl")
-            return value !== defaultValues[key as keyof EditSummaryInput];
-
-          return value !== defaultValues.previewUrl.value;
-        })
-      );
+      const changedDataValues = getComponentChangedValues(input, defaultValues);
 
       await mutateAsync({
         ...changedDataValues,

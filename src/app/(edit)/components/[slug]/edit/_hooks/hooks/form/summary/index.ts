@@ -64,7 +64,7 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     });
 
   const { onSubmit, isMutating, isUploading } = useComponentUpdater({
-    defaultValues,
+    defaultValues: defaultValuesForm,
     reset,
   });
 
@@ -77,14 +77,26 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     const data = getValues();
     const hasError = Object.keys(errors).length > 0;
 
-    if (hasError) {
-      const errorsFields = Object.keys(errors);
+    if (!hasError) {
+      await onSubmit(data, input);
+
+      return;
+    }
+
+    const errorsFields = Object.keys(errors);
+
+    const validKeys = Object.keys(data).filter(
+      (key) => !errorsFields.includes(key)
+    );
+
+    if (validKeys.length === 0) {
       toast.error(
         `変更するには、${errorsFields.join(", ")} を入力してください。`
       );
 
       return;
     }
+
     await onSubmit(data, input);
   }
 
