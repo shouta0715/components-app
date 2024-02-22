@@ -1,6 +1,5 @@
 import "server-only";
 
-import { File } from "@prisma/client";
 import React, { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
@@ -15,16 +14,16 @@ import {
   TabsContent,
   TabsList,
 } from "@/components/ui/tabs";
-import { getFiles } from "@/services/files/get";
+import { FileObject } from "@/services/files/get";
 
 export async function FilePreviews({
-  files,
+  getObject,
   name,
 }: {
-  files: File[];
+  getObject: () => Promise<FileObject[]>;
   name: string;
 }) {
-  const objects = await getFiles(files);
+  const objects = await getObject();
 
   return (
     <NavigateTabs className="grid gap-8" defaultValue="preview">

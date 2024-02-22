@@ -5,6 +5,7 @@ import { FilePreviews } from "@/components/elements/files/file-previe";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
 import { getCompWithFiles } from "@/services/components/get";
+import { getFiles } from "@/services/files/get";
 import { Params } from "@/types/next";
 
 export default async function Page({ params }: Params) {
@@ -35,7 +36,10 @@ export default async function Page({ params }: Params) {
       <div className="grid flex-1 gap-8">
         <UserInfo creator={component.creator} />
 
-        <FilePreviews files={component.files} name={component.name} />
+        <FilePreviews
+          getObject={async () => getFiles(component.files)}
+          name={component.name}
+        />
 
         <ComponentDocument>{component.document}</ComponentDocument>
       </div>
