@@ -35,7 +35,9 @@ const DynamicCategoryForm = dynamic(
 
 const DynamicPreviewDropZone = dynamic(
   () =>
-    import("@/app/(edit)/components/[slug]/edit/_components/client/drop-zones"),
+    import(
+      "@/app/(edit)/components/[slug]/edit/_components/client/image-drop-zones"
+    ),
   {
     ssr: false,
     loading: () => <PreviewDropZoneLoader />,
