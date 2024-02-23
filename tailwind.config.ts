@@ -58,6 +58,15 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      height: {
+        "code-frame": "var(--code-frame-height)",
+      },
+      minHeight: {
+        "code-frame": "var(--code-frame-height)",
+      },
+      maxHeight: {
+        "code-frame": "var(--code-frame-height)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

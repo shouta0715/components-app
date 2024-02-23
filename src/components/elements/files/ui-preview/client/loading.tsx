@@ -27,7 +27,7 @@ export function UIPreviewLoading({ name }: { name: string }) {
           </p>
         </div>
         <div className="relative overflow-hidden p-2 sm:p-4">
-          <Skeleton className="h-96 w-full rounded-md" />
+          <Skeleton className="h-code-frame w-full rounded-md" />
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ type BrightCodeProps = {
 
 function BrightCode({ className, theme, children, ...props }: BrightCodeProps) {
   return (
-    <div className="relative h-[467px] w-full overflow-scroll">
+    <div className="relative h-code-frame w-full overflow-scroll">
       <Code
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
         codeClassName="w-full"

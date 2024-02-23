@@ -4,7 +4,7 @@
 
 import { highlight } from "@code-hike/lighter";
 import { BrightProps } from "bright";
-import { use } from "react";
+import { Suspense, memo, use } from "react";
 import { LangIcon } from "@/components/elements/code/common";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,42 +28,63 @@ type BrightCodeProps = {
   wrapperClassName?: string;
 } & CodeProps;
 
-function Code({
-  children,
-  lang,
-  theme,
-  codeClassName,
-  preClassName,
-  className,
-}: CodeProps) {
-  const {
-    lines,
-    style,
-    lang: language,
-  } = use(highlight(children, lang, theme ?? "github-dark-dimmed"));
+const Code = memo(
+  ({
+    children,
+    lang,
+    theme,
+    codeClassName,
+    preClassName,
+    className,
+  }: CodeProps) => {
+    const {
+      lines,
+      style,
+      lang: language,
+    } = use(highlight(children, lang, theme ?? "github-dark-dimmed"));
+
+    return (
+      <div
+        className={cn("text-sm min-w-full absolute overflow-auto", className)}
+      >
+        <pre
+          className={cn("py-4", preClassName, language)}
+          style={{ backgroundColor: style.background }}
+        >
+          <code className={cn("w-full", codeClassName)}>
+            {lines.map((tokenLine, i) => (
+              <div key={`line-${i}`} className="px-4">
+                <span>
+                  {tokenLine.map((token, j) => {
+                    return (
+                      <span key={`inner-line-${j}`} style={token.style}>
+                        {token.content}
+                      </span>
+                    );
+                  })}
+                </span>
+                {i < lines.length - 1 && "\n"}
+              </div>
+            ))}
+          </code>
+        </pre>
+      </div>
+    );
+  }
+);
+
+function LoadingCode() {
+  const code = `#include <stdio.h>\n
+int main() {
+    printf("loading...");
+    return 0; 
+}
+`.trim();
 
   return (
-    <div className={cn("text-sm min-w-full absolute overflow-auto", className)}>
-      <pre
-        className={cn("py-4", preClassName, language)}
-        style={{ backgroundColor: style.background }}
-      >
-        <code className={cn("w-full", codeClassName)}>
-          {lines.map((tokenLine, i) => (
-            <div key={`line-${i}`} className="px-4">
-              <span>
-                {tokenLine.map((token, j) => {
-                  return (
-                    <span key={`inner-line-${j}`} style={token.style}>
-                      {token.content}
-                    </span>
-                  );
-                })}
-              </span>
-              {i < lines.length - 1 && "\n"}
-            </div>
-          ))}
-        </code>
+    <div className="h-full bg-code p-4">
+      <pre className="text-primary-foreground">
+        <code>{code}</code>
       </pre>
     </div>
   );
@@ -73,11 +94,13 @@ function BrightCode({ children, wrapperClassName, ...props }: BrightCodeProps) {
   return (
     <div
       className={cn(
-        "relative h-[467px] w-full overflow-scroll",
+        "relative h-code-frame w-full overflow-scroll",
         wrapperClassName
       )}
     >
-      <Code {...props}>{children}</Code>
+      <Suspense fallback={<LoadingCode />}>
+        <Code {...props}>{children}</Code>
+      </Suspense>
     </div>
   );
 }
@@ -94,14 +117,16 @@ export function NormalBrightCode({
   }) {
   return (
     <div className="relative">
-      <Code
-        className={cn("text-sm relative", className)}
-        codeClassName="pr-12"
-        theme={theme ?? "github-dark-dimmed"}
-        {...props}
-      >
-        {children}
-      </Code>
+      <Suspense fallback={<LoadingCode />}>
+        <Code
+          className={cn("text-sm relative", className)}
+          codeClassName="pr-12"
+          theme={theme ?? "github-dark-dimmed"}
+          {...props}
+        >
+          {children}
+        </Code>
+      </Suspense>
       {copy && (
         <div className="pointer-events-none absolute inset-0 flex  h-12  w-full">
           <CopyButton
