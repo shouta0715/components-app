@@ -2,7 +2,7 @@ import { Accept } from "react-dropzone";
 
 export const accepts = {
   preview: ".png,.jpg,.jpeg,.gif,.webp",
-  files: ".html,.css,.js,.ts,.jsx,.tsx.",
+  files: ".html,.css,.js,.ts,.jsx,.tsx",
 };
 
 export function typeToAccept(type: keyof typeof accepts): Accept {
@@ -19,10 +19,7 @@ export function typeToAccept(type: keyof typeof accepts): Accept {
       return {
         "text/html": [".html"],
         "text/css": [".css"],
-        "text/javascript": [".js"],
-        "text/typescript": [".ts"],
-        "application/javascript": [".jsx", ".js"],
-        "application/typescript": [".tsx", ".ts"],
+        "text/javascript": [".js", ".ts", ".jsx", ".tsx"],
       };
     default:
       throw new Error("Invalid type");
