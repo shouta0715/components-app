@@ -1,12 +1,14 @@
+import { FileUp } from "lucide-react";
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 
+import { DropzoneInputProps } from "react-dropzone";
 import { ErrorBoundary } from "react-error-boundary";
-import { Control } from "react-hook-form";
-import { FilesDropZone } from "@/app/(edit)/components/[slug]/edit/_components/client/files-drop-zone";
+import { Control, UseFormSetValue } from "react-hook-form";
 import { NoFileInfo } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/no-files-info";
 import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/files/navigation";
 import { useQueryFileObjects } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/files/objects";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
@@ -35,51 +37,92 @@ const DynamicMultipleBrightCode = dynamic(
       (mod) => mod.MultipleBrightCode
     ),
   {
-    ssr: false,
-    loading: () => <UIPreviewLoading name="edit" />,
+    loading: () => <UIPreviewLoading className="px-0" name="edit" />,
   }
 );
+
+type NavigationProps = {
+  slug: string;
+  files: EditFilesInput["files"];
+  isLoading: boolean;
+  isDragActive: boolean;
+  getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
+};
 
 function PreviewsNavigate({
   files,
   slug,
-}: {
-  slug: string;
-  files: EditFilesInput["files"];
-}) {
-  const { data, canPreview } = useQueryFileObjects({
+  isLoading,
+  isDragActive,
+  getInputProps,
+  setValue,
+}: NavigationProps & { setValue: UseFormSetValue<EditFilesInput> }) {
+  const { data, canPreview, onDeleteFile } = useQueryFileObjects({
     slug,
     files,
+    setValue,
   });
 
   return (
     <>
-      <TabsContent value="preview">
+      <TabsContent className="-mx-2" value="preview">
         {canPreview ? (
           <ErrorBoundary FallbackComponent={UIPreviewError}>
-            <Suspense fallback={null}>
+            <Suspense fallback={<UIPreviewLoading name="edit" />}>
               <DynamicEditFilePreviews objects={data} slug={slug} />
             </Suspense>
           </ErrorBoundary>
         ) : (
-          <NoFileInfo type="preview" />
+          <NoFileInfo
+            files={files}
+            getInputProps={getInputProps}
+            isDragActive={isDragActive}
+            isLoading={isLoading}
+            type="preview"
+          />
         )}
       </TabsContent>
-      <TabsContent value="code">
-        <DynamicMultipleBrightCode objects={data} />
+      <TabsContent className="relative" value="code">
+        {isDragActive && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 rounded-lg bg-white/30 font-semibold text-white">
+            <FileUp aria-hidden="true" className="size-16" />
+            <span className="text-lg">Drag and drop your files here</span>
+          </div>
+        )}
+        <DynamicMultipleBrightCode
+          objects={data}
+          onClickDelete={onDeleteFile}
+        />
       </TabsContent>
     </>
   );
 }
 
-function NoFilesNavigate() {
+function NoFilesNavigate({
+  getInputProps,
+  files,
+  isLoading,
+  isDragActive,
+}: Omit<NavigationProps, "slug">) {
   return (
     <>
       <TabsContent value="preview">
-        <NoFileInfo type="preview" />
+        <NoFileInfo
+          files={files}
+          getInputProps={getInputProps}
+          isDragActive={isDragActive}
+          isLoading={isLoading}
+          type="preview"
+        />
       </TabsContent>
       <TabsContent value="code">
-        <NoFileInfo type="code" />
+        <NoFileInfo
+          files={files}
+          getInputProps={getInputProps}
+          isDragActive={isDragActive}
+          isLoading={isLoading}
+          type="code"
+        />
       </TabsContent>
     </>
   );
@@ -88,13 +131,19 @@ function NoFilesNavigate() {
 function EditFileNavigate({
   controls,
   slug,
+  isLoading,
+  setValue,
 }: {
   controls: Control<EditFilesInput>;
   slug: string;
+  isLoading: boolean;
+  setValue: UseFormSetValue<EditFilesInput>;
 }) {
-  const { hasFiles, files } = usePreviewNavigation({
-    controls,
-  });
+  const { hasFiles, files, isDragActive, getRootProps, getInputProps } =
+    usePreviewNavigation({
+      controls,
+      setValue,
+    });
 
   return (
     <NavigateTabs className="grid gap-8" defaultValue="preview">
@@ -114,15 +163,39 @@ function EditFileNavigate({
           </NavigateTabsTrigger>
         </div>
       </TabsList>
-      <FilesDropZone>
+      <div
+        {...getRootProps({
+          disabled: isLoading,
+          id: "files",
+          type: "file",
+          name: "files",
+          accept: accepts.files,
+          "aria-label": "Upload a file",
+        })}
+        className="flex flex-col gap-4"
+      >
         {hasFiles ? (
-          <Suspense>
-            <PreviewsNavigate files={files} slug={slug} />
+          <Suspense
+            fallback={<UIPreviewLoading className="mt-2 px-0" name="edit" />}
+          >
+            <PreviewsNavigate
+              files={files}
+              getInputProps={getInputProps}
+              isDragActive={isDragActive}
+              isLoading={isLoading}
+              setValue={setValue}
+              slug={slug}
+            />
           </Suspense>
         ) : (
-          <NoFilesNavigate />
+          <NoFilesNavigate
+            files={files}
+            getInputProps={getInputProps}
+            isDragActive={isDragActive}
+            isLoading={isLoading}
+          />
         )}
-      </FilesDropZone>
+      </div>
     </NavigateTabs>
   );
 }
