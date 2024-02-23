@@ -25,14 +25,19 @@ export function EditFileForm({
 }: {
   defaultValues: EditFilesInput;
 }) {
-  const { onSubmitHandler, control, slug, isDirty } =
+  const { onSubmitHandler, control, slug, isDirty, setValue } =
     useFilesForm(defaultValues);
 
   return (
     <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
       <ErrorBoundary FallbackComponent={UIPreviewError}>
         <Suspense fallback={<UIPreviewLoading name="edit" />}>
-          <DynamicEditFilesNavigate controls={control} slug={slug} />
+          <DynamicEditFilesNavigate
+            controls={control}
+            isLoading={false}
+            setValue={setValue}
+            slug={slug}
+          />
         </Suspense>
       </ErrorBoundary>
 
