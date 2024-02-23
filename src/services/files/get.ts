@@ -40,7 +40,7 @@ export const getNotSignedFile = async (
   };
 };
 
-export const getFiles = (files: File[]): Promise<FileObject[]> => {
+export const getFiles = (files: Omit<File, "id">[]): Promise<FileObject[]> => {
   const extensionList = files.map((file) => {
     validate(file.extension, extensions);
 

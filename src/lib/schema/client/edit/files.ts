@@ -41,23 +41,29 @@ function customArrayValidation(input: EditFileInput[]): boolean {
   return true;
 }
 
+const inputFileSchema = object({
+  type: literal("input"),
+  // 1mb
+  value: blob("ファイルを選択してください。", [
+    maxSize(1024 * 1024, "ファイルのサイズは1MBまでです。"),
+    custom(extensionValidation, "拡張子は、html,css,js,jsx,ts,tsxのみです。"),
+  ]),
+  extension: enum_(Extension),
+});
+
+const defaultFileSchema = object({
+  type: literal("default"),
+  objectId: string(),
+  extension: enum_(Extension),
+});
+
 export const editFileSchema = variant("type", [
-  object({
-    type: literal("input"),
-    // 1mb
-    value: blob("ファイルを選択してください。", [
-      maxSize(1024 * 1024, "ファイルのサイズは1MBまでです。"),
-      custom(extensionValidation, "拡張子は、html,css,js,jsx,ts,tsxのみです。"),
-    ]),
-    extension: enum_(Extension),
-  }),
-  object({
-    type: literal("default"),
-    objectId: string(),
-    extension: enum_(Extension),
-  }),
+  inputFileSchema,
+  defaultFileSchema,
 ]);
 
+export type InputFileType = Input<typeof inputFileSchema>;
+export type DefaultFileType = Input<typeof defaultFileSchema>;
 export type EditFileInput = Input<typeof editFileSchema>;
 
 export const editFilesSchema = object({
