@@ -4,6 +4,7 @@
 
 import { highlight } from "@code-hike/lighter";
 import { BrightProps } from "bright";
+import { X } from "lucide-react";
 import { Suspense, memo, use } from "react";
 import { LangIcon } from "@/components/elements/code/common";
 import { CopyButton } from "@/components/ui/copy-button";
@@ -139,7 +140,13 @@ export function NormalBrightCode({
   );
 }
 
-export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
+export function MultipleBrightCode({
+  objects,
+  onClickDelete,
+}: {
+  objects: FileObject[];
+  onClickDelete?: (id: string) => void;
+}) {
   return (
     <Tabs
       className="overflow-hidden rounded-md"
@@ -147,13 +154,31 @@ export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
     >
       <TabsList className="flex h-auto justify-start gap-2 overflow-y-scroll rounded-none bg-code py-2 data-[state=active]:shadow-none">
         {objects.map((object) => (
-          <TabsTrigger
+          <div
             key={`${object.componentId}/index.${object.extension}`}
-            className="rounded-none border-b-2 border-b-transparent text-xs text-gray-200 opacity-50 transition-none data-[state=active]:border-b-orange-700 data-[state=active]:bg-code data-[state=active]:text-primary-foreground data-[state=active]:opacity-100 data-[state=active]:shadow-none sm:text-sm dark:data-[state=active]:text-primary"
-            value={`${object.componentId}/index.${object.extension}`}
+            className="relative"
           >
-            <LangIcon extension={object.extension} />
-          </TabsTrigger>
+            <TabsTrigger
+              className="rounded-none border-b-2 border-b-transparent pr-6 text-xs text-gray-200 opacity-50 transition-none data-[state=active]:border-b-orange-700 data-[state=active]:bg-code data-[state=active]:text-primary-foreground data-[state=active]:opacity-100 data-[state=active]:shadow-none sm:text-sm dark:data-[state=active]:text-primary"
+              value={`${object.componentId}/index.${object.extension}`}
+            >
+              <LangIcon extension={object.extension} />
+            </TabsTrigger>
+            {onClickDelete && (
+              <button
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-primary-foreground"
+                onClick={() => {
+                  onClickDelete?.(object.id);
+                }}
+                type="button"
+              >
+                <span className="sr-only">
+                  delete {object.componentId}/index.{object.extension}
+                </span>
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
         ))}
       </TabsList>
 
