@@ -12,6 +12,7 @@ import { FileObject } from "@/services/files/get";
 const commonFile = {
   file: "file",
   componentId: "Example",
+  id: "1",
 };
 
 const reactFile = "export function Example(){}";

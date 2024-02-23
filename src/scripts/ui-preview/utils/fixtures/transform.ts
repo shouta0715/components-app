@@ -6,6 +6,7 @@ export const fxHTMLFile: FileObject = {
   extension: "html",
   file: "<div></div>",
   componentId: "1",
+  id: "1",
 };
 
 export const fxHTMLFileResult: TransformedFile = {
@@ -19,30 +20,35 @@ export const fxTSXFile: FileObject = {
   extension: "tsx",
   file: "export const Example = () => {} const a = 1; console.log(a);",
   componentId: "1",
+  id: "1",
 };
 
 export const fxJSXFile: FileObject = {
   extension: "jsx",
   file: "export function Example(){}const a = 1; console.log(a);",
   componentId: "1",
+  id: "1",
 };
 
 export const fxTSFile: FileObject = {
   extension: "ts",
   file: "const a = 1; console.log(a);",
   componentId: "1",
+  id: "1",
 };
 
 export const fxJSFile: FileObject = {
   extension: "js",
   file: "const a = 1; console.log(a);",
   componentId: "1",
+  id: "1",
 };
 
 export const fxCSSFile: FileObject = {
   extension: "css",
   file: "body { color: red; }",
   componentId: "1",
+  id: "1",
 };
 
 export const fxGetFilesResult = (arg: CompiledFile): TransformedFile => {

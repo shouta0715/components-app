@@ -9,6 +9,7 @@ export type FileObject = {
   file: string;
   extension: Extension;
   componentId: string;
+  id: string;
 };
 
 export const getNotSignedFile = async (
@@ -37,6 +38,7 @@ export const getNotSignedFile = async (
     file,
     extension,
     componentId,
+    id,
   };
 };
 
