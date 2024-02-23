@@ -10,6 +10,7 @@ import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_hook
 
 import { TabsContent, TabsList } from "@/components/ui/tabs";
 import { assertMine } from "@/lib/auth/handlers";
+import { EditFilesInput } from "@/lib/schema/client/edit/files";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { Params } from "@/types/next";
 
@@ -29,6 +30,16 @@ export default async function Page({ params }: Params) {
     },
   };
 
+  const files: EditFilesInput["files"] = data.files.map((file) => ({
+    type: "default",
+    objectId: file.objectId,
+    extension: file.extension,
+  }));
+
+  const filesDefaultValues: EditFilesInput = {
+    files,
+  };
+
   return (
     <Suspense fallback={null}>
       <HydrateEditSection data={data}>
@@ -45,7 +56,7 @@ export default async function Page({ params }: Params) {
               />
             </TabsContent>
             <TabsContent value="files">
-              <EditFile />
+              <EditFile defaultValues={filesDefaultValues} />
             </TabsContent>
             <TabsContent value="document">
               <EditDocument />
