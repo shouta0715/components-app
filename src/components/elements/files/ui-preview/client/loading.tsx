@@ -1,7 +1,6 @@
 import { Loader } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/utils";
 
 export function UIPreviewLoading({
   name,
@@ -11,7 +10,7 @@ export function UIPreviewLoading({
   className?: string;
 }) {
   return (
-    <div className={cn("px-2 ", className)}>
+    <div className={className}>
       <div className="grid overflow-hidden rounded-md border border-border">
         <div className="flex items-center gap-2 border-b border-border p-4">
           <Loader className="animate-spin" size={16}>

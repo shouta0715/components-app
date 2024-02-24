@@ -19,7 +19,7 @@ export function PreviewResizeGroup({
   tittle: string;
 }) {
   return (
-    <ResizablePanelGroup className="px-2" direction="horizontal">
+    <ResizablePanelGroup direction="horizontal">
       <ResizablePanel className="min-w-64" defaultSize={100} minSize={30}>
         <PreviewIframe inputData={data} name={name} title={tittle} />
       </ResizablePanel>
