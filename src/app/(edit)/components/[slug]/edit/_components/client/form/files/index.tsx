@@ -32,8 +32,10 @@ export function EditFileForm({
     slug,
     isDirty,
     status,
-    setFiles,
     isAllSuccess,
+    errors,
+    setFiles,
+    setError,
   } = useFilesForm(defaultValues);
 
   return (
@@ -42,8 +44,10 @@ export function EditFileForm({
         <Suspense fallback={<UIPreviewLoading name="edit" />}>
           <DynamicEditFilesNavigate
             controls={control}
+            errors={errors}
             isAllSuccess={isAllSuccess}
             isLoading={false}
+            setError={setError}
             setFiles={setFiles}
             slug={slug}
           />

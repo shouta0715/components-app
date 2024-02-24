@@ -63,6 +63,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   const {
     setValue,
     getValues,
+    setError,
     handleSubmit,
     formState: { errors, isDirty, defaultValues: defaultValuesForm },
     control,
@@ -80,7 +81,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   const [status, setStatus] = useState<FilesStatus>(errorFilesStatus);
 
   const setFiles = (newFile: EditFilesInput["files"]) => {
-    setValue("files", newFile);
+    setValue("files", newFile, { shouldDirty: true });
     setStatus(calcStatus(newFile));
   };
 
@@ -92,6 +93,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setFiles,
     getValues,
     onSubmitHandler,
+    setError,
     errors,
     slug,
     control,

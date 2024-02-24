@@ -3,16 +3,22 @@
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
+import { UseFormSetError } from "react-hook-form";
 import { v4 as randomUUID } from "uuid";
-import { typeToAccept } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
+import {
+  accepts,
+  typeToAccept,
+} from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
 import { EditFilesInput, InputFileType } from "@/lib/schema/client/edit/files";
 import { safeValidate } from "@/lib/validation";
 import { extensions } from "@/types/file";
 
 export function useFilesDropZone({
   setFiles,
+  setError,
   files,
 }: {
+  setError: UseFormSetError<EditFilesInput>;
   setFiles: (files: EditFilesInput["files"]) => void;
   files: EditFilesInput["files"];
 }) {
@@ -47,7 +53,21 @@ export function useFilesDropZone({
     setFiles([...filteredFiles, ...newFiles]);
   };
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
-    console.log("rejectedFiles", rejectedFiles);
+    if (rejectedFiles.length > 3) {
+      setError("files", {
+        message: "入力できるファイルの数は3つまでです。",
+      });
+
+      return;
+    }
+    const exs = rejectedFiles.map((file) => file.file.name.split(".").pop());
+    const message = `拡張子が${exs.join(
+      ", "
+    )}のファイルは入力できません。入力できる拡張子は、${accepts.files}です。`;
+
+    setError("files", {
+      message,
+    });
   };
 
   const noClick = useMemo(() => {
@@ -67,7 +87,7 @@ export function useFilesDropZone({
     return Boolean(hasPreviewFile);
   }, [files, searchParams]);
 
-  const { getInputProps, getRootProps, isDragActive } = useDropzone({
+  const { getInputProps, getRootProps, isDragActive, open } = useDropzone({
     noClick,
     multiple: true,
     maxFiles: 3 - files.length,
@@ -80,6 +100,7 @@ export function useFilesDropZone({
   return {
     getInputProps,
     getRootProps,
+    open,
     isDragActive,
   };
 }

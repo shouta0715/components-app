@@ -1,4 +1,4 @@
-import { Control, useWatch } from "react-hook-form";
+import { Control, UseFormSetError, useWatch } from "react-hook-form";
 
 import { useFilesDropZone } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/drop-zone/files";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";
@@ -6,9 +6,11 @@ import { EditFilesInput } from "@/lib/schema/client/edit/files";
 export function usePreviewNavigation({
   controls,
   setFiles,
+  setError,
 }: {
   controls: Control<EditFilesInput>;
   setFiles: (files: EditFilesInput["files"]) => void;
+  setError: UseFormSetError<EditFilesInput>;
 }) {
   const files = useWatch({
     control: controls,
@@ -21,8 +23,9 @@ export function usePreviewNavigation({
     setFiles(newFile);
   }
 
-  const { getInputProps, getRootProps, isDragActive } = useFilesDropZone({
+  const { open, getInputProps, getRootProps, isDragActive } = useFilesDropZone({
     setFiles,
+    setError,
     files,
   });
 
@@ -35,5 +38,6 @@ export function usePreviewNavigation({
     getInputProps,
     getRootProps,
     onDeleteFile,
+    open,
   };
 }
