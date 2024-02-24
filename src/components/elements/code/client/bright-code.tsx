@@ -173,6 +173,7 @@ export function MultipleBrightCode({
                   if (value !== object.id) return;
                   const otherFiles = objects.filter((o) => o.id !== object.id);
 
+                  if (otherFiles.length === 0) return;
                   setValue(otherFiles[0].id);
                 }}
                 type="button"
