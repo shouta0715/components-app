@@ -5,7 +5,7 @@
 import { highlight } from "@code-hike/lighter";
 import { BrightProps } from "bright";
 import { X } from "lucide-react";
-import { Suspense, memo, use } from "react";
+import { Suspense, memo, use, useState } from "react";
 import { LangIcon } from "@/components/elements/code/common";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -147,20 +147,21 @@ export function MultipleBrightCode({
   objects: FileObject[];
   onClickDelete?: (id: string) => void;
 }) {
+  const [value, setValue] = useState(objects[0].id);
+
   return (
     <Tabs
       className="overflow-hidden rounded-md"
-      defaultValue={`${objects[0].componentId}/index.${objects[0].extension}`}
+      defaultValue={objects[0].id}
+      onValueChange={setValue}
+      value={value}
     >
       <TabsList className="flex h-auto justify-start gap-2 overflow-y-scroll rounded-none bg-code py-2 data-[state=active]:shadow-none">
         {objects.map((object) => (
-          <div
-            key={`${object.componentId}/index.${object.extension}`}
-            className="relative"
-          >
+          <div key={object.id} className="relative">
             <TabsTrigger
               className="rounded-none border-b-2 border-b-transparent pr-6 text-xs text-gray-200 opacity-50 transition-none data-[state=active]:border-b-orange-700 data-[state=active]:bg-code data-[state=active]:text-primary-foreground data-[state=active]:opacity-100 data-[state=active]:shadow-none sm:text-sm dark:data-[state=active]:text-primary"
-              value={`${object.componentId}/index.${object.extension}`}
+              value={object.id}
             >
               <LangIcon extension={object.extension} />
             </TabsTrigger>
@@ -169,6 +170,10 @@ export function MultipleBrightCode({
                 className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-primary-foreground"
                 onClick={() => {
                   onClickDelete?.(object.id);
+                  if (value !== object.id) return;
+                  const otherFiles = objects.filter((o) => o.id !== object.id);
+
+                  setValue(otherFiles[0].id);
                 }}
                 type="button"
               >
@@ -184,9 +189,9 @@ export function MultipleBrightCode({
 
       {objects.map((object) => (
         <TabsContent
-          key={`${object.componentId}/index.${object.extension}`}
+          key={object.id}
           className="relative mt-0 bg-code"
-          value={`${object.componentId}/index.${object.extension}`}
+          value={object.id}
         >
           <CopyButton
             className="absolute right-4 z-10 mx-2 my-2.5 sm:right-4 sm:-my-10"

@@ -3,7 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { UseFormSetValue } from "react-hook-form";
 import { v4 as randomUUID } from "uuid";
 import { typeToAccept } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
 import { EditFilesInput, InputFileType } from "@/lib/schema/client/edit/files";
@@ -11,10 +10,10 @@ import { safeValidate } from "@/lib/validation";
 import { extensions } from "@/types/file";
 
 export function useFilesDropZone({
-  setValue,
+  setFiles,
   files,
 }: {
-  setValue: UseFormSetValue<EditFilesInput>;
+  setFiles: (files: EditFilesInput["files"]) => void;
   files: EditFilesInput["files"];
 }) {
   const searchParams = useSearchParams();
@@ -45,7 +44,7 @@ export function useFilesDropZone({
       );
     });
 
-    setValue("files", [...filteredFiles, ...newFiles]);
+    setFiles([...filteredFiles, ...newFiles]);
   };
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
     console.log("rejectedFiles", rejectedFiles);

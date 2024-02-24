@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 
 import { DropzoneInputProps } from "react-dropzone";
 import { ErrorBoundary } from "react-error-boundary";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { NoFileInfo } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/no-files-info";
 import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/files/navigation";
 import { useQueryFileObjects } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/files/objects";
@@ -46,6 +46,7 @@ type NavigationProps = {
   files: EditFilesInput["files"];
   isLoading: boolean;
   isDragActive: boolean;
+  onDeleteFile: (id: string) => void;
   getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
 };
 
@@ -54,14 +55,18 @@ function PreviewsNavigate({
   slug,
   isLoading,
   isDragActive,
+  isAllSuccess,
   getInputProps,
-  setValue,
-}: NavigationProps & { setValue: UseFormSetValue<EditFilesInput> }) {
-  const { data, canPreview, onDeleteFile } = useQueryFileObjects({
+  onDeleteFile,
+}: NavigationProps & {
+  isAllSuccess: boolean;
+}) {
+  const { data, hsaPreviewFiles } = useQueryFileObjects({
     slug,
     files,
-    setValue,
   });
+
+  const canPreview = hsaPreviewFiles && isAllSuccess;
 
   return (
     <>
@@ -132,18 +137,26 @@ function EditFileNavigate({
   controls,
   slug,
   isLoading,
-  setValue,
+  setFiles,
+  isAllSuccess,
 }: {
   controls: Control<EditFilesInput>;
   slug: string;
   isLoading: boolean;
-  setValue: UseFormSetValue<EditFilesInput>;
+  setFiles: (files: EditFilesInput["files"]) => void;
+  isAllSuccess: boolean;
 }) {
-  const { hasFiles, files, isDragActive, getRootProps, getInputProps } =
-    usePreviewNavigation({
-      controls,
-      setValue,
-    });
+  const {
+    hasFiles,
+    files,
+    isDragActive,
+    getRootProps,
+    getInputProps,
+    onDeleteFile,
+  } = usePreviewNavigation({
+    controls,
+    setFiles,
+  });
 
   return (
     <NavigateTabs className="grid gap-8" defaultValue="preview">
@@ -181,9 +194,10 @@ function EditFileNavigate({
             <PreviewsNavigate
               files={files}
               getInputProps={getInputProps}
+              isAllSuccess={isAllSuccess}
               isDragActive={isDragActive}
               isLoading={isLoading}
-              setValue={setValue}
+              onDeleteFile={onDeleteFile}
               slug={slug}
             />
           </Suspense>
@@ -193,6 +207,7 @@ function EditFileNavigate({
             getInputProps={getInputProps}
             isDragActive={isDragActive}
             isLoading={isLoading}
+            onDeleteFile={onDeleteFile}
           />
         )}
       </div>

@@ -48,14 +48,17 @@ export function NoFileInfo({
 }) {
   return (
     <>
-      <p className="mb-3 flex gap-x-2 text-xs leading-5 text-primary">
+      <Label
+        className="mb-3 flex gap-x-2 text-xs leading-5 text-primary"
+        htmlFor="files"
+      >
         <Siren className="size-6 text-destructive" />
         <span className="self-end">
           {type === "preview"
             ? "HTML, JSX, TSXのいずれかのファイルをアップロードすると、プレビューが表示されます。"
             : "1つ以上のファイルをアップロードすると、コードが表示されます。"}
         </span>
-      </p>
+      </Label>
       <div
         className={cn(
           "flex justify-center flex-col rounded-lg  border-dashed pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-code-frame duration-150 cursor-pointer  border-2 border-border hover:border-primary",
@@ -101,7 +104,12 @@ export function NoFileInfo({
               Uploading Preview Image...
             </p>
           ) : (
-            <p className={cn("text-xs leading-5 text-primary")}>
+            <p
+              className={cn(
+                "text-xs leading-5",
+                isDragActive ? "text-primary" : "text-muted-foreground"
+              )}
+            >
               <span>HTML, CSS, JS,JSX,TS,TSX up to 3 files</span>
             </p>
           )}
