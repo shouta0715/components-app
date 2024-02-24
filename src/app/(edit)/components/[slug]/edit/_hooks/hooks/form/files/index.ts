@@ -34,12 +34,12 @@ function calcStatus(files: EditFilesInput["files"]): FilesStatus {
       file.extension === "tsx"
   );
   const numbersStatus: FileStatus =
-    files.length < 3
-      ? successFilesStatus.numbers
-      : {
+    files.length > 3
+      ? {
           status: "error",
           message: "入力できるファイルの数は3つまでです。",
-        };
+        }
+      : successFilesStatus.numbers;
 
   const previewStatus = hasPreviewFile
     ? successFilesStatus.preview

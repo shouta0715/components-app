@@ -44,13 +44,7 @@ export function useFilesDropZone({
       });
     }
 
-    const filteredFiles = files.filter((prevFile) => {
-      return !newFiles.some(
-        (newFile) => newFile.extension === prevFile.extension
-      );
-    });
-
-    setFiles([...filteredFiles, ...newFiles]);
+    setFiles([...files, ...newFiles]);
   };
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
     if (rejectedFiles.length > 3) {
