@@ -15,5 +15,13 @@ up-all:
 
 down-all:
 	docker compose -f docker-compose.yaml -f docker-compose.test.yaml down
+	
+reset-vlume:
+	docker volume rm ui-trade_minio
+	docker volume rm ui-trade_minio-test
+	docker volume rm ui-trade_mysql
+	docker volume rm ui-trade_mysql-test
+	rm -rf .next
 
-.PHONY: up down up-test down-test up-all down-all
+
+.PHONY: up down up-test down-test up-all down-all reset-vlume
