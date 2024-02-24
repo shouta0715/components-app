@@ -49,6 +49,7 @@ const inputFileSchema = object({
     custom(extensionValidation, "拡張子は、html,css,js,jsx,ts,tsxのみです。"),
   ]),
   extension: enum_(Extension),
+  objectId: string(),
 });
 
 const defaultFileSchema = object({

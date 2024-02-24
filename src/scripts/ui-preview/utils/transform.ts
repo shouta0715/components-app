@@ -30,7 +30,7 @@ export async function transformWithHTML(
     ({ error, result }, index) => {
       if (error) throw new CompilerError();
 
-      const { extension, componentId } = removedPreview[index];
+      const { extension, componentId, id } = removedPreview[index];
 
       if (extension === "ts" || extension === "js") {
         return {
@@ -38,6 +38,7 @@ export async function transformWithHTML(
           extension: "js",
           componentId,
           originallyExtension: extension,
+          id,
         };
       }
 
@@ -46,6 +47,7 @@ export async function transformWithHTML(
         extension,
         componentId,
         originallyExtension: extension,
+        id,
       };
     }
   );
@@ -74,7 +76,7 @@ export async function transformWithoutHTML(
     ({ error, result }, index) => {
       if (error) throw new CompilerError();
 
-      const { extension, componentId } = files[index];
+      const { extension, componentId, id } = files[index];
 
       if (
         extension === "ts" ||
@@ -87,6 +89,7 @@ export async function transformWithoutHTML(
           extension: "js",
           componentId,
           originallyExtension: extension,
+          id,
         };
       }
 
@@ -95,6 +98,7 @@ export async function transformWithoutHTML(
         extension,
         componentId,
         originallyExtension: extension,
+        id,
       };
     }
   );

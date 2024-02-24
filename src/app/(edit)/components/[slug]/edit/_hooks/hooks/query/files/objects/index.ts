@@ -38,6 +38,7 @@ async function transformInputFiles(
       componentId: slug,
       file: content,
       extension: file.extension,
+      id: file.objectId,
     };
   });
 
@@ -94,9 +95,9 @@ export function useQueryFileObjects({
     queryFn: () => transformFileObjects({ slug, files }),
   });
 
-  const canPreview = useMemo(() => {
-    if (!data) return false;
-    const is = data.find(
+  const hsaPreviewFiles = useMemo(() => {
+    if (!files) return false;
+    const is = files.find(
       (file) =>
         file.extension === "html" ||
         file.extension === "tsx" ||
@@ -104,7 +105,7 @@ export function useQueryFileObjects({
     );
 
     return is;
-  }, [data]);
+  }, [files]);
 
-  return { data, isPending, canPreview };
+  return { data, isPending, hsaPreviewFiles };
 }

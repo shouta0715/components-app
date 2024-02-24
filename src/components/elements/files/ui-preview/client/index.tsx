@@ -191,6 +191,7 @@ const PreviewIframe = ({
           style={{
             opacity: isPending ? 0 : 1,
             height: isPending ? "0px" : height,
+            minHeight: isPending ? "auto" : "var(--code-frame-height)",
           }}
           title={title}
         />
@@ -201,7 +202,11 @@ const PreviewIframe = ({
             </Button>
           </div>
         )}
-        {isPending && <Skeleton className="h-96 w-full rounded-md" />}
+        {isPending && (
+          <div className="relative h-code-frame w-full p-2 sm:p-4">
+            <Skeleton className="h-full w-full rounded-md" />
+          </div>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );

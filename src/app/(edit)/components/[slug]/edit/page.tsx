@@ -45,7 +45,6 @@ export default async function Page({ params }: Params) {
       <HydrateEditSection data={data}>
         <TabsList className="block h-auto items-center bg-transparent p-0 text-primary">
           <EditHeader />
-
           {/* Tab Contents */}
 
           <div className="mt-8">

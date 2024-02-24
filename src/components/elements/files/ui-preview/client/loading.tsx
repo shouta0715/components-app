@@ -2,11 +2,17 @@ import { Loader } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function UIPreviewLoading({ name }: { name: string }) {
+export function UIPreviewLoading({
+  name,
+  className,
+}: {
+  name: string;
+  className?: string;
+}) {
   return (
-    <div className="px-2">
+    <div className={className}>
       <div className="grid overflow-hidden rounded-md border border-border">
-        <div className=" flex items-center gap-2 border-b border-border p-4">
+        <div className="flex items-center gap-2 border-b border-border p-4">
           <Loader className="animate-spin" size={16}>
             <span className="sr-only">
               プレビューをロード中です。しばらくお待ちください。
@@ -26,8 +32,8 @@ export function UIPreviewLoading({ name }: { name: string }) {
             {name}
           </p>
         </div>
-        <div className="relative overflow-hidden p-2 sm:p-4">
-          <Skeleton className="h-96 w-full rounded-md" />
+        <div className="relative h-code-frame flex-1 overflow-hidden p-2 sm:p-4">
+          <Skeleton className="h-full w-full rounded-md" />
         </div>
       </div>
     </div>

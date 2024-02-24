@@ -17,7 +17,7 @@ export function useQueryTransformedCode({
   slug: string;
 }) {
   const { data, isPending } = useQuery({
-    queryKey: ["transformedCode", { slug }],
+    queryKey: ["transformedCode", { slug, objects }],
     queryFn: () => getTransformedCode({ files: objects }),
   });
 
