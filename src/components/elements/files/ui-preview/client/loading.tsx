@@ -11,9 +11,9 @@ export function UIPreviewLoading({
   className?: string;
 }) {
   return (
-    <div className={cn("px-2", className)}>
+    <div className={cn("px-2 ", className)}>
       <div className="grid overflow-hidden rounded-md border border-border">
-        <div className=" flex items-center gap-2 border-b border-border p-4">
+        <div className="flex items-center gap-2 border-b border-border p-4">
           <Loader className="animate-spin" size={16}>
             <span className="sr-only">
               プレビューをロード中です。しばらくお待ちください。
@@ -33,8 +33,8 @@ export function UIPreviewLoading({
             {name}
           </p>
         </div>
-        <div className="relative overflow-hidden p-2 sm:p-4">
-          <Skeleton className="h-code-frame w-full rounded-md" />
+        <div className="relative h-code-frame flex-1 overflow-hidden p-2 sm:p-4">
+          <Skeleton className="h-full w-full rounded-md" />
         </div>
       </div>
     </div>
