@@ -22,6 +22,7 @@ async function generateSeedComponents(
           creatorId: users[randomNum(0, users.length - 1)].id,
           document: getMarkdownText(),
           previewUrl: `${image.id}.png`,
+          functionName: "Example",
         };
 
         return data;
