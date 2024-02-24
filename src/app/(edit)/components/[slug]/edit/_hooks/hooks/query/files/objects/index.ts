@@ -1,7 +1,6 @@
 import { File } from "@prisma/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { UseFormSetValue } from "react-hook-form";
 import {
   DefaultFileType,
   EditFilesInput,
@@ -90,20 +89,13 @@ async function transformFileObjects({
 export function useQueryFileObjects({
   slug,
   files,
-  setValue,
-}: TransformFileObjectsProps & { setValue: UseFormSetValue<EditFilesInput> }) {
+}: TransformFileObjectsProps) {
   const { data, isPending } = useSuspenseQuery({
     queryKey: ["fileObjects", { slug, files }],
     queryFn: () => transformFileObjects({ slug, files }),
   });
 
-  function onDeleteFile(id: string) {
-    const newFile = files.filter((file) => file.objectId !== id);
-
-    setValue("files", newFile);
-  }
-
-  const canPreview = useMemo(() => {
+  const hsaPreviewFiles = useMemo(() => {
     if (!files) return false;
     const is = files.find(
       (file) =>
@@ -115,5 +107,5 @@ export function useQueryFileObjects({
     return is;
   }, [files]);
 
-  return { data, isPending, canPreview, onDeleteFile };
+  return { data, isPending, hsaPreviewFiles };
 }
