@@ -1,39 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 import { FileCode2, Siren } from "lucide-react";
-import React, { memo } from "react";
+import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
+import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/files-info";
 import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
-import { LangIcons } from "@/components/icons/LangIcons";
 import { Label } from "@/components/ui/label";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";
 import { cn } from "@/utils";
 
-const AcceptedFiles = memo(({ files }: { files: EditFilesInput["files"] }) => {
-  return (
-    <p className="grid gap-2 text-sm leading-5 text-muted-foreground">
-      <span className="text-xs">
-        {files.length > 1
-          ? "現在の入力されたファイル 一覧"
-          : "現在の入力されたファイルはありません。"}{" "}
-      </span>
-      {files.map((file, i) => {
-        const Icon = LangIcons[file.extension];
-
-        return (
-          <span
-            key={`${i}-${file.extension}-file-info`}
-            className="flex items-center gap-x-1"
-          >
-            <Icon aria-hidden="true" className="size-6" />
-            <span>index.{file.extension}</span>
-          </span>
-        );
-      })}
-    </p>
-  );
-});
-
-export function NoFileInfo({
+export function DropZoneInfo({
   type,
   getInputProps,
   files,
@@ -70,7 +45,8 @@ export function NoFileInfo({
           <FileCode2
             aria-hidden="true"
             className={cn(
-              "mx-auto h-12 w-12  transition-colors duration-150  text-primary dark:text-primary"
+              "mx-auto size-12 transition-colors duration-150",
+              isDragActive ? "text-primary" : "text-muted-foreground"
             )}
           />
           {!isLoading && (
@@ -114,8 +90,8 @@ export function NoFileInfo({
             </p>
           )}
         </div>
-        <div className="flex justify-end px-4">
-          <AcceptedFiles files={files} />
+        <div className="flex px-4">
+          <AcceptedFiles files={files} suffix="no-file-info" />
         </div>
       </div>
     </>

@@ -1,11 +1,12 @@
-import { FileUp, Video } from "lucide-react";
+import { FileUp, Siren, Video } from "lucide-react";
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 
 import { DropzoneInputProps } from "react-dropzone";
 import { ErrorBoundary } from "react-error-boundary";
 import { Control, FieldErrors, UseFormSetError } from "react-hook-form";
-import { NoFileInfo } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/no-files-info";
+import { DropZoneInfo } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/drop-zone-info";
+import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_components/client/form/files/files-info";
 import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/form/files/navigation";
 import { useQueryFileObjects } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/files/objects";
 import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
@@ -38,7 +39,7 @@ const DynamicMultipleBrightCode = dynamic(
       (mod) => mod.MultipleBrightCode
     ),
   {
-    loading: () => <UIPreviewLoading className="px-0" name="edit" />,
+    loading: () => <UIPreviewLoading name="edit" />,
   }
 );
 
@@ -77,7 +78,7 @@ function PreviewsNavigate({
           プレビューを表示中
         </p>
       )}
-      <TabsContent className="-mx-2" value="preview">
+      <TabsContent value="preview">
         {canPreview ? (
           <ErrorBoundary FallbackComponent={UIPreviewError}>
             <Suspense fallback={<UIPreviewLoading name="edit" />}>
@@ -85,7 +86,7 @@ function PreviewsNavigate({
             </Suspense>
           </ErrorBoundary>
         ) : (
-          <NoFileInfo
+          <DropZoneInfo
             files={files}
             getInputProps={getInputProps}
             isDragActive={isDragActive}
@@ -101,6 +102,15 @@ function PreviewsNavigate({
             <span className="text-lg">Drag and drop your files here</span>
           </div>
         )}
+        {!canPreview && (
+          <p className="mb-3 flex gap-x-2 text-xs  font-medium leading-5 text-primary">
+            <Siren className="size-6 text-destructive" />
+            <span className="self-end">
+              HTML, JSX,
+              TSXのいずれかのファイルをアップロードすると、プレビューが表示されます。
+            </span>
+          </p>
+        )}
         <DynamicMultipleBrightCode
           objects={data}
           onClickDelete={onDeleteFile}
@@ -110,7 +120,7 @@ function PreviewsNavigate({
   );
 }
 
-function NoFilesNavigate({
+function DropZoneNavigate({
   getInputProps,
   files,
   isLoading,
@@ -119,7 +129,7 @@ function NoFilesNavigate({
   return (
     <>
       <TabsContent value="preview">
-        <NoFileInfo
+        <DropZoneInfo
           files={files}
           getInputProps={getInputProps}
           isDragActive={isDragActive}
@@ -128,7 +138,7 @@ function NoFilesNavigate({
         />
       </TabsContent>
       <TabsContent value="code">
-        <NoFileInfo
+        <DropZoneInfo
           files={files}
           getInputProps={getInputProps}
           isDragActive={isDragActive}
@@ -203,7 +213,7 @@ function EditFileNavigate({
         >
           {hasFiles ? (
             <Suspense
-              fallback={<UIPreviewLoading className="mt-2 px-0" name="edit" />}
+              fallback={<UIPreviewLoading className="mt-2" name="edit" />}
             >
               <PreviewsNavigate
                 files={files}
@@ -216,7 +226,7 @@ function EditFileNavigate({
               />
             </Suspense>
           ) : (
-            <NoFilesNavigate
+            <DropZoneNavigate
               files={files}
               getInputProps={getInputProps}
               isDragActive={isDragActive}
@@ -238,6 +248,13 @@ function EditFileNavigate({
         >
           ファイルを選択
         </Button>
+        <div className="mt-4">
+          <AcceptedFiles
+            files={files}
+            onDeleteFile={onDeleteFile}
+            suffix="global-check-files"
+          />
+        </div>
       </div>
     </div>
   );
