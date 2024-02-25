@@ -48,6 +48,7 @@ type NavigationProps = {
   files: EditFilesInput["files"];
   isLoading: boolean;
   isDragActive: boolean;
+  functionName?: string;
   onDeleteFile: (id: string) => void;
   getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
 };
@@ -58,6 +59,7 @@ function PreviewsNavigate({
   isLoading,
   isDragActive,
   isAllSuccess,
+  functionName,
   getInputProps,
   onDeleteFile,
 }: NavigationProps & {
@@ -82,7 +84,11 @@ function PreviewsNavigate({
         {canPreview ? (
           <ErrorBoundary FallbackComponent={UIPreviewError}>
             <Suspense fallback={<UIPreviewLoading name="edit" />}>
-              <DynamicEditFilePreviews objects={data} slug={slug} />
+              <DynamicEditFilePreviews
+                functionName={functionName}
+                objects={data}
+                slug={slug}
+              />
             </Suspense>
           </ErrorBoundary>
         ) : (
@@ -171,6 +177,7 @@ function EditFileNavigate({
     hasFiles,
     files,
     isDragActive,
+    functionName,
     getRootProps,
     getInputProps,
     onDeleteFile,
@@ -217,6 +224,7 @@ function EditFileNavigate({
             >
               <PreviewsNavigate
                 files={files}
+                functionName={functionName}
                 getInputProps={getInputProps}
                 isAllSuccess={isAllSuccess}
                 isDragActive={isDragActive}

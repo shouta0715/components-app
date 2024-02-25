@@ -10,7 +10,7 @@ import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_hook
 
 import { TabsContent, TabsList } from "@/components/ui/tabs";
 import { assertMine } from "@/lib/auth/handlers";
-import { EditFilesInput } from "@/lib/schema/client/edit/files";
+import { EditFilesInput, PreviewType } from "@/lib/schema/client/edit/files";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { Params } from "@/types/next";
 
@@ -18,7 +18,7 @@ export default async function Page({ params }: Params) {
   const data = await cacheGetCompWithFiles(params.slug);
   await assertMine(data.creatorId, notFound);
 
-  const { name, description, categoryName, previewUrl } = data;
+  const { name, description, categoryName, previewUrl, functionName } = data;
 
   const summaryDefaultValues: EditSummaryInput = {
     name,
@@ -36,8 +36,18 @@ export default async function Page({ params }: Params) {
     extension: file.extension,
   }));
 
+  const previewType: PreviewType = functionName
+    ? {
+        type: "react",
+        functionName,
+      }
+    : {
+        type: "html",
+      };
+
   const filesDefaultValues: EditFilesInput = {
     files,
+    previewType,
   };
 
   return (

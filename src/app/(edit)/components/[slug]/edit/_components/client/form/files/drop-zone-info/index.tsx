@@ -30,7 +30,7 @@ export function DropZoneInfo({
         <Siren className="size-6 text-destructive" />
         <span className="self-end">
           {type === "preview"
-            ? "HTML, JSX, TSXのいずれかのファイルをアップロードすると、プレビューが表示されます。"
+            ? "ファイルのステータス の項目をすべて満たすと、プレビューが表示されます。"
             : "1つ以上のファイルをアップロードすると、コードが表示されます。"}
         </span>
       </Label>

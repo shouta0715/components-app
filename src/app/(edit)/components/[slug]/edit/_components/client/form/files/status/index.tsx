@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { CheckCircle2, XCircle } from "lucide-react";
 import React from "react";
 import {
@@ -16,6 +17,9 @@ function getLabel(key: keyof TFilesStatus) {
     case "combination":
       return "ファイルの拡張子の組み合わせ";
 
+    case "functionName":
+      return "関数名の入力";
+
     default:
       return "";
   }
@@ -31,7 +35,7 @@ function StatusItem({
   return (
     <div>
       <div className="flex items-center gap-2">
-        <div className="-mt-1 size-12 self-start">
+        <div className="-mt-1 size-12 min-w-12 self-start">
           {value.status === "success" ? (
             <CheckCircle2 className="size-full fill-green-500 text-background dark:text-primary" />
           ) : (
@@ -41,7 +45,15 @@ function StatusItem({
         <p className="grid gap-1 text-sm">
           <span className="font-semibold">{getLabel(statusKey)}</span>
           {value.message && (
-            <span className="text-xs text-destructive" role="alert">
+            <span
+              className={clsx(
+                "text-xs",
+                value.status === "success"
+                  ? "text-muted-foreground"
+                  : "text-destructive"
+              )}
+              role="alert"
+            >
               {value.message}
             </span>
           )}
@@ -55,14 +67,14 @@ export function FilesStatus({ status }: { status: TFilesStatus }) {
   return (
     <div className="grid gap-4">
       <p className="grid gap-2">
-        <span className="text-lg font-bold text-primary">
+        <span className="text-lg font-bold text-primary" id="files-status">
           ファイルのステータス
         </span>
         <span className="text-xs text-muted-foreground">
           以下の項目を確認してください。投稿するには、すべての項目を満たしている必要があります。
         </span>
       </p>
-      <div className="-mx-2 grid gap-6">
+      <div className="-mx-2 grid gap-6 sm:grid-cols-2">
         {Object.entries(status).map(([k, value]) => {
           const key = k as keyof TFilesStatus;
 
