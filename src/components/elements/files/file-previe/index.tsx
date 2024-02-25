@@ -5,6 +5,7 @@ import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { MultipleBrightCode } from "@/components/elements/code/server/bright-code";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
+import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { UIPreview } from "@/components/elements/files/ui-preview/server";
 
 import { MultipleCopyButton } from "@/components/ui/multiple-copy-button";
@@ -19,9 +20,11 @@ import { FileObject } from "@/services/files/get";
 export async function FilePreviews({
   getObject,
   name,
+  functionNames,
 }: {
   getObject: () => Promise<FileObject[]>;
   name: string;
+  functionNames?: string;
 }) {
   const objects = await getObject();
 
@@ -53,8 +56,12 @@ export async function FilePreviews({
       </TabsList>
       <TabsContent value="preview">
         <ErrorBoundary FallbackComponent={UIPreviewError}>
-          <Suspense fallback={null}>
-            <UIPreview name={name} objects={objects} />
+          <Suspense fallback={<UIPreviewLoading name={name} />}>
+            <UIPreview
+              functionName={functionNames}
+              name={name}
+              objects={objects}
+            />
           </Suspense>
         </ErrorBoundary>
       </TabsContent>

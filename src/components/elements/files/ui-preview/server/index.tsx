@@ -10,11 +10,13 @@ import { FileObject } from "@/services/files/get";
 export async function UIPreview({
   objects,
   name,
+  functionName,
 }: {
   objects: FileObject[];
   name: string;
+  functionName?: string;
 }) {
-  const { data } = await transformCode(objects);
+  const { data } = await transformCode(objects, functionName);
 
   if (!data) throw new CodeBundlerError();
 
