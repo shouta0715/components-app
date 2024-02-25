@@ -14,6 +14,7 @@ export const fxHTMLFileResult: TransformedFile = {
   extension: "html",
   mimeType: "text/html",
   originallyExtension: undefined,
+  id: "1",
 };
 
 export const fxTSXFile: FileObject = {
@@ -64,6 +65,7 @@ export const fxGetFilesResult = (arg: CompiledFile): TransformedFile => {
     extension: arg.extension,
     mimeType: getExtensionToMimeType(arg.extension),
     originallyExtension: arg.originallyExtension,
+    id: arg.id,
   };
 };
 

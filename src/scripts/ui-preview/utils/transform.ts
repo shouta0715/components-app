@@ -17,14 +17,15 @@ export async function transformWithHTML(
   files: FileObject[],
   htmlFile: FileObject
 ): Promise<TransformedResult> {
-  if (files.length === 1) return htmlToResult([htmlFile]);
+  const mainFileId = htmlFile.id;
+  if (files.length === 1) return htmlToResult([htmlFile], mainFileId);
 
   const removedPreview = files.filter(
     ({ extension }) =>
       extension !== "tsx" && extension !== "jsx" && extension !== "html"
   );
 
-  if (removedPreview.length < 1) return htmlToResult([htmlFile]);
+  if (removedPreview.length < 1) return htmlToResult([htmlFile], mainFileId);
 
   const compileFiles = await Promise.all(
     removedPreview.map(({ file, extension }) => compile(file, extension))
@@ -56,7 +57,7 @@ export async function transformWithHTML(
     }
   );
 
-  return htmlToResult([htmlFile, ...compiledFiles]);
+  return htmlToResult([htmlFile, ...compiledFiles], mainFileId);
 }
 
 export async function transformWithoutHTML(
@@ -65,17 +66,23 @@ export async function transformWithoutHTML(
 ): Promise<TransformedResult> {
   if (!functionName) throw new PackageError();
 
-  const mainFiles: string[] = [];
+  const mainFiles: {
+    file: string;
+    id: string;
+  }[] = [];
 
-  for (const { file, extension } of files) {
+  for (const { file, extension, id } of files) {
     if (extension !== "tsx" && extension !== "jsx" && extension !== "js")
       continue;
-    mainFiles.push(file);
+    mainFiles.push({ file, id });
   }
 
   if (!mainFiles.length) throw new CodeBundlerError();
 
-  const { exportStyle } = getExportComponentName(mainFiles, functionName);
+  const { exportStyle, mainFileId } = getExportComponentName(
+    mainFiles,
+    functionName
+  );
 
   const compileFiles = await Promise.all(
     files.map(({ file, extension }) => compile(file, extension))
@@ -112,5 +119,5 @@ export async function transformWithoutHTML(
     }
   );
 
-  return reactToResult(functionName, compiledFiles, exportStyle);
+  return reactToResult(functionName, compiledFiles, exportStyle, mainFileId);
 }

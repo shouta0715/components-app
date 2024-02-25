@@ -25,6 +25,7 @@ export type TransformedFile = {
   mimeType: MIMETYPE;
   extension: Extension;
   originallyExtension?: Extension;
+  id: string;
 };
 
 type ErrorMessages = typeof ERROR_MESSAGES;
@@ -41,6 +42,7 @@ export type SuccessTransformedData =
       componentName: string | null;
       exportStyle: ExportStyle | null;
       files: TransformedFile[];
+      mainFileId: string;
       action: Extract<MessageAction, "render">;
     }
   | {

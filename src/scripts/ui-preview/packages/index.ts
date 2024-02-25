@@ -59,33 +59,43 @@ function resolveStaticImports(target: string): string {
 }
 
 export function getExportComponentName(
-  targets: string[],
+  targets: { id: string; file: string }[],
   functionName: string
 ): {
   exportStyle: ExportStyle;
+  mainFileId: string;
 } {
   let exportStyle: ExportStyle | undefined;
+  let mainFileId: string | undefined;
 
   for (const regex of EXPORT_COMPONENT_REGEXES) {
-    const matches = targets.map((target) => target.match(regex));
+    const matches = targets.map((target) => ({
+      regex: target.file.match(regex),
+      id: target.id,
+    }));
 
     if (!matches || matches.length === 0) continue;
 
-    const names = matches.map((match) => match?.[1]);
+    const files = matches.map((match) => ({
+      name: match?.regex?.[1],
+      id: match.id,
+    }));
 
-    const inCloudName = names.includes(functionName);
+    const mailFile = files.find((file) => file?.name === functionName);
 
-    if (!inCloudName) continue;
+    if (!mailFile) continue;
 
     exportStyle = getExportStyle(regex);
+    mainFileId = mailFile.id;
 
     if (exportStyle) break;
   }
 
-  if (!exportStyle) throw new PackageError();
+  if (!exportStyle || !mainFileId) throw new PackageError();
 
   return {
     exportStyle,
+    mainFileId,
   };
 }
 

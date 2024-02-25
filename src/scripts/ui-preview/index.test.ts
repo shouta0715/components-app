@@ -28,6 +28,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "html",
         mimeType: "text/html",
         originallyExtension: undefined,
+        id: "1",
       };
     case "css":
       return {
@@ -35,6 +36,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "css",
         mimeType: "text/css",
         originallyExtension: "css",
+        id: "1",
       };
 
     case "js":
@@ -43,6 +45,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "js",
+        id: "1",
       };
 
     case "ts":
@@ -51,6 +54,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "ts",
+        id: "1",
       };
 
     case "tsx":
@@ -59,6 +63,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "tsx",
+        id: "1",
       };
 
     case "jsx":
@@ -67,6 +72,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "jsx",
+        id: "1",
       };
 
     case "mock-tsx":
@@ -75,6 +81,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "tsx",
+        id: "1",
       };
 
     case "mock-jsx":
@@ -83,6 +90,7 @@ function getResultFile(extension: string): TransformedFile {
         extension: "js",
         mimeType: "text/javascript",
         originallyExtension: "jsx",
+        id: "1",
       };
 
     default:
@@ -165,6 +173,7 @@ describe("scripts/ui-preview", () => {
           componentName: null,
           action: "render",
           exportStyle: null,
+          mainFileId: "1",
         },
       });
     });
@@ -185,6 +194,7 @@ describe("scripts/ui-preview", () => {
           componentName: null,
           action: "render",
           exportStyle: null,
+          mainFileId: "1",
         },
       });
     });
@@ -210,6 +220,7 @@ describe("scripts/ui-preview", () => {
           componentName: null,
           action: "render",
           exportStyle: null,
+          mainFileId: "1",
         },
       });
     });
@@ -234,6 +245,7 @@ describe("scripts/ui-preview", () => {
           componentName: null,
           action: "render",
           exportStyle: null,
+          mainFileId: "1",
         },
       });
     });
@@ -257,6 +269,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -280,6 +293,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -307,6 +321,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -334,6 +349,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -363,6 +379,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -392,6 +409,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });
@@ -423,6 +441,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Example",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
 
@@ -439,6 +458,7 @@ describe("scripts/ui-preview", () => {
           componentName: "Mock",
           action: "render",
           exportStyle: "named",
+          mainFileId: "1",
         },
       });
     });

@@ -17,9 +17,11 @@ export async function transformCode(
   const extensions = files.map((file) => file.extension);
   if (isBadCombination(extensions)) throw new BadCombinationExtensionsError();
 
+  if (functionName) return transformWithoutHTML(files, functionName);
+
   const htmlFile = files.find((file) => file.extension === "html");
 
-  if (htmlFile) return transformWithHTML(files, htmlFile);
+  if (!htmlFile) throw new BadCombinationExtensionsError();
 
-  return transformWithoutHTML(files, functionName);
+  return transformWithHTML(files, htmlFile);
 }

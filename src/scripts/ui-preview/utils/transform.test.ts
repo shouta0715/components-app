@@ -50,6 +50,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -66,6 +67,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -82,6 +84,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -107,6 +110,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -137,6 +141,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -162,6 +167,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: null,
         action: "render",
         exportStyle: null,
+        mainFileId: "1",
       });
     });
 
@@ -197,6 +203,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -219,6 +226,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -249,6 +257,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -279,6 +288,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -314,6 +324,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -349,6 +360,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -379,6 +391,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Example",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
@@ -409,6 +422,7 @@ describe("scripts/ui-preview/utils/transform", async () => {
         componentName: "Mock",
         action: "render",
         exportStyle: "named",
+        mainFileId: "1",
       });
     });
 
