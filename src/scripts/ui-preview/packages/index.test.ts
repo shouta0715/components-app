@@ -5,10 +5,17 @@ import {
   replaceImports,
 } from "@/scripts/ui-preview/packages";
 import {
+  FX_CONST_ARROW_CHANGE_COMPONENT,
   FX_CONST_ARROW_FUNCTION_COMPONENT,
+  FX_DEFAULT_NAMED_CHANGE_COMPONENT,
   FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+  FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
   FX_DEFAULT_VARIABLE_COMPONENT,
+  FX_DOUBLE_EXPORT,
+  FX_EXPECT_CHANGE_NAME,
   FX_EXPECT_COMPONENT_NAME,
+  FX_NAMED_CHANGE,
+  FX_NAMED_CHANGE_COMPONENT,
   FX_NAMED_COMPONENT,
   FX_NAMED_FUNCTION_COMPONENT,
   FX_NO_EXPORT_COMPONENT,
@@ -25,49 +32,350 @@ import {
 
 describe("scripts/ui-preview/packages", async () => {
   describe("Function getExportComponentName Test", async () => {
-    test("Export Named Function", async () => {
-      const { exportStyle, result } = getExportComponentName(
-        FX_NAMED_FUNCTION_COMPONENT
-      );
-      expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
-      expect(exportStyle).toBe("named");
+    describe("Single Component", async () => {
+      test("Export Named Function", async () => {
+        const { exportStyle } = getExportComponentName(
+          [FX_NAMED_FUNCTION_COMPONENT],
+          FX_EXPECT_COMPONENT_NAME
+        );
+        expect(exportStyle).toBe("named");
+      });
+
+      test("Export Const Arrow Function", async () => {
+        const { exportStyle } = getExportComponentName(
+          [FX_CONST_ARROW_FUNCTION_COMPONENT],
+          FX_EXPECT_COMPONENT_NAME
+        );
+        expect(exportStyle).toBe("named");
+      });
+
+      test("Export Default Named Function", async () => {
+        const { exportStyle } = getExportComponentName(
+          [FX_DEFAULT_NAMED_FUNCTION_COMPONENT],
+          FX_EXPECT_COMPONENT_NAME
+        );
+
+        expect(exportStyle).toBe("default");
+      });
+
+      test("Export Default Variable", async () => {
+        const { exportStyle } = getExportComponentName(
+          [FX_DEFAULT_VARIABLE_COMPONENT],
+          FX_EXPECT_COMPONENT_NAME
+        );
+
+        expect(exportStyle).toBe("default");
+      });
+
+      test("Export Named", async () => {
+        const { exportStyle } = getExportComponentName(
+          [FX_NAMED_COMPONENT],
+          FX_EXPECT_COMPONENT_NAME
+        );
+
+        expect(exportStyle).toBe("named");
+      });
+
+      test("No Export", async () => {
+        expect(() =>
+          getExportComponentName(
+            [FX_NO_EXPORT_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          )
+        ).toThrow(PackageError);
+      });
     });
 
-    test("Export Const Arrow Function", async () => {
-      const { exportStyle, result } = getExportComponentName(
-        FX_CONST_ARROW_FUNCTION_COMPONENT
-      );
-      expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
-      expect(exportStyle).toBe("named");
-    });
+    describe("Multiple Component", async () => {
+      describe("Named Component", async () => {
+        test("Named and Named", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_NAMED_CHANGE_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
 
-    test("Export Default Named Function", async () => {
-      const { result, exportStyle } = getExportComponentName(
-        FX_DEFAULT_NAMED_FUNCTION_COMPONENT
-      );
-      expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
-      expect(exportStyle).toBe("default");
-    });
+          expect(exportStyle).toBe("named");
 
-    test("Export Default Variable", async () => {
-      const { result, exportStyle } = getExportComponentName(
-        FX_DEFAULT_VARIABLE_COMPONENT
-      );
-      expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
-      expect(exportStyle).toBe("default");
-    });
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE_COMPONENT, FX_NAMED_FUNCTION_COMPONENT],
+            FX_EXPECT_CHANGE_NAME
+          );
 
-    test("Export Named", async () => {
-      const { result, exportStyle } =
-        getExportComponentName(FX_NAMED_COMPONENT);
-      expect(result).toBe(FX_EXPECT_COMPONENT_NAME);
-      expect(exportStyle).toBe("named");
-    });
+          expect(exportStyle2).toBe("named");
+        });
 
-    test("No Export", async () => {
-      expect(() => getExportComponentName(FX_NO_EXPORT_COMPONENT)).toThrow(
-        PackageError
-      );
+        test("Named and Default", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_DEFAULT_NAMED_CHANGE_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("named");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+              FX_DEFAULT_NAMED_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Named and arrow", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_CONST_ARROW_CHANGE_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("named");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_CONST_ARROW_FUNCTION_COMPONENT,
+              FX_CONST_ARROW_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("named");
+        });
+
+        test("Named and default Variables", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_DEFAULT_VARIABLE_CHANGE_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("named");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_DEFAULT_VARIABLE_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Named and Named Object", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_NAMED_CHANGE],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("named");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE, FX_NAMED_FUNCTION_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle2).toBe("named");
+        });
+
+        test("Double Named", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_DOUBLE_EXPORT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("named");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_DOUBLE_EXPORT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle2).toBe("named");
+        });
+      });
+
+      describe("Default Component", async () => {
+        test("Default and Default", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+              FX_DEFAULT_NAMED_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("default");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_DEFAULT_NAMED_CHANGE_COMPONENT,
+              FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Default and Arrow", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+              FX_CONST_ARROW_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("default");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_FUNCTION_COMPONENT, FX_CONST_ARROW_CHANGE_COMPONENT],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("named");
+        });
+
+        test("Default and Default Variable", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_DEFAULT_NAMED_FUNCTION_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("default");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_DEFAULT_VARIABLE_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Default and Named Object", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_DEFAULT_NAMED_FUNCTION_COMPONENT, FX_NAMED_CHANGE],
+            FX_EXPECT_COMPONENT_NAME
+          );
+
+          expect(exportStyle).toBe("default");
+
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE, FX_DEFAULT_NAMED_FUNCTION_COMPONENT],
+            FX_EXPECT_CHANGE_NAME
+          );
+
+          expect(exportStyle2).toBe("named");
+        });
+      });
+
+      describe("Arrow Component", async () => {
+        test("Arrow and Arrow", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_CONST_ARROW_FUNCTION_COMPONENT,
+              FX_CONST_ARROW_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("named");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_CONST_ARROW_CHANGE_COMPONENT,
+              FX_CONST_ARROW_FUNCTION_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+          expect(exportStyle2).toBe("named");
+        });
+
+        test("Arrow and Default Variable", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_CONST_ARROW_FUNCTION_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("named");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_CONST_ARROW_FUNCTION_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Arrow and Named Object", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_CONST_ARROW_FUNCTION_COMPONENT, FX_NAMED_CHANGE],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("named");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE, FX_CONST_ARROW_FUNCTION_COMPONENT],
+            FX_EXPECT_CHANGE_NAME
+          );
+          expect(exportStyle2).toBe("named");
+        });
+      });
+
+      describe("Default Variable Component", async () => {
+        test("Default Variable and Default Variable", async () => {
+          const { exportStyle } = getExportComponentName(
+            [
+              FX_DEFAULT_VARIABLE_COMPONENT,
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+            ],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("default");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [
+              FX_DEFAULT_VARIABLE_CHANGE_COMPONENT,
+              FX_DEFAULT_VARIABLE_COMPONENT,
+            ],
+            FX_EXPECT_CHANGE_NAME
+          );
+          expect(exportStyle2).toBe("default");
+        });
+
+        test("Default Variable and Named Object", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_DEFAULT_VARIABLE_COMPONENT, FX_NAMED_CHANGE],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("default");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE, FX_DEFAULT_VARIABLE_COMPONENT],
+            FX_EXPECT_CHANGE_NAME
+          );
+          expect(exportStyle2).toBe("named");
+        });
+      });
+
+      describe("Named Object Component", async () => {
+        test("Named Object and Named Object", async () => {
+          const { exportStyle } = getExportComponentName(
+            [FX_NAMED_COMPONENT, FX_NAMED_CHANGE],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle).toBe("named");
+          const { exportStyle: exportStyle2 } = getExportComponentName(
+            [FX_NAMED_CHANGE, FX_NAMED_COMPONENT],
+            FX_EXPECT_COMPONENT_NAME
+          );
+          expect(exportStyle2).toBe("named");
+        });
+      });
     });
   });
   describe("replaceImports", async () => {

@@ -23,6 +23,13 @@ export const fxTSXFile: FileObject = {
   id: "1",
 };
 
+export const fxMockNameTSXFile: CompiledFile = {
+  extension: "tsx",
+  file: "export const Mock = () => {} const a = 1; console.log(a);",
+  componentId: "1",
+  id: "1",
+};
+
 export const fxJSXFile: FileObject = {
   extension: "jsx",
   file: "export function Example(){}const a = 1; console.log(a);",
@@ -59,3 +66,5 @@ export const fxGetFilesResult = (arg: CompiledFile): TransformedFile => {
     originallyExtension: arg.originallyExtension,
   };
 };
+
+export const fxFunctionName = "Example";

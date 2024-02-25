@@ -11,7 +11,8 @@ import {
 import { FileObject } from "@/services/files/get";
 
 export async function transformCode(
-  files: FileObject[]
+  files: FileObject[],
+  functionName?: string
 ): Promise<TransformedResult> {
   const extensions = files.map((file) => file.extension);
   if (isBadCombination(extensions)) throw new BadCombinationExtensionsError();
@@ -20,5 +21,5 @@ export async function transformCode(
 
   if (htmlFile) return transformWithHTML(files, htmlFile);
 
-  return transformWithoutHTML(files);
+  return transformWithoutHTML(files, functionName);
 }

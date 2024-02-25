@@ -1,5 +1,9 @@
 import { compile } from "@/scripts/ui-preview/compilers";
-import { CodeBundlerError, CompilerError } from "@/scripts/ui-preview/errors";
+import {
+  CodeBundlerError,
+  CompilerError,
+  PackageError,
+} from "@/scripts/ui-preview/errors";
 import {
   getExportComponentName,
   replaceImports,
@@ -56,17 +60,22 @@ export async function transformWithHTML(
 }
 
 export async function transformWithoutHTML(
-  files: FileObject[]
+  files: FileObject[],
+  functionName?: string
 ): Promise<TransformedResult> {
-  const mainFile = files.find(
-    (file) => file.extension === "tsx" || file.extension === "jsx"
-  );
+  if (!functionName) throw new PackageError();
 
-  if (!mainFile) throw new CodeBundlerError();
+  const mainFiles: string[] = [];
 
-  const { result: componentName, exportStyle } = getExportComponentName(
-    mainFile.file
-  );
+  for (const { file, extension } of files) {
+    if (extension !== "tsx" && extension !== "jsx" && extension !== "js")
+      continue;
+    mainFiles.push(file);
+  }
+
+  if (!mainFiles.length) throw new CodeBundlerError();
+
+  const { exportStyle } = getExportComponentName(mainFiles, functionName);
 
   const compileFiles = await Promise.all(
     files.map(({ file, extension }) => compile(file, extension))
@@ -103,5 +112,5 @@ export async function transformWithoutHTML(
     }
   );
 
-  return reactToResult(componentName, compiledFiles, exportStyle);
+  return reactToResult(functionName, compiledFiles, exportStyle);
 }

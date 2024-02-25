@@ -20,6 +20,25 @@ function resolvePackage(target: string): string {
   return `${ESM_BASE_URL}/${target}`;
 }
 
+function getExportStyle(target: RegExp): ExportStyle | undefined {
+  if (
+    target === EXPORT_DEFAULT_NAMED_FUNCTION_REGEX ||
+    target === EXPORT_DEFAULT_VARIABLE_REGEX
+  ) {
+    return "default";
+  }
+
+  if (
+    target === EXPORT_NAMED_FUNCTION_REGEX ||
+    target === EXPORT_CONST_ARROW_FUNCTION_REGEX ||
+    target === EXPORT_NAMED_REGEX
+  ) {
+    return "named";
+  }
+
+  return undefined;
+}
+
 function resolveDynamicImports(target: string): string {
   const resolved = target.replace(DYNAMIC_IMPORT_REGEX, (_, pk) => {
     return `import("${resolvePackage(pk)}")`;
@@ -39,45 +58,33 @@ function resolveStaticImports(target: string): string {
   return resolved;
 }
 
-export function getExportComponentName(target: string): {
-  result: string;
+export function getExportComponentName(
+  targets: string[],
+  functionName: string
+): {
   exportStyle: ExportStyle;
 } {
-  let result: string | undefined;
   let exportStyle: ExportStyle | undefined;
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const regex of EXPORT_COMPONENT_REGEXES) {
-    const match = target.match(regex);
+    const matches = targets.map((target) => target.match(regex));
 
-    // eslint-disable-next-line no-continue
-    if (!match) continue;
+    if (!matches || matches.length === 0) continue;
 
-    if (result && result !== "function") break;
+    const names = matches.map((match) => match?.[1]);
 
-    const [, name] = match;
+    const inCloudName = names.includes(functionName);
 
-    if (
-      regex === EXPORT_DEFAULT_NAMED_FUNCTION_REGEX ||
-      regex === EXPORT_DEFAULT_VARIABLE_REGEX
-    ) {
-      exportStyle = "default";
-    }
+    if (!inCloudName) continue;
 
-    if (
-      regex === EXPORT_NAMED_FUNCTION_REGEX ||
-      regex === EXPORT_CONST_ARROW_FUNCTION_REGEX ||
-      regex === EXPORT_NAMED_REGEX
-    ) {
-      exportStyle = "named";
-    }
-    result = name;
+    exportStyle = getExportStyle(regex);
+
+    if (exportStyle) break;
   }
 
-  if (!result || !exportStyle) throw new PackageError();
+  if (!exportStyle) throw new PackageError();
 
   return {
-    result,
     exportStyle,
   };
 }

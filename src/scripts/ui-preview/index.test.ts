@@ -16,6 +16,9 @@ const commonFile = {
 };
 
 const reactFile = "export function Example(){}";
+const reactFile2 = "export const Mock = () => {}";
+const functionName = "Example";
+const functionName2 = "Mock";
 
 function getResultFile(extension: string): TransformedFile {
   switch (extension) {
@@ -66,6 +69,22 @@ function getResultFile(extension: string): TransformedFile {
         originallyExtension: "jsx",
       };
 
+    case "mock-tsx":
+      return {
+        content: "const o=()=>{};export{o as Mock};\n",
+        extension: "js",
+        mimeType: "text/javascript",
+        originallyExtension: "tsx",
+      };
+
+    case "mock-jsx":
+      return {
+        content: "const o=()=>{};export{o as Mock};\n",
+        extension: "js",
+        mimeType: "text/javascript",
+        originallyExtension: "jsx",
+      };
+
     default:
       throw new Error(`Unexpected extension: ${extension}`);
   }
@@ -90,7 +109,9 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "css" },
       ];
 
-      expect(transformCode(input)).rejects.toThrowError(CodeBundlerError);
+      expect(transformCode(input, functionName)).rejects.toThrowError(
+        CodeBundlerError
+      );
     });
 
     test("CompilerError from transformWithHTML", async () => {
@@ -108,7 +129,9 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "css", file: "" },
       ];
 
-      expect(transformCode(input)).rejects.toThrowError(CompilerError);
+      expect(transformCode(input, functionName)).rejects.toThrowError(
+        CompilerError
+      );
     });
 
     test("PackageError from transformWithoutHTML", async () => {
@@ -117,7 +140,9 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "css" },
       ];
 
-      expect(transformCode(input)).rejects.toThrowError(PackageError);
+      expect(transformCode(input, functionName)).rejects.toThrowError(
+        PackageError
+      );
     });
   });
   describe("Success cases transformCode", () => {
@@ -222,7 +247,7 @@ describe("scripts/ui-preview", () => {
         },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [getResultFile("tsx")];
 
@@ -245,7 +270,7 @@ describe("scripts/ui-preview", () => {
         },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [getResultFile("jsx")];
 
@@ -269,7 +294,7 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "ts" },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [
         getResultFile("tsx"),
@@ -296,7 +321,7 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "js" },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [
         getResultFile("jsx"),
@@ -324,7 +349,7 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "css" },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [
         getResultFile("tsx"),
@@ -353,7 +378,7 @@ describe("scripts/ui-preview", () => {
         { ...commonFile, extension: "css" },
       ];
 
-      const result = await transformCode(input);
+      const result = await transformCode(input, functionName);
 
       const resultFiles: TransformedFile[] = [
         getResultFile("jsx"),
@@ -365,6 +390,53 @@ describe("scripts/ui-preview", () => {
         data: {
           files: resultFiles,
           componentName: "Example",
+          action: "render",
+          exportStyle: "named",
+        },
+      });
+    });
+
+    test("tsx and tsx", async () => {
+      const input: FileObject[] = [
+        {
+          ...commonFile,
+          extension: "tsx",
+          file: reactFile,
+        },
+        {
+          ...commonFile,
+          extension: "tsx",
+          file: reactFile2,
+        },
+      ];
+
+      const result = await transformCode(input, functionName);
+
+      const resultFiles: TransformedFile[] = [
+        getResultFile("tsx"),
+        getResultFile("mock-tsx"),
+      ];
+
+      expect(result).toStrictEqual<TransformedResult>({
+        data: {
+          files: resultFiles,
+          componentName: "Example",
+          action: "render",
+          exportStyle: "named",
+        },
+      });
+
+      const result2 = await transformCode(input, functionName2);
+
+      const resultFiles2: TransformedFile[] = [
+        getResultFile("tsx"),
+        getResultFile("mock-tsx"),
+      ];
+
+      expect(result2).toStrictEqual<TransformedResult>({
+        data: {
+          files: resultFiles2,
+          componentName: "Mock",
           action: "render",
           exportStyle: "named",
         },
