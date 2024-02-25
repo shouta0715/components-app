@@ -43,12 +43,7 @@ export function UIPreviewError({
   const [collapsible, setCollapsible] = useState(true);
 
   return (
-    <Collapsible
-      className="px-2"
-      defaultOpen
-      onOpenChange={setCollapsible}
-      open={collapsible}
-    >
+    <Collapsible defaultOpen onOpenChange={setCollapsible} open={collapsible}>
       <div className="grid overflow-hidden rounded-md border border-border">
         <div className="flex items-center gap-2 border-b border-border p-4">
           <button onClick={resetErrorBoundary} type="button">
