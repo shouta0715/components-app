@@ -1,5 +1,9 @@
 import { compile } from "@/scripts/ui-preview/compilers";
-import { CodeBundlerError, CompilerError } from "@/scripts/ui-preview/errors";
+import {
+  CodeBundlerError,
+  CompilerError,
+  PackageError,
+} from "@/scripts/ui-preview/errors";
 import {
   getExportComponentName,
   replaceImports,
@@ -13,14 +17,15 @@ export async function transformWithHTML(
   files: FileObject[],
   htmlFile: FileObject
 ): Promise<TransformedResult> {
-  if (files.length === 1) return htmlToResult([htmlFile]);
+  const mainFileId = htmlFile.id;
+  if (files.length === 1) return htmlToResult([htmlFile], mainFileId);
 
   const removedPreview = files.filter(
     ({ extension }) =>
       extension !== "tsx" && extension !== "jsx" && extension !== "html"
   );
 
-  if (removedPreview.length < 1) return htmlToResult([htmlFile]);
+  if (removedPreview.length < 1) return htmlToResult([htmlFile], mainFileId);
 
   const compileFiles = await Promise.all(
     removedPreview.map(({ file, extension }) => compile(file, extension))
@@ -52,20 +57,31 @@ export async function transformWithHTML(
     }
   );
 
-  return htmlToResult([htmlFile, ...compiledFiles]);
+  return htmlToResult([htmlFile, ...compiledFiles], mainFileId);
 }
 
 export async function transformWithoutHTML(
-  files: FileObject[]
+  files: FileObject[],
+  functionName?: string
 ): Promise<TransformedResult> {
-  const mainFile = files.find(
-    (file) => file.extension === "tsx" || file.extension === "jsx"
-  );
+  if (!functionName) throw new PackageError();
 
-  if (!mainFile) throw new CodeBundlerError();
+  const mainFiles: {
+    file: string;
+    id: string;
+  }[] = [];
 
-  const { result: componentName, exportStyle } = getExportComponentName(
-    mainFile.file
+  for (const { file, extension, id } of files) {
+    if (extension !== "tsx" && extension !== "jsx" && extension !== "js")
+      continue;
+    mainFiles.push({ file, id });
+  }
+
+  if (!mainFiles.length) throw new CodeBundlerError();
+
+  const { exportStyle, mainFileId } = getExportComponentName(
+    mainFiles,
+    functionName
   );
 
   const compileFiles = await Promise.all(
@@ -103,5 +119,5 @@ export async function transformWithoutHTML(
     }
   );
 
-  return reactToResult(componentName, compiledFiles, exportStyle);
+  return reactToResult(functionName, compiledFiles, exportStyle, mainFileId);
 }

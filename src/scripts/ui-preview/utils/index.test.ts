@@ -7,21 +7,9 @@ import {
 describe("scripts/ui-preview/utils", async () => {
   describe("Function isBadCombination Test", async () => {
     test("Duplication", async () => {
-      const result = isBadCombination(["js", "js"]);
+      const result = isBadCombination(["html", "html"]);
 
       expect(result).toBe(true);
-
-      const result2 = isBadCombination(["ts", "ts"]);
-
-      expect(result2).toBe(true);
-
-      const result3 = isBadCombination(["tsx", "tsx", "css"]);
-
-      expect(result3).toBe(true);
-
-      const result4 = isBadCombination(["jsx", "css"]);
-
-      expect(result4).toBe(false);
     });
 
     test("Bad Combination", async () => {

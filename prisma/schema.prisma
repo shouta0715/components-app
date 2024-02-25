@@ -73,10 +73,10 @@ model Follow {
   following   User   @relation("following", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
+  @@unique([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
   @@map("follows")
-  @@unique([followerId, followingId])
 }
 
 model Category {
@@ -90,17 +90,18 @@ model Category {
 }
 
 model Component {
-  id         String   @id @default(cuid())
-  name       String
-  description String?
-  draft      Boolean  @default(true)
-  document   String   @db.Text
-  previewUrl String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  draft        Boolean  @default(true)
+  document     String   @db.Text
+  previewUrl   String
+  functionName String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // RELATIONSHIPS
-  category  Category @relation(fields: [categoryName], references: [name])
+  category     Category @relation(fields: [categoryName], references: [name])
   categoryName String
 
   creatorId String
@@ -113,9 +114,8 @@ model Component {
   likes         ComponentLike[]
 
   @@index([creatorId])
-  
-  @@map("components")
   @@index([categoryName])
+  @@map("components")
 }
 
 enum Extension {
@@ -166,7 +166,6 @@ enum Responsive {
   mobile
   desktop
 }
-
 
 model ComponentReview {
   id        String   @id @default(cuid())

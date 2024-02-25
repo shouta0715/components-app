@@ -14,11 +14,19 @@ export const fxHTMLFileResult: TransformedFile = {
   extension: "html",
   mimeType: "text/html",
   originallyExtension: undefined,
+  id: "1",
 };
 
 export const fxTSXFile: FileObject = {
   extension: "tsx",
   file: "export const Example = () => {} const a = 1; console.log(a);",
+  componentId: "1",
+  id: "1",
+};
+
+export const fxMockNameTSXFile: CompiledFile = {
+  extension: "tsx",
+  file: "export const Mock = () => {} const a = 1; console.log(a);",
   componentId: "1",
   id: "1",
 };
@@ -57,5 +65,8 @@ export const fxGetFilesResult = (arg: CompiledFile): TransformedFile => {
     extension: arg.extension,
     mimeType: getExtensionToMimeType(arg.extension),
     originallyExtension: arg.originallyExtension,
+    id: arg.id,
   };
 };
+
+export const fxFunctionName = "Example";

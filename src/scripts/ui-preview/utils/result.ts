@@ -8,13 +8,17 @@ import {
 } from "@/scripts/ui-preview/types";
 import { getExtensionToMimeType } from "@/scripts/ui-preview/utils";
 
-export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
+export const htmlToResult = (
+  files: CompiledFile[],
+  mainFileId: string
+): TransformedResult => {
   const resultFiles: TransformedFile[] = files.map((file) => {
     return {
       content: file.file,
       mimeType: getExtensionToMimeType(file.extension),
       extension: file.extension,
       originallyExtension: file.originallyExtension,
+      id: file.id,
     };
   });
 
@@ -23,6 +27,7 @@ export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
     componentName: null,
     action: RENDER_ACTION,
     exportStyle: null,
+    mainFileId,
   };
 
   return {
@@ -33,7 +38,8 @@ export const htmlToResult = (files: CompiledFile[]): TransformedResult => {
 export const reactToResult = (
   componentName: string,
   files: CompiledFile[],
-  exportStyle: ExportStyle
+  exportStyle: ExportStyle,
+  mainFileId: string
 ): TransformedResult => {
   const resultFiles: TransformedFile[] = files.map((file) => {
     return {
@@ -41,6 +47,7 @@ export const reactToResult = (
       mimeType: getExtensionToMimeType(file.extension),
       extension: file.extension,
       originallyExtension: file.originallyExtension,
+      id: file.id,
     };
   });
 
@@ -49,6 +56,7 @@ export const reactToResult = (
     componentName,
     action: RENDER_ACTION,
     exportStyle,
+    mainFileId,
   };
 
   return {

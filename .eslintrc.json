@@ -24,13 +24,7 @@
     "prettier",
     "plugin:storybook/recommended"
   ],
-  "plugins": [
-    "import",
-    "jsx-a11y",
-    "react",
-    "unused-imports",
-    "react-hooks"
-  ],
+  "plugins": ["import", "jsx-a11y", "react", "unused-imports", "react-hooks"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -89,10 +83,7 @@
     "react/jsx-filename-extension": [
       "error",
       {
-        "extensions": [
-          ".jsx",
-          ".tsx"
-        ]
+        "extensions": [".jsx", ".tsx"]
       }
     ],
     "import/order": [
@@ -110,12 +101,12 @@
     "no-underscore-dangle": [
       "error",
       {
-        "allow": [
-          "_count"
-        ]
+        "allow": ["_count"]
       }
     ],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    "no-continue": "off",
+    "no-restricted-syntax": "off"
   }
 }

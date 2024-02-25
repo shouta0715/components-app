@@ -37,6 +37,7 @@ export default async function Page({ params }: Params) {
         <UserInfo creator={component.creator} />
 
         <FilePreviews
+          functionNames={component.functionName || undefined}
           getObject={async () => getFiles(component.files)}
           name={component.name}
         />

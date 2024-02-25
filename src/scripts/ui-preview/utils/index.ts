@@ -10,9 +10,9 @@ const badCombinationExtensions: [Extension, Extension][] = [
 ];
 
 export const isBadCombination = (extensions: Extension[]): boolean => {
-  const uniqueExtensions = [...new Set(extensions)];
+  if (extensions.filter((ext) => ext === "html").length > 1) return true;
 
-  if (extensions.length !== uniqueExtensions.length) return true;
+  const uniqueExtensions = [...new Set(extensions)];
 
   return badCombinationExtensions.some((badCombination) => {
     const [firstExtension, secondExtension] = badCombination;

@@ -12,6 +12,7 @@ import {
   minLength,
   object,
   string,
+  undefined_,
   variant,
 } from "valibot";
 import { safeValidate } from "@/lib/validation";
@@ -67,12 +68,26 @@ export type InputFileType = Input<typeof inputFileSchema>;
 export type DefaultFileType = Input<typeof defaultFileSchema>;
 export type EditFileInput = Input<typeof editFileSchema>;
 
+export const previewTypeSchema = variant("type", [
+  object({
+    type: literal("html"),
+    functionName: undefined_(),
+  }),
+  object({
+    type: literal("react"),
+    functionName: string(),
+  }),
+]);
+
+export type PreviewType = Input<typeof previewTypeSchema>;
+
 export const editFilesSchema = object({
   files: array(editFileSchema, [
     minLength(1, "ファイルを1つ以上選択してください。"),
     maxLength(3, "ファイルは3つまで選択できます。"),
     custom(customArrayValidation, "ファイルの組み合わせが不正です。"),
   ]),
+  previewType: previewTypeSchema,
 });
 
 export type EditFilesInput = Input<typeof editFilesSchema>;
