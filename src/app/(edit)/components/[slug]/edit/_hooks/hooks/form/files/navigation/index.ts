@@ -12,9 +12,9 @@ export function usePreviewNavigation({
   setFiles: (files: EditFilesInput["files"]) => void;
   setError: UseFormSetError<EditFilesInput>;
 }) {
-  const files = useWatch({
+  const [files, functionName] = useWatch({
     control: controls,
-    name: "files",
+    name: ["files", "previewType.functionName"],
   });
 
   function onDeleteFile(id: string) {
@@ -35,6 +35,7 @@ export function usePreviewNavigation({
     hasFiles,
     files,
     isDragActive,
+    functionName,
     getInputProps,
     getRootProps,
     onDeleteFile,

@@ -38,25 +38,49 @@ export type FilesStatus = {
   numbers: FileStatus;
   preview: FileStatus;
   combination: FileStatus;
+  functionName: FileStatus;
 };
 
-export const errorFilesStatus: FilesStatus = {
+export const invalidReactStatus: FilesStatus = {
   numbers: {
     status: "error",
     message: "1つ以上のファイルをアップロードしてください。",
   },
   preview: {
     status: "error",
-    message:
-      ".html, .jsx, .tsxのいずれかのファイルをアップロードしてください。",
+    message: ".jsx, .tsxのいずれかのファイルをアップロードしてください。",
   },
   combination: {
     status: "error",
     message: "js形式とts形式のファイルは同時にアップロードできません。",
   },
+  functionName: {
+    status: "error",
+    message: "関数名を入力してください。",
+  },
 };
 
-export const successFilesStatus: FilesStatus = {
+export const invalidHtmlStatus: FilesStatus = {
+  numbers: {
+    status: "error",
+    message: "1つ以上のファイルをアップロードしてください。",
+  },
+  preview: {
+    status: "error",
+    message: "HTMLファイルをアップロードしてください。",
+  },
+  combination: {
+    status: "error",
+    message: "js形式とts形式のファイルは同時にアップロードできません。",
+  },
+  functionName: {
+    status: "success",
+    message:
+      "HTMLでプレビューを表示する場合は、関数名を入力する必要はありません。",
+  },
+};
+
+export const validFilesStatus: FilesStatus = {
   numbers: {
     status: "success",
   },
@@ -64,6 +88,9 @@ export const successFilesStatus: FilesStatus = {
     status: "success",
   },
   combination: {
+    status: "success",
+  },
+  functionName: {
     status: "success",
   },
 };

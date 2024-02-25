@@ -7,11 +7,11 @@ import { useForm } from "react-hook-form";
 import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
 
 import {
-  FileStatus,
   FilesStatus,
-  errorFilesStatus,
-  successFilesStatus,
+  invalidHtmlStatus,
+  invalidReactStatus,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+import { getFilesStatus } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/files-status";
 import {
   EditFilesInput,
   editFilesSchema,
@@ -19,41 +19,29 @@ import {
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { Params } from "@/types/next";
 
-function calcStatus(files: EditFilesInput["files"]): FilesStatus {
-  if (files.length === 0) {
-    return errorFilesStatus;
-  }
-
+function calcStatus(
+  files: EditFilesInput["files"],
+  type: "html" | "react",
+  functionName?: string
+): FilesStatus {
   const exs = files.map((file) => file.extension);
   const isBad = isBadCombination(exs);
 
-  const hasPreviewFile = files.find(
-    (file) =>
-      file.extension === "html" ||
-      file.extension === "jsx" ||
-      file.extension === "tsx"
-  );
-  const numbersStatus: FileStatus =
-    files.length > 3
-      ? {
-          status: "error",
-          message: "入力できるファイルの数は3つまでです。",
-        }
-      : successFilesStatus.numbers;
+  const hasPreviewFile = files.some((file) => {
+    if (type === "html") {
+      return file.extension === "html";
+    }
 
-  const previewStatus = hasPreviewFile
-    ? successFilesStatus.preview
-    : errorFilesStatus.preview;
+    return file.extension === "tsx" || file.extension === "jsx";
+  });
 
-  const combinationStatus = isBad
-    ? errorFilesStatus.combination
-    : successFilesStatus.combination;
-
-  return {
-    numbers: numbersStatus,
-    preview: previewStatus,
-    combination: combinationStatus,
-  };
+  return getFilesStatus({
+    isBad,
+    hasPreviewFile,
+    type,
+    functionName,
+    length: files.length,
+  });
 }
 
 export function useFilesForm(defaultValues: EditFilesInput) {
@@ -65,6 +53,8 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     getValues,
     setError,
     handleSubmit,
+    resetField,
+    register,
     formState: { errors, isDirty, defaultValues: defaultValuesForm },
     control,
   } = useForm<EditFilesInput>({
@@ -78,11 +68,38 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     console.log(data);
   });
 
-  const [status, setStatus] = useState<FilesStatus>(errorFilesStatus);
+  const [status, setStatus] = useState<FilesStatus>(
+    defaultValues.previewType.type === "html"
+      ? invalidHtmlStatus
+      : invalidReactStatus
+  );
 
   const setFiles = (newFile: EditFilesInput["files"]) => {
     setValue("files", newFile, { shouldDirty: true });
-    setStatus(calcStatus(newFile));
+
+    const { type, functionName } = getValues("previewType");
+    setStatus(calcStatus(newFile, type, functionName));
+  };
+
+  const setPreviewType = (type: "html" | "react") => {
+    const {
+      files: filesValue,
+      previewType: { functionName },
+    } = getValues();
+
+    setValue("previewType.type", type);
+    setStatus(calcStatus(filesValue, type, functionName));
+  };
+
+  const onCompleteFunctionName = (functionName: string) => {
+    const {
+      files: filesValue,
+      previewType: { type },
+    } = getValues();
+
+    setValue("previewType.functionName", functionName);
+    setStatus(calcStatus(filesValue, type, functionName));
+    resetField("previewType.functionName", { defaultValue: functionName });
   };
 
   const isAllSuccess = useMemo(() => {
@@ -94,6 +111,9 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     getValues,
     onSubmitHandler,
     setError,
+    setPreviewType,
+    onCompleteFunctionName,
+    register,
     errors,
     slug,
     control,
