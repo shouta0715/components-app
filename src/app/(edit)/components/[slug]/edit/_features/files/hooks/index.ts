@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { isChangedFNAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
-import { getFilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
+import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
 import {
@@ -18,33 +18,7 @@ import {
   EditFilesInput,
   editFilesSchema,
 } from "@/lib/schema/client/edit/files";
-import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { Params } from "@/types/next";
-
-function calcStatus(
-  files: EditFilesInput["files"],
-  type: "html" | "react",
-  functionName: string | null
-): FilesStatus {
-  const exs = files.map((file) => file.extension);
-  const isBad = isBadCombination(exs);
-
-  const hasPreviewFile = files.some((file) => {
-    if (type === "html") {
-      return file.extension === "html";
-    }
-
-    return file.extension === "tsx" || file.extension === "jsx";
-  });
-
-  return getFilesStatus({
-    isBad,
-    hasPreviewFile,
-    type,
-    functionName,
-    length: files.length,
-  });
-}
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
@@ -78,7 +52,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   );
 
   const setFiles = (newFile: EditFilesInput["files"]) => {
-    setValue("files", newFile, { shouldDirty: true });
+    setValue("files", newFile, { shouldDirty: true, shouldValidate: true });
 
     const { type, functionName } = getValues("previewType");
     setStatus(calcStatus(newFile, type, functionName));
@@ -110,7 +84,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
       previewType: { type },
     } = getValues();
 
-    setValue("previewType.functionName", functionName);
+    setValue("previewType.functionName", functionName, { shouldDirty: true });
     setStatus(calcStatus(filesValue, type, functionName));
     resetField("previewType.functionName", { defaultValue: functionName });
     setIsChangedFN(true);

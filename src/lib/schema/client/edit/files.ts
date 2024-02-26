@@ -5,6 +5,7 @@ import {
   blob,
   custom,
   enum_,
+  forward,
   Input,
   literal,
   maxLength,
@@ -15,6 +16,7 @@ import {
   string,
   variant,
 } from "valibot";
+import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { extensions } from "@/types/file";
@@ -28,16 +30,7 @@ function extensionValidation(input: Blob): boolean {
 function customArrayValidation(input: EditFileInput[]): boolean {
   const exs = input.map((i) => i.extension);
 
-  if (exs.length === 0) return false;
-
   if (isBadCombination(exs)) return false;
-
-  const mainFile = input.find(
-    (i) =>
-      i.extension === "tsx" || i.extension === "jsx" || i.extension === "html"
-  );
-
-  if (!mainFile) return false;
 
   return true;
 }
@@ -75,19 +68,39 @@ export const previewTypeSchema = variant("type", [
   }),
   object({
     type: literal("react"),
-    functionName: string(),
+    functionName: string("関数名を入力してください。"),
   }),
 ]);
 
 export type PreviewType = Input<typeof previewTypeSchema>;
 
-export const editFilesSchema = object({
-  files: array(editFileSchema, [
-    minLength(1, "ファイルを1つ以上選択してください。"),
-    maxLength(3, "ファイルは3つまで選択できます。"),
-    custom(customArrayValidation, "ファイルの組み合わせが不正です。"),
-  ]),
-  previewType: previewTypeSchema,
-});
+export const editFilesSchema = object(
+  {
+    files: array(editFileSchema, [
+      minLength(1, "ファイルを1つ以上選択してください。"),
+      maxLength(3, "ファイルは3つまで選択できます。"),
+      custom(customArrayValidation, "ファイルの組み合わせが不正です。"),
+    ]),
+    previewType: previewTypeSchema,
+  },
+  [
+    forward(
+      custom((input) => {
+        const {
+          files,
+          previewType: { functionName, type },
+        } = input;
+        const status = calcStatus(files, type, functionName);
+
+        const isAllSuccess = Object.values(status).every(
+          (s) => s.status === "success"
+        );
+
+        return isAllSuccess;
+      }, "ステータスの項目をすべて満たしてください。"),
+      ["files"]
+    ),
+  ]
+);
 
 export type EditFilesInput = Input<typeof editFilesSchema>;
