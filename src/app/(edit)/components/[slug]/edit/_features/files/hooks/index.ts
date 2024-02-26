@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isChangedFNAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
+import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { getFilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
@@ -94,6 +95,16 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   };
 
   const onCompleteFunctionName = (functionName: string) => {
+    const validCapitalize = isCapitalize(functionName);
+
+    if (!validCapitalize) {
+      setError("previewType.functionName", {
+        type: "manual",
+        message: "関数名は大文字で始めてください。",
+      });
+
+      return;
+    }
     const {
       files: filesValue,
       previewType: { type },

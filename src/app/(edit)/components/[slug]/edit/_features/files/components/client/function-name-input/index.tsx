@@ -3,6 +3,7 @@ import React from "react";
 import { useFunctionNameInput } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks/function-name";
 import { FunctionNameInputProps } from "@/app/(edit)/components/[slug]/edit/_features/files/types/function-name";
 import { Button } from "@/components/ui/button";
+import { ErrorMessage } from "@/components/ui/error-message";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -11,6 +12,7 @@ export function FunctionNameInput({
   defaultValues,
   onCompleteFunctionName,
   register,
+  errors,
 }: FunctionNameInputProps) {
   const { disabled, type, changed, onChange, onClickComplete } =
     useFunctionNameInput({
@@ -59,6 +61,9 @@ export function FunctionNameInput({
           決定
         </Button>
       </div>
+      <ErrorMessage className="mt-1">
+        {errors.previewType?.functionName?.message}
+      </ErrorMessage>
     </fieldset>
   );
 }

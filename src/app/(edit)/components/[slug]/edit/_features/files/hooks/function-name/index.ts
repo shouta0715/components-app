@@ -6,7 +6,7 @@ export function useFunctionNameInput({
   control,
   defaultValues,
   onCompleteFunctionName,
-}: Omit<FunctionNameInputProps, "register">) {
+}: Omit<FunctionNameInputProps, "register" | "errors">) {
   const [value, setValue] = useState(
     defaultValues?.previewType?.functionName ?? ""
   );

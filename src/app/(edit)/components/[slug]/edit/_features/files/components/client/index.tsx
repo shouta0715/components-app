@@ -50,6 +50,7 @@ export function EditFileForm({
         <FunctionNameInput
           control={control}
           defaultValues={defaultValuesForm}
+          errors={errors}
           onCompleteFunctionName={onCompleteFunctionName}
           register={register}
         />
