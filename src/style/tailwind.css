@@ -50,6 +50,16 @@
   }
 }
 
+.scroll-bar-hidden {
+  -ms-overflow-style: none;
+  /* Firefox 対応 */
+  scrollbar-width: none;
+}
+
+.scroll-bar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components {
   .markdown {
     @apply text-primary [&>:first-child]:!mt-0 [&>:last-child]:!mb-0 leading-7;

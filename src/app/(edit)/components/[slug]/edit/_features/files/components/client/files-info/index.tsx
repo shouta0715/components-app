@@ -44,7 +44,7 @@ export const AcceptedFiles = memo(
             ? "現在の入力されたファイル 一覧"
             : "現在の入力されたファイルはありません。"}
         </span>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="grid grid-cols-3 items-center gap-4">
           {files.map((file, i) => (
             <FilesItem
               key={`${i}-${file.extension}-file-info`}
