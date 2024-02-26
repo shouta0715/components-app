@@ -1,5 +1,4 @@
 import { Extension } from "@prisma/client";
-import { extension } from "mime-types";
 import {
   array,
   blob,
@@ -21,8 +20,10 @@ import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { extensions } from "@/types/file";
 
-function extensionValidation(input: Blob): boolean {
-  const validated = safeValidate(extension(input.type), extensions);
+function extensionValidation(input: File): boolean {
+  const ex = input.name.split(".").pop();
+
+  const validated = safeValidate(ex, extensions);
 
   return validated.success;
 }
@@ -68,7 +69,9 @@ export const previewTypeSchema = variant("type", [
   }),
   object({
     type: literal("react"),
-    functionName: string("関数名を入力してください。"),
+    functionName: string("関数名を入力してください。", [
+      minLength(1, "関数名を入力してください。"),
+    ]),
   }),
 ]);
 

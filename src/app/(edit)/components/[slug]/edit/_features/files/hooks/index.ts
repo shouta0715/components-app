@@ -29,6 +29,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setValue,
     getValues,
     setError,
+    clearErrors,
     handleSubmit,
     resetField,
     register,
@@ -36,7 +37,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     control,
   } = useForm<EditFilesInput>({
     defaultValues: files || defaultValues,
-    mode: "onChange",
+    mode: "onSubmit",
     resolver: valibotResolver(editFilesSchema),
   });
 
@@ -59,13 +60,22 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   };
 
   const setPreviewType = (type: "html" | "react") => {
-    const {
-      files: filesValue,
-      previewType: { functionName },
-    } = getValues();
+    clearErrors("files");
+    const { files: filesValue } = getValues();
+
+    const defaultFunctionName = defaultValuesForm?.previewType?.functionName;
 
     setValue("previewType.type", type);
-    setStatus(calcStatus(filesValue, type, functionName));
+
+    const newFunctionName =
+      type === "html" ? null : defaultFunctionName || null;
+
+    setValue("previewType.functionName", newFunctionName, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    setStatus(calcStatus(filesValue, type, newFunctionName));
   };
 
   const onCompleteFunctionName = (functionName: string) => {
@@ -84,7 +94,10 @@ export function useFilesForm(defaultValues: EditFilesInput) {
       previewType: { type },
     } = getValues();
 
-    setValue("previewType.functionName", functionName, { shouldDirty: true });
+    setValue("previewType.functionName", functionName, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
     setStatus(calcStatus(filesValue, type, functionName));
     resetField("previewType.functionName", { defaultValue: functionName });
     setIsChangedFN(true);

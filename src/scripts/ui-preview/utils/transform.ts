@@ -66,12 +66,14 @@ export async function transformWithoutHTML(
 ): Promise<TransformedResult> {
   if (!functionName) throw new PackageError();
 
+  const targetFiles = files.filter(({ extension }) => extension !== "html");
+
   const mainFiles: {
     file: string;
     id: string;
   }[] = [];
 
-  for (const { file, extension, id } of files) {
+  for (const { file, extension, id } of targetFiles) {
     if (extension !== "tsx" && extension !== "jsx" && extension !== "js")
       continue;
     mainFiles.push({ file, id });
@@ -85,14 +87,14 @@ export async function transformWithoutHTML(
   );
 
   const compileFiles = await Promise.all(
-    files.map(({ file, extension }) => compile(file, extension))
+    targetFiles.map(({ file, extension }) => compile(file, extension))
   );
 
   const compiledFiles: CompiledFile[] = compileFiles.map(
     ({ error, result }, index) => {
       if (error) throw new CompilerError();
 
-      const { extension, componentId, id } = files[index];
+      const { extension, componentId, id } = targetFiles[index];
 
       if (
         extension === "ts" ||

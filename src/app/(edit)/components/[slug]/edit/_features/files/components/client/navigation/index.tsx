@@ -41,6 +41,7 @@ function EditFileNavigate({
     files,
     isDragActive,
     functionName,
+    type,
     getRootProps,
     getInputProps,
     onDeleteFile,
@@ -87,7 +88,9 @@ function EditFileNavigate({
             >
               <PreviewsNavigate
                 files={files}
-                functionName={functionName || undefined}
+                functionName={
+                  type === "react" && functionName ? functionName : undefined
+                }
                 getInputProps={getInputProps}
                 isAllSuccess={isAllSuccess}
                 isDragActive={isDragActive}
