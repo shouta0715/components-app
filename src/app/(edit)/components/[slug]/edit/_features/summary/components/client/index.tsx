@@ -25,7 +25,7 @@ type EditSummaryFormProps = {
 const DynamicCategoryForm = dynamic(
   () =>
     import(
-      "@/app/(edit)/components/[slug]/edit/_features/categories/components/client"
+      "@/app/(edit)/components/[slug]/edit/_features/common/components/client/categories"
     ),
   {
     ssr: false,
