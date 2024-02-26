@@ -3,8 +3,8 @@ import { Suspense } from "react";
 
 import { HydrateEditSection } from "@/app/(edit)/components/[slug]/edit/_components/client/hydrate-atom";
 import { EditDocument } from "@/app/(edit)/components/[slug]/edit/_components/server/document";
-import { EditFile } from "@/app/(edit)/components/[slug]/edit/_components/server/files";
 import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_components/server/header";
+import { EditFile } from "@/app/(edit)/components/[slug]/edit/_features/files/components/server";
 import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_features/summary/components/server";
 import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_hooks/cache";
 
