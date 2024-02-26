@@ -1,9 +1,10 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { isChangedFNAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { getFilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
@@ -46,6 +47,7 @@ function calcStatus(
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
+  const setIsChangedFN = useSetAtom(isChangedFNAtom);
   const { slug } = useParams<Params["params"]>();
 
   const {
@@ -100,6 +102,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setValue("previewType.functionName", functionName);
     setStatus(calcStatus(filesValue, type, functionName));
     resetField("previewType.functionName", { defaultValue: functionName });
+    setIsChangedFN(true);
   };
 
   const isAllSuccess = useMemo(() => {
