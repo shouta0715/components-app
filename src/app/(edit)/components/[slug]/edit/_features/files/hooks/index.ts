@@ -5,13 +5,13 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { getFilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
-import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
+import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
 import {
   FilesStatus,
   invalidHtmlStatus,
   invalidReactStatus,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+} from "@/app/(edit)/components/[slug]/edit/_features/section/types";
 import {
   EditFilesInput,
   editFilesSchema,

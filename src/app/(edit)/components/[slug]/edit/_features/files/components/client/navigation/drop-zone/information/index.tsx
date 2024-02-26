@@ -2,8 +2,8 @@
 import { FileCode2, Siren } from "lucide-react";
 import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
 import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/files-info";
-import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
 import { Label } from "@/components/ui/label";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";
 import { cn } from "@/utils";

@@ -1,6 +1,6 @@
 import { Control, UseFormSetError, useWatch } from "react-hook-form";
 
-import { useFilesDropZone } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/drop-zone/files";
+import { useFilesDropZone } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/hooks/files";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";
 
 export function usePreviewNavigation({

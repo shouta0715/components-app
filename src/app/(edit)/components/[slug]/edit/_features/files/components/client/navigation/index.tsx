@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
 
 import { Control, FieldErrors, UseFormSetError } from "react-hook-form";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
 import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/files-info";
 import { DropZoneNavigate } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/navigation/drop-zone";
 import { PreviewsNavigate } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/navigation/preview";
 import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks/navigation";
-import { accepts } from "@/app/(edit)/components/[slug]/edit/_hooks/utils/drop-zone";
 
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { Button } from "@/components/ui/button";

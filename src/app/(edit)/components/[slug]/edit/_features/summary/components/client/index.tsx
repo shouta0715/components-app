@@ -6,8 +6,8 @@ import React, { Suspense } from "react";
 import {
   CategoryFormLoader,
   PreviewDropZoneLoader,
-} from "@/app/(edit)/components/[slug]/edit/_components/client/loaders";
-import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_components/client/next-section-button";
+} from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/loaders";
+import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/next-section-button";
 
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_features/summary/hooks";
 import { ErrorMessage } from "@/components/ui/error-message";
@@ -25,7 +25,7 @@ type EditSummaryFormProps = {
 const DynamicCategoryForm = dynamic(
   () =>
     import(
-      "@/app/(edit)/components/[slug]/edit/_components/client/form/summary/category-selector"
+      "@/app/(edit)/components/[slug]/edit/_features/categories/components/client"
     ),
   {
     ssr: false,
@@ -36,7 +36,7 @@ const DynamicCategoryForm = dynamic(
 const DynamicPreviewDropZone = dynamic(
   () =>
     import(
-      "@/app/(edit)/components/[slug]/edit/_components/client/image-drop-zones"
+      "@/app/(edit)/components/[slug]/edit/_features/drop-zone/components/client/image-drop-zones"
     ),
   {
     ssr: false,
@@ -47,7 +47,7 @@ const DynamicPreviewDropZone = dynamic(
 const DynamicDuringComponentSave = dynamic(
   () =>
     import(
-      "@/app/(edit)/components/[slug]/edit/_components/client/during-save"
+      "@/app/(edit)/components/[slug]/edit/_features/common/components/client/during-save"
     ),
   {
     ssr: false,

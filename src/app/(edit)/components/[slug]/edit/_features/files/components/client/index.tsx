@@ -3,11 +3,11 @@
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_components/client/next-section-button";
 import { FunctionNameInput } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/function-name-input";
 import { FilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/status";
 import { TogglePreviewType } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/toggle-preview-type";
 import { useFilesForm } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks";
+import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/next-section-button";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";

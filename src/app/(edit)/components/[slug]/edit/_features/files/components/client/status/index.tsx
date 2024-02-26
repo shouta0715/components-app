@@ -6,7 +6,7 @@ import React from "react";
 import {
   FileStatus,
   FilesStatus as TFilesStatus,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+} from "@/app/(edit)/components/[slug]/edit/_features/section/types";
 
 function getLabel(key: keyof TFilesStatus) {
   switch (key) {

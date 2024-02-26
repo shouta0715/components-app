@@ -4,7 +4,7 @@ import {
   invalidHtmlStatus,
   invalidReactStatus,
   validFilesStatus,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/types";
+} from "@/app/(edit)/components/[slug]/edit/_features/section/types";
 
 type Props = {
   isBad: boolean;

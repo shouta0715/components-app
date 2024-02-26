@@ -4,15 +4,15 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_features/summary/hooks/image";
-import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_features/summary/hooks/update";
 import {
   editStatusAtom,
   editValueStatesAtom,
   isEditingAtom,
   isPendingEditAtom,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
-import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/section";
+} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
+import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_features/section/hooks";
+import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_features/summary/hooks/image";
+import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_features/summary/hooks/update";
 import {
   EditSummaryInput,
   editSummarySchema,
