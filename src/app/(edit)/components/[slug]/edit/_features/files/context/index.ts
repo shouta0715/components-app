@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const isChangedFNAtom = atom<boolean>(false);
+export const isForceMountAtom = atom(false);

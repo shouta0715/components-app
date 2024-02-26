@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { isChangedFNAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
+import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
@@ -22,7 +22,7 @@ import { Params } from "@/types/next";
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
-  const setIsChangedFN = useSetAtom(isChangedFNAtom);
+  const setForceMount = useSetAtom(isForceMountAtom);
   const { slug } = useParams<Params["params"]>();
 
   const {
@@ -61,6 +61,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
 
   const setPreviewType = (type: "html" | "react") => {
     clearErrors("files");
+    setForceMount(true);
     const { files: filesValue } = getValues();
 
     const defaultFunctionName = defaultValuesForm?.previewType?.functionName;
@@ -100,7 +101,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     });
     setStatus(calcStatus(filesValue, type, functionName));
     resetField("previewType.functionName", { defaultValue: functionName });
-    setIsChangedFN(true);
+    setForceMount(true);
   };
 
   const isAllSuccess = useMemo(() => {
