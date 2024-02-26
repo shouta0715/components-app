@@ -94,8 +94,7 @@ export function PreviewsNavigate({
           <p className="mb-3 flex gap-x-2 text-xs  font-medium leading-5 text-primary">
             <Siren className="size-6 text-destructive" />
             <span className="self-end">
-              HTML, JSX,
-              TSXのいずれかのファイルをアップロードすると、プレビューが表示されます。
+              ステータスをすべて満たすとプレビューが表示されます
             </span>
           </p>
         )}
