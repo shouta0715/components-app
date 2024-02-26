@@ -23,7 +23,7 @@ import { Params } from "@/types/next";
 function calcStatus(
   files: EditFilesInput["files"],
   type: "html" | "react",
-  functionName?: string
+  functionName: string | null
 ): FilesStatus {
   const exs = files.map((file) => file.extension);
   const isBad = isBadCombination(exs);

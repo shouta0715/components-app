@@ -10,9 +10,9 @@ import {
   maxLength,
   maxSize,
   minLength,
+  null_,
   object,
   string,
-  undefined_,
   variant,
 } from "valibot";
 import { safeValidate } from "@/lib/validation";
@@ -71,7 +71,7 @@ export type EditFileInput = Input<typeof editFileSchema>;
 export const previewTypeSchema = variant("type", [
   object({
     type: literal("html"),
-    functionName: undefined_(),
+    functionName: null_(),
   }),
   object({
     type: literal("react"),

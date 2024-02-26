@@ -43,6 +43,7 @@ export default async function Page({ params }: Params) {
       }
     : {
         type: "html",
+        functionName: null,
       };
 
   const filesDefaultValues: EditFilesInput = {

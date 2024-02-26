@@ -86,7 +86,7 @@ function EditFileNavigate({
             >
               <PreviewsNavigate
                 files={files}
-                functionName={functionName}
+                functionName={functionName || undefined}
                 getInputProps={getInputProps}
                 isAllSuccess={isAllSuccess}
                 isDragActive={isDragActive}

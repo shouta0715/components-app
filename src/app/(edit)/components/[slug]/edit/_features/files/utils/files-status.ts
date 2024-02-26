@@ -10,7 +10,7 @@ type Props = {
   isBad: boolean;
   hasPreviewFile: boolean;
   type: "html" | "react";
-  functionName?: string;
+  functionName: string | null;
   length: number;
 };
 
@@ -41,13 +41,13 @@ const checkLength = (
 
 const checkFunctionName = (
   type: "html" | "react",
-  functionName?: string
+  functionName: string | null
 ): boolean => {
   if (type === "html") {
-    return functionName === undefined;
+    return functionName === null;
   }
 
-  return functionName !== undefined;
+  return functionName !== null;
 };
 
 export function getFilesStatus({
