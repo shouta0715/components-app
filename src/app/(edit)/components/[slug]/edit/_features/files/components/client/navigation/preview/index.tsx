@@ -4,8 +4,8 @@ import React, { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
 
+import { DropZoneInfo } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/components/client/files-drop-zones";
 import { useQueryFileObjects } from "@/app/(edit)/components/[slug]/edit/_features/files/api/objects";
-import { DropZoneInfo } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/navigation/drop-zone/information";
 import { NavigationProps } from "@/app/(edit)/components/[slug]/edit/_features/files/types/navigation/preview";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 

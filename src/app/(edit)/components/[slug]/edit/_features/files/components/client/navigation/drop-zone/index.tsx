@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DropZoneInfo } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/navigation/drop-zone/information";
+import { DropZoneInfo } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/components/client/files-drop-zones";
 import { NavigationProps } from "@/app/(edit)/components/[slug]/edit/_features/files/types/navigation/preview";
 import { TabsContent } from "@/components/ui/tabs";
 
