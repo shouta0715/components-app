@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { HydrateEditSection } from "@/app/(edit)/components/[slug]/edit/_components/client/hydrate-atom";
-import { EditDocument } from "@/app/(edit)/components/[slug]/edit/_components/server/document";
-import { EditFile } from "@/app/(edit)/components/[slug]/edit/_components/server/files";
-import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_components/server/header";
-import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_components/server/summary";
-import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_hooks/cache";
+import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_features/common/cache";
+import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/header";
+import { EditDocument } from "@/app/(edit)/components/[slug]/edit/_features/documents/components/server";
+import { EditFile } from "@/app/(edit)/components/[slug]/edit/_features/files/components/server";
+import { HydrateEditSection } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/hydrate-atom";
+import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_features/summary/components/server";
 
 import { TabsContent, TabsList } from "@/components/ui/tabs";
 import { assertMine } from "@/lib/auth/handlers";
