@@ -1,5 +1,5 @@
 import React from "react";
-import { EditSummaryForm } from "@/app/(edit)/components/[slug]/edit/_components/client/form/summary";
+import { EditSummaryForm } from "@/app/(edit)/components/[slug]/edit/_features/summary/components/client";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 type EditSummaryProps = {

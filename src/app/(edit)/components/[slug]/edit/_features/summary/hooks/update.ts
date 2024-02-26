@@ -2,13 +2,13 @@ import { useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
 import { DeepPartial } from "react-hook-form";
 import {
+  useMutateImage,
+  useMutateSummary,
+} from "@/app/(edit)/components/[slug]/edit/_features/summary/api";
+import {
   editStatusAtom,
   editValueStatesAtom,
 } from "@/app/(edit)/components/[slug]/edit/_hooks/contexts";
-import {
-  useMutateImage,
-  useMutateSummary,
-} from "@/app/(edit)/components/[slug]/edit/_hooks/hooks/query/summary";
 import { SummaryUpdateInputValue } from "@/app/(edit)/components/[slug]/edit/_hooks/types";
 import { getComponentChangedValues } from "@/app/(edit)/components/[slug]/edit/_hooks/utils";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
