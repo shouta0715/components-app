@@ -90,8 +90,10 @@ export function useQueryFileObjects({
   slug,
   files,
 }: TransformFileObjectsProps) {
+  const ids = files.map(({ objectId }) => objectId);
+
   const { data, isPending } = useSuspenseQuery({
-    queryKey: ["fileObjects", { slug, files }],
+    queryKey: ["fileObjects", { slug, ids }],
     queryFn: () => transformFileObjects({ slug, files }),
   });
 

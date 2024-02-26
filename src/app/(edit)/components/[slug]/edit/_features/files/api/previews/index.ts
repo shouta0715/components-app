@@ -25,7 +25,8 @@ export function useQueryTransformedCode({
     queryKey: ["transformedCode", { slug, functionName, ids }],
     queryFn: () => getTransformedCode({ objects, functionName }),
     retry: false,
-    gcTime: 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
   });
 
   return { data, isPending };
