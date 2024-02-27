@@ -138,6 +138,7 @@ model File {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
+  @@index([objectId])
   @@map("files")
 }
 
