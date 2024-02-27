@@ -164,7 +164,7 @@ export function MultipleBrightCode({
                 className="h-10 rounded-none border-b-2 border-b-transparent pr-6 text-xs text-gray-200 opacity-50 transition-none data-[state=active]:border-b-orange-700 data-[state=active]:bg-code data-[state=active]:text-primary-foreground data-[state=active]:opacity-100 data-[state=active]:shadow-none sm:text-sm dark:data-[state=active]:text-primary"
                 value={object.id}
               >
-                <LangIcon extension={object.extension} />
+                <LangIcon extension={object.extension} name={object.name} />
               </TabsTrigger>
               {onClickDelete && (
                 <button
@@ -181,7 +181,8 @@ export function MultipleBrightCode({
                   type="button"
                 >
                   <span className="sr-only">
-                    delete {object.componentId}/index.{object.extension}
+                    delete {object.componentId}/${object.name}.
+                    {object.extension}
                   </span>
                   <X className="size-4" />
                 </button>

@@ -34,6 +34,7 @@ export default async function Page({ params }: Params) {
     type: "default",
     objectId: file.objectId,
     extension: file.extension,
+    name: file.name,
   }));
 
   const previewType: PreviewType = functionName

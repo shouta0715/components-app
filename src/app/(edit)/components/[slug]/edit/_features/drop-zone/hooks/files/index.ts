@@ -29,6 +29,7 @@ export function useFilesDropZone({
 
     for (const file of acceptedFiles) {
       const ex = file.name.split(".").pop();
+      const name = file.name.split(".").slice(0, -1).join(".");
 
       const val = safeValidate(ex, extensions);
 
@@ -41,6 +42,7 @@ export function useFilesDropZone({
         extension: val.output,
         type: "input",
         objectId: uuid,
+        name,
       });
     }
 
