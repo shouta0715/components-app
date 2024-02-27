@@ -20,17 +20,17 @@ const uploadFileSchema = object({
 
 export type UploadFileInput = Input<typeof uploadFileSchema>;
 
-const deleteIDSchema = object({
+const deleteFiles = object({
   id: number(),
   objectId: string(),
   extension: enum_(Extension),
 });
 
-export type DeleteIDInput = Input<typeof deleteIDSchema>;
+export type DeleteFilesInput = Input<typeof deleteFiles>;
 
 export const filesUpdateSchema = object(
   {
-    deleteIDs: optional(array(deleteIDSchema)),
+    deleteFiles: optional(array(deleteFiles)),
     uploadFiles: optional(array(uploadFileSchema)),
     functionName: optional(functionNameSchema),
     draft: optional(boolean()),
