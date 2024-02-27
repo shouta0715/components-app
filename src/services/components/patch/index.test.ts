@@ -94,13 +94,13 @@ describe("PATCH Component RDB test", () => {
       test("delete files", async () => {
         const { component, files } = await createMockComponentFiles();
         const firstFile = files[0];
-        const deleteIDs = {
+        const deleteFiles = {
           id: firstFile.id,
           objectId: firstFile.objectId,
           extension: firstFile.extension,
         };
 
-        const input: FilesUpdateInput = { deleteIDs: [deleteIDs] };
+        const input: FilesUpdateInput = { deleteFiles: [deleteFiles] };
 
         await updateComponentFiles(component.id, input);
 
@@ -125,14 +125,14 @@ describe("PATCH Component RDB test", () => {
       test("delete with update other fields", async () => {
         const { component, files } = await createMockComponentFiles();
         const firstFile = files[0];
-        const deleteIDs = {
+        const deleteFiles = {
           id: firstFile.id,
           objectId: firstFile.objectId,
           extension: firstFile.extension,
         };
 
         const input: FilesUpdateInput = {
-          deleteIDs: [deleteIDs],
+          deleteFiles: [deleteFiles],
           functionName: "new function name",
           draft: false,
         };
@@ -162,7 +162,7 @@ describe("PATCH Component RDB test", () => {
       test("delete files with create new files", async () => {
         const { component, files } = await createMockComponentFiles();
         const firstFile = files[0];
-        const deleteIDs = {
+        const deleteFiles = {
           id: firstFile.id,
           objectId: firstFile.objectId,
           extension: firstFile.extension,
@@ -177,7 +177,7 @@ describe("PATCH Component RDB test", () => {
         ];
 
         const input: FilesUpdateInput = {
-          deleteIDs: [deleteIDs],
+          deleteFiles: [deleteFiles],
           uploadFiles: newFiles,
         };
 
@@ -217,7 +217,7 @@ describe("PATCH Component RDB test", () => {
       test("delete files with create new files and update other fields", async () => {
         const { component, files } = await createMockComponentFiles();
         const firstFile = files[0];
-        const deleteIDs = {
+        const deleteFiles = {
           id: firstFile.id,
           objectId: firstFile.objectId,
           extension: firstFile.extension,
@@ -237,7 +237,7 @@ describe("PATCH Component RDB test", () => {
         ];
 
         const input: FilesUpdateInput = {
-          deleteIDs: [deleteIDs],
+          deleteFiles: [deleteFiles],
           uploadFiles: newFiles,
           functionName: "new function name",
           draft: true,
@@ -283,13 +283,13 @@ describe("PATCH Component RDB test", () => {
       test("if fail to aws delete, rollback", async () => {
         const { component, files } = await createMockComponentFiles();
         const firstFile = files[0];
-        const deleteIDs = {
+        const deleteFiles = {
           id: firstFile.id,
           objectId: firstFile.objectId,
           extension: firstFile.extension,
         };
 
-        const input: FilesUpdateInput = { deleteIDs: [deleteIDs] };
+        const input: FilesUpdateInput = { deleteFiles: [deleteFiles] };
 
         spyDeleteAWSFiles.mockImplementation(async () => {
           throw new Error("Failed to delete files from s3");

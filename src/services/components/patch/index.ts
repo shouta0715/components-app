@@ -15,13 +15,13 @@ export async function updateComponentFiles(
   id: string,
   input: FilesUpdateInput
 ) {
-  const { deleteIDs, uploadFiles, functionName, draft } = input;
+  const { deleteFiles, uploadFiles, functionName, draft } = input;
 
   const objectIds: string[] = [];
   const deleteIds: number[] = [];
 
-  if (deleteIDs) {
-    for (const { objectId, id: deleteID, extension } of deleteIDs) {
+  if (deleteFiles) {
+    for (const { objectId, id: deleteID, extension } of deleteFiles) {
       objectIds.push(`${objectId}.${extension}`);
       deleteIds.push(deleteID);
     }
@@ -34,9 +34,9 @@ export async function updateComponentFiles(
   }));
 
   return prisma.$transaction(async (tp) => {
-    await tp.component.update({
+    const data = await tp.component.update({
       where: { id },
-      select: { id: true },
+      select: { files: { select: { id: true, objectId: true } } },
       data: {
         files: {
           deleteMany: { id: { in: deleteIds } },
@@ -49,6 +49,10 @@ export async function updateComponentFiles(
       },
     });
 
+    if (objectIds.length === 0) return data;
+
     await deleteAWSFiles(objectIds);
+
+    return data;
   });
 }
