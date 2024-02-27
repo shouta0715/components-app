@@ -437,6 +437,7 @@ describe("PATCH Component RDB test", () => {
         const input: FilesUpdateInput = {
           functionName: "new function name",
           draft: true,
+          deleteFiles: [{ extension: "html", id: 1, objectId: "1" }],
         };
 
         spyDeleteAWSFiles.mockImplementation(async () => {
