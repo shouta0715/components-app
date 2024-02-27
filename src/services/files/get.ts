@@ -10,12 +10,14 @@ export type FileObject = {
   extension: Extension;
   componentId: string;
   id: string;
+  name: string;
 };
 
 export const getNotSignedFile = async (
   id: string,
   extension: Extension,
-  componentId: string
+  componentId: string,
+  name: string
 ): Promise<FileObject> => {
   const filename = `${id}.${extension}`;
   const url = `${OBJECT_PUBLIC_BASE_URL}/${filename}`;
@@ -39,6 +41,7 @@ export const getNotSignedFile = async (
     extension,
     componentId,
     id,
+    name,
   };
 };
 
@@ -50,12 +53,13 @@ export const getFiles = (files: Omit<File, "id">[]): Promise<FileObject[]> => {
       fileId: file.objectId,
       extension: file.extension,
       componentId: file.componentId,
+      name: file.name,
     };
   });
 
   return Promise.all(
-    extensionList.map(async ({ fileId, extension, componentId }) => {
-      return getNotSignedFile(fileId, extension, componentId);
+    extensionList.map(async ({ fileId, extension, componentId, name }) => {
+      return getNotSignedFile(fileId, extension, componentId, name);
     })
   );
 };
