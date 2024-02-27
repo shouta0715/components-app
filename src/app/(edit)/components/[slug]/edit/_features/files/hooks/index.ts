@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
-import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import {
   editValueStatesAtom,
@@ -22,6 +21,7 @@ import {
   editFilesSchema,
 } from "@/lib/schema/client/edit/files";
 import { Params } from "@/types/next";
+import { isCapitalize } from "@/utils/capitalize";
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);

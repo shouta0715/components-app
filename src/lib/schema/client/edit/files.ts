@@ -16,11 +16,11 @@ import {
   string,
   variant,
 } from "valibot";
-import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { extensions } from "@/types/file";
+import { isCapitalize } from "@/utils/capitalize";
 
 function extensionValidation(input: File): boolean {
   const ex = input.name.split(".").pop();
