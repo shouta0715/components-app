@@ -1,13 +1,16 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
-import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
+import {
+  editValueStatesAtom,
+  isEditingAtom,
+} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
 import {
   FilesStatus,
@@ -23,6 +26,7 @@ import { Params } from "@/types/next";
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
   const setForceMount = useSetAtom(isForceMountAtom);
+  const setIsEditing = useSetAtom(isEditingAtom);
   const { slug } = useParams<Params["params"]>();
 
   const {
@@ -40,6 +44,12 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     mode: "onSubmit",
     resolver: valibotResolver(editFilesSchema),
   });
+
+  useEffect(() => {
+    setIsEditing(isDirty);
+
+    return () => setIsEditing(false);
+  }, [isDirty, setIsEditing]);
 
   const onSubmitHandler = handleSubmit(async (data) => {
     // TODO: Implement onSubmitHandler
@@ -71,10 +81,11 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     const newFunctionName =
       type === "html" ? null : defaultFunctionName || null;
 
-    setValue("previewType.functionName", newFunctionName, {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
+    if (newFunctionName !== defaultFunctionName) {
+      setValue("previewType.functionName", newFunctionName, {
+        shouldDirty: true,
+      });
+    }
 
     setStatus(calcStatus(filesValue, type, newFunctionName));
   };
