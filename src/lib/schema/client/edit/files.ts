@@ -16,6 +16,7 @@ import {
   string,
   variant,
 } from "valibot";
+import { isCapitalize } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/capitalize";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
@@ -66,6 +67,12 @@ export type InputFileType = Input<typeof inputFileSchema>;
 export type DefaultFileType = Input<typeof defaultFileSchema>;
 export type EditFileInput = Input<typeof editFileSchema>;
 
+export const functionNameSchema = string("関数名を入力してください。", [
+  minLength(1, "関数名を入力してください。"),
+  maxLength(30, "関数名は30文字までです。"),
+  custom(isCapitalize, "関数名は大文字で始めてください。"),
+]);
+
 export const previewTypeSchema = variant("type", [
   object({
     type: literal("html"),
@@ -73,9 +80,7 @@ export const previewTypeSchema = variant("type", [
   }),
   object({
     type: literal("react"),
-    functionName: string("関数名を入力してください。", [
-      minLength(1, "関数名を入力してください。"),
-    ]),
+    functionName: functionNameSchema,
   }),
 ]);
 

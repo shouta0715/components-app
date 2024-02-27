@@ -9,6 +9,8 @@ import {
   optional,
   string,
 } from "valibot";
+import { functionNameSchema } from "@/lib/schema/client/edit/files";
+import { isRequiredOneField } from "@/lib/schema/server/custom";
 
 const uploadFileSchema = object({
   name: string(),
@@ -26,11 +28,14 @@ const deleteIDSchema = object({
 
 export type DeleteIDInput = Input<typeof deleteIDSchema>;
 
-export const filesUpdateSchema = object({
-  deleteIDs: optional(array(deleteIDSchema)),
-  uploadFiles: optional(array(uploadFileSchema)),
-  functionName: optional(string()),
-  draft: optional(boolean()),
-});
+export const filesUpdateSchema = object(
+  {
+    deleteIDs: optional(array(deleteIDSchema)),
+    uploadFiles: optional(array(uploadFileSchema)),
+    functionName: optional(functionNameSchema),
+    draft: optional(boolean()),
+  },
+  [isRequiredOneField()]
+);
 
 export type FilesUpdateInput = Input<typeof filesUpdateSchema>;
