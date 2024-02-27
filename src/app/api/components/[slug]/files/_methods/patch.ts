@@ -21,9 +21,15 @@ const handler = async (req: Request, { params }: Params) => {
       throw new NotFoundError();
     }
 
-    await updateComponentFiles(params.slug, body);
+    const { files } = await updateComponentFiles(params.slug, body);
 
-    return new Response(null, { status: 204 });
+    const ids: { [key: string]: number } = {};
+
+    for (const file of files) {
+      ids[file.objectId] = file.id;
+    }
+
+    return Response.json({ ids }, { status: 200 });
   } catch (error) {
     return handleApiError({ error });
   }

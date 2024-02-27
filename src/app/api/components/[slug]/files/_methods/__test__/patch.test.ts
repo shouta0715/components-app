@@ -11,7 +11,7 @@ const url = `${testBaseURL}/api/components/1/files`;
 
 const input: Required<FilesUpdateInput> = {
   draft: false,
-  deleteIDs: [],
+  deleteFiles: [],
   uploadFiles: [],
   functionName: "Example",
 };
@@ -20,7 +20,9 @@ describe("PATCH Component Files API test", () => {
   describe("success", () => {
     beforeAll(() => {
       vi.spyOn(services, "updateComponentFiles").mockImplementation(
-        async () => {}
+        async () => {
+          return { files: [] };
+        }
       );
 
       vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
@@ -32,7 +34,7 @@ describe("PATCH Component Files API test", () => {
       vi.restoreAllMocks();
     });
 
-    test("should return 204", async () => {
+    test("should return 200", async () => {
       const req = new NextRequest(url, {
         method: "PATCH",
         body: JSON.stringify(input),
@@ -41,7 +43,7 @@ describe("PATCH Component Files API test", () => {
         params: { slug: "1" },
       });
 
-      expect(res.status).toBe(204);
+      expect(res.status).toBe(200);
     });
 
     test("should call updateComponentFiles", async () => {

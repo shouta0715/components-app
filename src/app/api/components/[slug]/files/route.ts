@@ -1,1 +1,1 @@
-export { PATCH } from "../_methods/patch";
+export { PATCH } from "./_methods/patch";
