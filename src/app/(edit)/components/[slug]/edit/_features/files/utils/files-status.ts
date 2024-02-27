@@ -50,7 +50,7 @@ const checkFunctionName = (
     return functionName === null;
   }
 
-  return functionName !== null;
+  return !!functionName;
 };
 
 function getFilesStatus({

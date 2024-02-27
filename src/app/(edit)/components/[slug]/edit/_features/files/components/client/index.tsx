@@ -36,6 +36,7 @@ export function EditFileForm({
     isAllSuccess,
     errors,
     defaultValuesForm,
+    isPending,
     setFiles,
     setError,
     setPreviewType,
@@ -76,7 +77,7 @@ export function EditFileForm({
       <NextSectionButton
         currentSection="files"
         isDirty={isDirty}
-        isLoading={false}
+        isLoading={isPending}
       />
     </form>
   );

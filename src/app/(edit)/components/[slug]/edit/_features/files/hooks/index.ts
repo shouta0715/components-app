@@ -1,33 +1,38 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
+import { useComponentFilesUpdater } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks/upload";
+import { getNewPreviewType } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/change-type";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import {
+  editStatusAtom,
   editValueStatesAtom,
   isEditingAtom,
+  isPendingEditAtom,
 } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 
-import {
-  FilesStatus,
-  invalidHtmlStatus,
-  invalidReactStatus,
-} from "@/app/(edit)/components/[slug]/edit/_features/section/types";
+import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_features/section/hooks";
+import { FilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/section/types";
 import {
   EditFilesInput,
   editFilesSchema,
 } from "@/lib/schema/client/edit/files";
 import { Params } from "@/types/next";
-import { isCapitalize } from "@/utils/capitalize";
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
+  const { slug } = useParams<Params["params"]>();
+  const prevFunctionName = useRef(defaultValues.previewType.functionName);
+  const isPendingAtom = useAtomValue(isPendingEditAtom);
+
   const setForceMount = useSetAtom(isForceMountAtom);
   const setIsEditing = useSetAtom(isEditingAtom);
-  const { slug } = useParams<Params["params"]>();
+  const { onNextSection } = useRedirectSectionHandler();
+  const setEditStatus = useSetAtom(editStatusAtom);
 
   const {
     setValue,
@@ -36,13 +41,20 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     clearErrors,
     handleSubmit,
     resetField,
+    reset,
     register,
-    formState: { errors, isDirty, defaultValues: defaultValuesForm },
+    formState: { errors, isDirty, defaultValues: defaultValuesForm, isLoading },
     control,
   } = useForm<EditFilesInput>({
     defaultValues: files || defaultValues,
     mode: "onSubmit",
     resolver: valibotResolver(editFilesSchema),
+  });
+
+  const { onSubmit, isPending: isSubmitting } = useComponentFilesUpdater({
+    defaultValues: defaultValuesForm,
+    reset,
+    slug,
   });
 
   useEffect(() => {
@@ -52,14 +64,21 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   }, [isDirty, setIsEditing]);
 
   const onSubmitHandler = handleSubmit(async (data) => {
-    // TODO: Implement onSubmitHandler
-    console.log(data);
+    await onSubmit(data);
+    prevFunctionName.current = data.previewType.functionName;
+    setEditStatus((prev) => ({
+      ...prev,
+      files: { ...prev.files, dataStatus: "CREATED" },
+    }));
+    onNextSection("files");
   });
 
   const [status, setStatus] = useState<FilesStatus>(
-    defaultValues.previewType.type === "html"
-      ? invalidHtmlStatus
-      : invalidReactStatus
+    calcStatus(
+      defaultValues.files,
+      defaultValues.previewType.type,
+      defaultValues.previewType.functionName
+    )
   );
 
   const setFiles = (newFile: EditFilesInput["files"]) => {
@@ -70,37 +89,24 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   };
 
   const setPreviewType = (type: "html" | "react") => {
+    const values = getValues();
+
+    const newPreviewType = getNewPreviewType({
+      type,
+      prevFunctionName: prevFunctionName.current,
+    });
+
+    const { files: filesValue } = values;
+
+    resetField("previewType", {
+      defaultValue: newPreviewType,
+    });
+    setStatus(calcStatus(filesValue, type, newPreviewType.functionName));
     clearErrors("files");
     setForceMount(true);
-    const { files: filesValue } = getValues();
-
-    const defaultFunctionName = defaultValuesForm?.previewType?.functionName;
-
-    setValue("previewType.type", type);
-
-    const newFunctionName =
-      type === "html" ? null : defaultFunctionName || null;
-
-    if (newFunctionName !== defaultFunctionName) {
-      setValue("previewType.functionName", newFunctionName, {
-        shouldDirty: true,
-      });
-    }
-
-    setStatus(calcStatus(filesValue, type, newFunctionName));
   };
 
   const onCompleteFunctionName = (functionName: string) => {
-    const validCapitalize = isCapitalize(functionName);
-
-    if (!validCapitalize) {
-      setError("previewType.functionName", {
-        type: "manual",
-        message: "関数名は大文字で始めてください。",
-      });
-
-      return;
-    }
     const {
       files: filesValue,
       previewType: { type },
@@ -110,14 +116,17 @@ export function useFilesForm(defaultValues: EditFilesInput) {
       shouldDirty: true,
       shouldValidate: true,
     });
+
+    prevFunctionName.current = functionName;
     setStatus(calcStatus(filesValue, type, functionName));
-    resetField("previewType.functionName", { defaultValue: functionName });
     setForceMount(true);
   };
 
   const isAllSuccess = useMemo(() => {
     return Object.values(status).every((s) => s.status === "success");
   }, [status]);
+
+  const isPending = isPendingAtom || isSubmitting || isLoading;
 
   return {
     setFiles,
@@ -134,5 +143,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     isDirty,
     status,
     isAllSuccess,
+    isPending,
   };
 }
