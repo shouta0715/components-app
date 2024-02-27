@@ -11,6 +11,7 @@ import {
   maxSize,
   minLength,
   null_,
+  number,
   object,
   string,
   variant,
@@ -51,6 +52,7 @@ const inputFileSchema = object({
 const defaultFileSchema = object({
   type: literal("default"),
   objectId: string(),
+  id: number(),
   extension: enum_(Extension),
   name: string(),
 });

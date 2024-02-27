@@ -31,6 +31,7 @@ export default async function Page({ params }: Params) {
   };
 
   const files: EditFilesInput["files"] = data.files.map((file) => ({
+    id: file.id,
     type: "default",
     objectId: file.objectId,
     extension: file.extension,
