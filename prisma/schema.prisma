@@ -130,6 +130,7 @@ enum Extension {
 model File {
   id        Int       @id @default(autoincrement())
   objectId  String
+  name      String    @default("index")
   extension Extension
 
   // RELATIONSHIPS
