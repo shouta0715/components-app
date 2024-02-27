@@ -7,20 +7,24 @@ import { EditFilesInput } from "@/lib/schema/client/edit/files";
 type AcceptedFilesProps = {
   files: EditFilesInput["files"];
   suffix: string;
+
   onDeleteFile?: (id: string) => void;
 };
 
 type FileItemProps = Omit<AcceptedFilesProps, "files"> & {
   file: EditFilesInput["files"][number];
+  name: string;
 };
 
-function FilesItem({ file, onDeleteFile }: FileItemProps) {
+function FilesItem({ file, onDeleteFile, name }: FileItemProps) {
   const Icon = LangIcons[file.extension];
 
   return (
     <span className="flex items-center gap-x-1">
       <Icon aria-hidden="true" className="size-6" />
-      <span>index.{file.extension}</span>
+      <span>
+        {name}.{file.extension}
+      </span>
       {onDeleteFile && (
         <button
           className="rounded-md p-1 hover:bg-muted"
@@ -49,6 +53,7 @@ export const AcceptedFiles = memo(
             <FilesItem
               key={`${i}-${file.extension}-file-info`}
               file={file}
+              name={file.name}
               onDeleteFile={onDeleteFile}
               suffix={suffix}
             />

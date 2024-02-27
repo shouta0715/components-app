@@ -8,14 +8,16 @@ import {
   getExportComponentName,
   replaceImports,
 } from "@/scripts/ui-preview/packages";
-import { CompiledFile, TransformedResult } from "@/scripts/ui-preview/types";
+import {
+  CompiledFile,
+  RemoveNameFileObject,
+  TransformedResult,
+} from "@/scripts/ui-preview/types";
 import { htmlToResult, reactToResult } from "@/scripts/ui-preview/utils/result";
 
-import { FileObject } from "@/services/files/get";
-
 export async function transformWithHTML(
-  files: FileObject[],
-  htmlFile: FileObject
+  files: RemoveNameFileObject[],
+  htmlFile: RemoveNameFileObject
 ): Promise<TransformedResult> {
   const mainFileId = htmlFile.id;
   if (files.length === 1) return htmlToResult([htmlFile], mainFileId);
@@ -61,7 +63,7 @@ export async function transformWithHTML(
 }
 
 export async function transformWithoutHTML(
-  files: FileObject[],
+  files: RemoveNameFileObject[],
   functionName?: string
 ): Promise<TransformedResult> {
   if (!functionName) throw new PackageError();

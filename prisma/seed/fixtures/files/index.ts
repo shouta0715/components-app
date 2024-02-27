@@ -7,7 +7,7 @@ import { $Enums, Component, File, Prisma } from "@prisma/client";
 
 import { getSignedPostUrl } from "../lib/s3";
 
-import { randomNum } from "@/utils/random";
+import { randomNum, randomString } from "@/utils/random";
 
 const getContentType = (type: $Enums.Extension) => {
   if (type === "tsx") {
@@ -110,6 +110,7 @@ async function generateSeedFiles(
           objectId: file.id,
           extension: file.type,
           componentId: component.id,
+          name: randomString(),
         };
       }
 
@@ -144,6 +145,7 @@ async function generateSeedFiles(
           objectId: file?.id,
           extension: file?.type,
           componentId: component.id,
+          name: randomString(),
         };
       }
 
@@ -172,6 +174,7 @@ async function generateSeedFiles(
           objectId: file?.id,
           extension: file?.type,
           componentId: component.id,
+          name: randomString(),
         };
       }
 
@@ -181,6 +184,7 @@ async function generateSeedFiles(
         objectId: files[3].id,
         extension: files[3].type,
         componentId: component.id,
+        name: randomString(),
       };
     });
   });

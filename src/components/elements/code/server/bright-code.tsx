@@ -71,25 +71,25 @@ export function MultipleBrightCode({ objects }: { objects: FileObject[] }) {
   return (
     <Tabs
       className="overflow-hidden rounded-md"
-      defaultValue={`${objects[0].componentId}/index.${objects[0].extension}`}
+      defaultValue={`${objects[0].componentId}/${objects[0].name}.${objects[0].extension}`}
     >
       <TabsList className="flex h-auto justify-start gap-2 overflow-y-scroll rounded-none bg-code py-2 data-[state=active]:shadow-none">
         {objects.map((object) => (
           <TabsTrigger
-            key={`${object.componentId}/index.${object.extension}`}
+            key={`${object.componentId}/${object.name}.${object.extension}`}
             className="rounded-none border-b-2 border-b-transparent text-xs text-gray-200 opacity-50 transition-none data-[state=active]:border-b-orange-700 data-[state=active]:bg-code data-[state=active]:text-primary-foreground data-[state=active]:opacity-100 data-[state=active]:shadow-none sm:text-sm dark:data-[state=active]:text-primary"
-            value={`${object.componentId}/index.${object.extension}`}
+            value={`${object.componentId}/${object.name}.${object.extension}`}
           >
-            <LangIcon extension={object.extension} />
+            <LangIcon extension={object.extension} name={object.name} />
           </TabsTrigger>
         ))}
       </TabsList>
 
       {objects.map((object) => (
         <TabsContent
-          key={`${object.componentId}/index.${object.extension}`}
+          key={`${object.componentId}/${object.name}.${object.extension}`}
           className="relative mt-0 bg-code"
-          value={`${object.componentId}/index.${object.extension}`}
+          value={`${object.componentId}/${object.name}.${object.extension}`}
         >
           <CopyButton
             className="absolute right-4 z-10 mx-2 my-2.5 sm:right-4 sm:-my-10"

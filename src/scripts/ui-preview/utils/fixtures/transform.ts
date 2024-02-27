@@ -1,8 +1,11 @@
-import { CompiledFile, TransformedFile } from "@/scripts/ui-preview/types";
+import {
+  CompiledFile,
+  RemoveNameFileObject,
+  TransformedFile,
+} from "@/scripts/ui-preview/types";
 import { getExtensionToMimeType } from "@/scripts/ui-preview/utils";
-import { FileObject } from "@/services/files/get";
 
-export const fxHTMLFile: FileObject = {
+export const fxHTMLFile: RemoveNameFileObject = {
   extension: "html",
   file: "<div></div>",
   componentId: "1",
@@ -17,7 +20,7 @@ export const fxHTMLFileResult: TransformedFile = {
   id: "1",
 };
 
-export const fxTSXFile: FileObject = {
+export const fxTSXFile: RemoveNameFileObject = {
   extension: "tsx",
   file: "export const Example = () => {} const a = 1; console.log(a);",
   componentId: "1",
@@ -31,28 +34,28 @@ export const fxMockNameTSXFile: CompiledFile = {
   id: "1",
 };
 
-export const fxJSXFile: FileObject = {
+export const fxJSXFile: RemoveNameFileObject = {
   extension: "jsx",
   file: "export function Example(){}const a = 1; console.log(a);",
   componentId: "1",
   id: "1",
 };
 
-export const fxTSFile: FileObject = {
+export const fxTSFile: RemoveNameFileObject = {
   extension: "ts",
   file: "const a = 1; console.log(a);",
   componentId: "1",
   id: "1",
 };
 
-export const fxJSFile: FileObject = {
+export const fxJSFile: RemoveNameFileObject = {
   extension: "js",
   file: "const a = 1; console.log(a);",
   componentId: "1",
   id: "1",
 };
 
-export const fxCSSFile: FileObject = {
+export const fxCSSFile: RemoveNameFileObject = {
   extension: "css",
   file: "body { color: red; }",
   componentId: "1",

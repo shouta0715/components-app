@@ -6,8 +6,11 @@ import {
   CompilerError,
   PackageError,
 } from "@/scripts/ui-preview/errors";
-import { TransformedFile, TransformedResult } from "@/scripts/ui-preview/types";
-import { FileObject } from "@/services/files/get";
+import {
+  RemoveNameFileObject,
+  TransformedFile,
+  TransformedResult,
+} from "@/scripts/ui-preview/types";
 
 const commonFile = {
   file: "file",
@@ -101,7 +104,7 @@ function getResultFile(extension: string): TransformedFile {
 describe("scripts/ui-preview", () => {
   describe("Error cases transformCode", () => {
     test("Bad Combination Error", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "html" },
       ];
@@ -112,7 +115,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("CodeBundlerError from transformWithoutHTML", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "ts" },
         { ...commonFile, extension: "css" },
       ];
@@ -123,7 +126,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("CompilerError from transformWithHTML", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "ts", file: "" },
       ];
@@ -132,7 +135,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("CompilerError from transformWithoutHTML", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "tsx", file: reactFile },
         { ...commonFile, extension: "css", file: "" },
       ];
@@ -143,7 +146,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("PackageError from transformWithoutHTML", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "tsx" },
         { ...commonFile, extension: "css" },
       ];
@@ -155,7 +158,7 @@ describe("scripts/ui-preview", () => {
   });
   describe("Success cases transformCode", () => {
     test("html and css", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "css" },
       ];
@@ -179,7 +182,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("html and tsx", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "tsx" },
       ];
@@ -200,7 +203,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("html and css and js", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "css" },
         { ...commonFile, extension: "js" },
@@ -226,7 +229,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("html and tsx and ts", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "html" },
         { ...commonFile, extension: "tsx" },
         { ...commonFile, extension: "ts" },
@@ -251,7 +254,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("tsx", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "tsx",
@@ -275,7 +278,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("jsx", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "jsx",
@@ -299,7 +302,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("tsx and ts", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "tsx",
@@ -327,7 +330,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("jsx and js", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "jsx",
@@ -355,7 +358,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("tsx and ts and css", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "tsx",
@@ -385,7 +388,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("jsx and js and css", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "jsx",
@@ -415,7 +418,7 @@ describe("scripts/ui-preview", () => {
     });
 
     test("tsx and tsx", async () => {
-      const input: FileObject[] = [
+      const input: RemoveNameFileObject[] = [
         {
           ...commonFile,
           extension: "tsx",

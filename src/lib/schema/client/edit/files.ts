@@ -45,12 +45,14 @@ const inputFileSchema = object({
   ]),
   extension: enum_(Extension),
   objectId: string(),
+  name: string(),
 });
 
 const defaultFileSchema = object({
   type: literal("default"),
   objectId: string(),
   extension: enum_(Extension),
+  name: string(),
 });
 
 export const editFileSchema = variant("type", [
