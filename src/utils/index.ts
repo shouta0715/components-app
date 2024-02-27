@@ -7,28 +7,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getContentType = (type: Extension) => {
-  if (type === "tsx") {
-    return "text/typescript-jsx";
-  }
+type ContentType = "text/html" | "text/css" | "text/javascript";
 
-  if (type === "html") {
-    return "text/html";
+export const getContentType = (type: Extension): ContentType => {
+  switch (type) {
+    case "html":
+      return "text/html";
+    case "css":
+      return "text/css";
+    case "js":
+    case "ts":
+    case "jsx":
+    case "tsx":
+      return "text/javascript";
+    default:
+      throw new Error(type satisfies never);
   }
-
-  if (type === "css") {
-    return "text/css";
-  }
-
-  if (type === "js") {
-    return "text/javascript";
-  }
-
-  if (type === "jsx") {
-    return "text/javascript-jsx";
-  }
-
-  return "text/typescript";
 };
 
 export const getImageUrl = (id: string) => {
