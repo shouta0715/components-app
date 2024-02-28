@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { PREVIEW_BUCKET_NAME } from "@/lib/constant";
 import { Extension } from "@/types/file";
 
 export function cn(...inputs: ClassValue[]) {
@@ -26,9 +25,9 @@ export const getContentType = (type: Extension): ContentType => {
 };
 
 export const getImageUrl = (id: string) => {
-  const endpoint = process.env.NEXT_PUBLIC_AWS_S3_ENDPOINT;
+  const endpoint = `${process.env.NEXT_PUBLIC_IMAGE_URL}/images`;
 
-  return `${endpoint}/${PREVIEW_BUCKET_NAME}/${id}`;
+  return `${endpoint}/${id}`;
 };
 
 export const getDisplayName = (name?: string | null, slice?: number) => {
