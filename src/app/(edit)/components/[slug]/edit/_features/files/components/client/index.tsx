@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FunctionNameInput } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/function-name-input";
+import { FileNavigationLoading } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/loading";
 import { FilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/status";
 import { TogglePreviewType } from "@/app/(edit)/components/[slug]/edit/_features/files/components/client/toggle-preview-type";
 import { useFilesForm } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks";
@@ -20,7 +21,7 @@ const DynamicEditFilesNavigate = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <UIPreviewLoading name="Loading..." />,
+    loading: () => <FileNavigationLoading />,
   }
 );
 
