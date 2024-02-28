@@ -8,10 +8,12 @@ import { Switch } from "@/components/ui/switch";
 export function TogglePreviewType({
   setPreviewType,
   defaultType,
+  control,
 }: TogglePreviewTypeProps) {
   const { onCheckedChange, type } = useTogglePreviewType({
     defaultType,
     setPreviewType,
+    control,
   });
 
   return (

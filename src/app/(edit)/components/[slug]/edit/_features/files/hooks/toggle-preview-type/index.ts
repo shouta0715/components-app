@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useWatch } from "react-hook-form";
 import { TogglePreviewTypeProps } from "@/app/(edit)/components/[slug]/edit/_features/files/types/toggle-preview-type";
 
 export function useTogglePreviewType({
   defaultType,
   setPreviewType,
+  control,
 }: TogglePreviewTypeProps) {
-  const [type, setType] = useState<"html" | "react">(defaultType || "html");
+  const type = useWatch({
+    name: "previewType.type",
+    defaultValue: defaultType,
+    control,
+  });
 
   const onCheckedChange = () => {
-    setType((prev) => (prev === "html" ? "react" : "html"));
     setPreviewType(type === "html" ? "react" : "html");
   };
 
