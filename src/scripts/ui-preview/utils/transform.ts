@@ -8,14 +8,16 @@ import {
   getExportComponentName,
   replaceImports,
 } from "@/scripts/ui-preview/packages";
-import { CompiledFile, TransformedResult } from "@/scripts/ui-preview/types";
+import {
+  CompiledFile,
+  RemoveNameFileObject,
+  TransformedResult,
+} from "@/scripts/ui-preview/types";
 import { htmlToResult, reactToResult } from "@/scripts/ui-preview/utils/result";
 
-import { FileObject } from "@/services/files/get";
-
 export async function transformWithHTML(
-  files: FileObject[],
-  htmlFile: FileObject
+  files: RemoveNameFileObject[],
+  htmlFile: RemoveNameFileObject
 ): Promise<TransformedResult> {
   const mainFileId = htmlFile.id;
   if (files.length === 1) return htmlToResult([htmlFile], mainFileId);
@@ -61,17 +63,19 @@ export async function transformWithHTML(
 }
 
 export async function transformWithoutHTML(
-  files: FileObject[],
+  files: RemoveNameFileObject[],
   functionName?: string
 ): Promise<TransformedResult> {
   if (!functionName) throw new PackageError();
+
+  const targetFiles = files.filter(({ extension }) => extension !== "html");
 
   const mainFiles: {
     file: string;
     id: string;
   }[] = [];
 
-  for (const { file, extension, id } of files) {
+  for (const { file, extension, id } of targetFiles) {
     if (extension !== "tsx" && extension !== "jsx" && extension !== "js")
       continue;
     mainFiles.push({ file, id });
@@ -85,14 +89,14 @@ export async function transformWithoutHTML(
   );
 
   const compileFiles = await Promise.all(
-    files.map(({ file, extension }) => compile(file, extension))
+    targetFiles.map(({ file, extension }) => compile(file, extension))
   );
 
   const compiledFiles: CompiledFile[] = compileFiles.map(
     ({ error, result }, index) => {
       if (error) throw new CompilerError();
 
-      const { extension, componentId, id } = files[index];
+      const { extension, componentId, id } = targetFiles[index];
 
       if (
         extension === "ts" ||

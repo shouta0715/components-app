@@ -9,6 +9,7 @@ import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_featu
 
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { Button } from "@/components/ui/button";
+import { ErrorMessage } from "@/components/ui/error-message";
 import {
   NavigateTabs,
   NavigateTabsTrigger,
@@ -40,6 +41,7 @@ function EditFileNavigate({
     files,
     isDragActive,
     functionName,
+    type,
     getRootProps,
     getInputProps,
     onDeleteFile,
@@ -82,11 +84,13 @@ function EditFileNavigate({
         >
           {hasFiles ? (
             <Suspense
-              fallback={<UIPreviewLoading className="mt-2" name="edit" />}
+              fallback={<UIPreviewLoading className="mt-2" name="Loading..." />}
             >
               <PreviewsNavigate
                 files={files}
-                functionName={functionName}
+                functionName={
+                  type === "react" && functionName ? functionName : undefined
+                }
                 getInputProps={getInputProps}
                 isAllSuccess={isAllSuccess}
                 isDragActive={isDragActive}
@@ -106,10 +110,8 @@ function EditFileNavigate({
           )}
         </div>
       </NavigateTabs>
-      {errors.files && (
-        <p className="text-sm text-destructive">{errors.files.message}</p>
-      )}
-      <div>
+
+      <div className="flex items-center gap-x-4">
         <Button
           className="font-semibold"
           onClick={open}
@@ -118,13 +120,15 @@ function EditFileNavigate({
         >
           ファイルを選択
         </Button>
-        <div className="mt-4">
-          <AcceptedFiles
-            files={files}
-            onDeleteFile={onDeleteFile}
-            suffix="global-check-files"
-          />
-        </div>
+        {errors.files && <ErrorMessage>{errors.files.message}</ErrorMessage>}
+      </div>
+
+      <div className="mt-4">
+        <AcceptedFiles
+          files={files}
+          onDeleteFile={onDeleteFile}
+          suffix="global-check-files"
+        />
       </div>
     </div>
   );

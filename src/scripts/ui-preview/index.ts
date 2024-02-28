@@ -2,16 +2,18 @@ import "server-only";
 
 import { BadCombinationExtensionsError } from "@/scripts/ui-preview/errors";
 
-import { TransformedResult } from "@/scripts/ui-preview/types";
+import {
+  RemoveNameFileObject,
+  TransformedResult,
+} from "@/scripts/ui-preview/types";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import {
   transformWithHTML,
   transformWithoutHTML,
 } from "@/scripts/ui-preview/utils/transform";
-import { FileObject } from "@/services/files/get";
 
 export async function transformCode(
-  files: FileObject[],
+  files: RemoveNameFileObject[],
   functionName?: string
 ): Promise<TransformedResult> {
   const extensions = files.map((file) => file.extension);

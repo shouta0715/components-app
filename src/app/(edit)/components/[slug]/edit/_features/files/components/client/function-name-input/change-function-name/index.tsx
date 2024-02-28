@@ -1,14 +1,14 @@
 import { useSetAtom } from "jotai";
 import React, { useEffect } from "react";
-import { isChangedFNAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
+import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 
 export function ChangeFunctionName() {
-  const setIsChangedFunctionName = useSetAtom(isChangedFNAtom);
+  const setForceMount = useSetAtom(isForceMountAtom);
 
   useEffect(() => {
-    setIsChangedFunctionName(false);
-  }, [setIsChangedFunctionName]);
+    setForceMount(false);
+  }, [setForceMount]);
 
-  return <UIPreviewLoading name="changed preview..." />;
+  return <UIPreviewLoading name="changing preview..." />;
 }

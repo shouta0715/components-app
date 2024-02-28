@@ -5,12 +5,15 @@ import {
   invalidReactStatus,
   validFilesStatus,
 } from "@/app/(edit)/components/[slug]/edit/_features/section/types";
+import type { EditFilesInput } from "@/lib/schema/client/edit/files";
+
+import { isBadCombination } from "@/scripts/ui-preview/utils";
 
 type Props = {
   isBad: boolean;
   hasPreviewFile: boolean;
   type: "html" | "react";
-  functionName?: string;
+  functionName: string | null;
   length: number;
 };
 
@@ -41,16 +44,16 @@ const checkLength = (
 
 const checkFunctionName = (
   type: "html" | "react",
-  functionName?: string
+  functionName: string | null
 ): boolean => {
   if (type === "html") {
-    return functionName === undefined;
+    return functionName === null;
   }
 
-  return functionName !== undefined;
+  return !!functionName;
 };
 
-export function getFilesStatus({
+function getFilesStatus({
   type,
   functionName,
   isBad,
@@ -120,4 +123,29 @@ export function getFilesStatus({
     combination: combinationStatus,
     functionName: validFNStatus,
   };
+}
+
+export function calcStatus(
+  files: EditFilesInput["files"],
+  type: "html" | "react",
+  functionName: string | null
+): FilesStatus {
+  const exs = files.map((file) => file.extension);
+  const isBad = isBadCombination(exs);
+
+  const hasPreviewFile = files.some((file) => {
+    if (type === "html") {
+      return file.extension === "html";
+    }
+
+    return file.extension === "tsx" || file.extension === "jsx";
+  });
+
+  return getFilesStatus({
+    isBad,
+    hasPreviewFile,
+    type,
+    functionName,
+    length: files.length,
+  });
 }

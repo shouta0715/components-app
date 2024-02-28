@@ -1,26 +1,31 @@
 import { Extension } from "@prisma/client";
-import { extension } from "mime-types";
 import {
   array,
   blob,
   custom,
   enum_,
+  forward,
   Input,
   literal,
   maxLength,
   maxSize,
   minLength,
+  null_,
+  number,
   object,
   string,
-  undefined_,
   variant,
 } from "valibot";
+import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { extensions } from "@/types/file";
+import { isCapitalize } from "@/utils/capitalize";
 
-function extensionValidation(input: Blob): boolean {
-  const validated = safeValidate(extension(input.type), extensions);
+function extensionValidation(input: File): boolean {
+  const ex = input.name.split(".").pop();
+
+  const validated = safeValidate(ex, extensions);
 
   return validated.success;
 }
@@ -28,16 +33,7 @@ function extensionValidation(input: Blob): boolean {
 function customArrayValidation(input: EditFileInput[]): boolean {
   const exs = input.map((i) => i.extension);
 
-  if (exs.length === 0) return false;
-
   if (isBadCombination(exs)) return false;
-
-  const mainFile = input.find(
-    (i) =>
-      i.extension === "tsx" || i.extension === "jsx" || i.extension === "html"
-  );
-
-  if (!mainFile) return false;
 
   return true;
 }
@@ -51,12 +47,15 @@ const inputFileSchema = object({
   ]),
   extension: enum_(Extension),
   objectId: string(),
+  name: string(),
 });
 
 const defaultFileSchema = object({
   type: literal("default"),
   objectId: string(),
+  id: number(),
   extension: enum_(Extension),
+  name: string(),
 });
 
 export const editFileSchema = variant("type", [
@@ -68,26 +67,52 @@ export type InputFileType = Input<typeof inputFileSchema>;
 export type DefaultFileType = Input<typeof defaultFileSchema>;
 export type EditFileInput = Input<typeof editFileSchema>;
 
+export const functionNameSchema = string("関数名を入力してください。", [
+  minLength(1, "関数名を入力してください。"),
+  maxLength(30, "関数名は30文字までです。"),
+  custom(isCapitalize, "関数名は大文字で始めてください。"),
+]);
+
 export const previewTypeSchema = variant("type", [
   object({
     type: literal("html"),
-    functionName: undefined_(),
+    functionName: null_(),
   }),
   object({
     type: literal("react"),
-    functionName: string(),
+    functionName: functionNameSchema,
   }),
 ]);
 
 export type PreviewType = Input<typeof previewTypeSchema>;
 
-export const editFilesSchema = object({
-  files: array(editFileSchema, [
-    minLength(1, "ファイルを1つ以上選択してください。"),
-    maxLength(3, "ファイルは3つまで選択できます。"),
-    custom(customArrayValidation, "ファイルの組み合わせが不正です。"),
-  ]),
-  previewType: previewTypeSchema,
-});
+export const editFilesSchema = object(
+  {
+    files: array(editFileSchema, [
+      minLength(1, "ファイルを1つ以上選択してください。"),
+      maxLength(3, "ファイルは3つまで選択できます。"),
+      custom(customArrayValidation, "ファイルの組み合わせが不正です。"),
+    ]),
+    previewType: previewTypeSchema,
+  },
+  [
+    forward(
+      custom((input) => {
+        const {
+          files,
+          previewType: { functionName, type },
+        } = input;
+        const status = calcStatus(files, type, functionName);
+
+        const isAllSuccess = Object.values(status).every(
+          (s) => s.status === "success"
+        );
+
+        return isAllSuccess;
+      }, "ステータスの項目をすべて満たしてください。"),
+      ["files"]
+    ),
+  ]
+);
 
 export type EditFilesInput = Input<typeof editFilesSchema>;

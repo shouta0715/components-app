@@ -31,9 +31,11 @@ export default async function Page({ params }: Params) {
   };
 
   const files: EditFilesInput["files"] = data.files.map((file) => ({
+    id: file.id,
     type: "default",
     objectId: file.objectId,
     extension: file.extension,
+    name: file.name,
   }));
 
   const previewType: PreviewType = functionName
@@ -43,6 +45,7 @@ export default async function Page({ params }: Params) {
       }
     : {
         type: "html",
+        functionName: null,
       };
 
   const filesDefaultValues: EditFilesInput = {
@@ -65,7 +68,7 @@ export default async function Page({ params }: Params) {
               />
             </TabsContent>
             <TabsContent value="files">
-              <EditFile defaultValues={filesDefaultValues} />
+              <EditFile defaultValues={filesDefaultValues} draft={data.draft} />
             </TabsContent>
             <TabsContent value="document">
               <EditDocument />

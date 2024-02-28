@@ -130,6 +130,7 @@ enum Extension {
 model File {
   id        Int       @id @default(autoincrement())
   objectId  String
+  name      String    @default("index")
   extension Extension
 
   // RELATIONSHIPS
@@ -137,6 +138,7 @@ model File {
   Component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
+  @@index([objectId])
   @@map("files")
 }
 

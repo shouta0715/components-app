@@ -1,3 +1,5 @@
+import { Extension } from "@prisma/client";
+
 const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const numbers = "0123456789";
 const symbols = "!@#$%^&*_-+=";
@@ -22,6 +24,12 @@ export const randomString = () => {
   });
 
   return result;
+};
+
+export const randomExtension = (): Extension => {
+  const exs: Extension[] = ["html", "css", "js", "ts", "tsx", "jsx"];
+
+  return exs[randomNum(0, exs.length - 1)];
 };
 
 export const randomCodeType = () => {

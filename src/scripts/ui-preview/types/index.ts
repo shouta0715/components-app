@@ -11,12 +11,14 @@ import {
 import { FileObject } from "@/services/files/get";
 import { Extension } from "@/types/file";
 
+export type RemoveNameFileObject = Omit<FileObject, "name">;
+
 export type MIMETYPE =
   | typeof HTML_MIME_TYPE
   | typeof CSS_MIME_TYPE
   | typeof JAVASCRIPT_MIME_TYPE;
 
-export type CompiledFile = FileObject & {
+export type CompiledFile = RemoveNameFileObject & {
   originallyExtension?: Extension;
 };
 

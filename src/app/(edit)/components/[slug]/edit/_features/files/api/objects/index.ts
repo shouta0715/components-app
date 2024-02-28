@@ -21,6 +21,7 @@ async function transformDefaultFiles(
     objectId: file.objectId,
     extension: file.extension,
     componentId: slug,
+    name: file.name,
   }));
   const defaultFiles = await getFiles(targetFiles);
 
@@ -39,6 +40,7 @@ async function transformInputFiles(
       file: content,
       extension: file.extension,
       id: file.objectId,
+      name: file.name,
     };
   });
 
