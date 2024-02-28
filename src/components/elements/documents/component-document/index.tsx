@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactMarkdown } from "@/components/ui/react-markdown";
+import { ReactMarkdown } from "@/components/elements/markdown/server";
 
 export function ComponentDocument({ children }: { children: string }) {
   return (
