@@ -18,11 +18,17 @@ function FilePreviews({ slug, objects, functionName }: FilePreviewsProps) {
   });
 
   if (forceMount) return <ChangeFunctionName />;
-  if (isPending) return <UIPreviewLoading name="edit" />;
+  if (isPending) return <UIPreviewLoading name="Loading..." />;
 
   if (!data) throw new CodeBundlerError();
 
-  return <PreviewResizeGroup data={data} name={slug} tittle={slug} />;
+  return (
+    <PreviewResizeGroup
+      data={data}
+      name={functionName ?? "Preview"}
+      tittle={slug}
+    />
+  );
 }
 
 export default FilePreviews;

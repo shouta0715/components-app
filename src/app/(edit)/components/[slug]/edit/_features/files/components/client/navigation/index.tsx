@@ -84,7 +84,7 @@ function EditFileNavigate({
         >
           {hasFiles ? (
             <Suspense
-              fallback={<UIPreviewLoading className="mt-2" name="edit" />}
+              fallback={<UIPreviewLoading className="mt-2" name="Loading..." />}
             >
               <PreviewsNavigate
                 files={files}

@@ -20,7 +20,7 @@ const DynamicEditFilesNavigate = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <UIPreviewLoading name="edit" />,
+    loading: () => <UIPreviewLoading name="Loading..." />,
   }
 );
 
@@ -94,7 +94,7 @@ export function EditFileForm({
           />
         </div>
         <ErrorBoundary FallbackComponent={UIPreviewError}>
-          <Suspense fallback={<UIPreviewLoading name="edit" />}>
+          <Suspense fallback={<UIPreviewLoading name="Loading" />}>
             <DynamicEditFilesNavigate
               controls={control}
               errors={errors}

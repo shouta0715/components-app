@@ -19,7 +19,7 @@ const DynamicEditFilePreviews = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <UIPreviewLoading name="edit" />,
+    loading: () => <UIPreviewLoading name="Loading..." />,
   }
 );
 
@@ -29,7 +29,7 @@ const DynamicMultipleBrightCode = dynamic(
       (mod) => mod.MultipleBrightCode
     ),
   {
-    loading: () => <UIPreviewLoading name="edit" />,
+    loading: () => <UIPreviewLoading name="Loading..." />,
   }
 );
 
@@ -65,7 +65,7 @@ export function PreviewsNavigate({
       <TabsContent value="preview">
         {canPreview ? (
           <ErrorBoundary FallbackComponent={UIPreviewError}>
-            <Suspense fallback={<UIPreviewLoading name="edit" />}>
+            <Suspense fallback={<UIPreviewLoading name="Loading..." />}>
               <DynamicEditFilePreviews
                 functionName={functionName}
                 objects={data}

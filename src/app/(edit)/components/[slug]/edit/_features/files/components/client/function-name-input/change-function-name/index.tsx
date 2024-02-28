@@ -10,5 +10,5 @@ export function ChangeFunctionName() {
     setForceMount(false);
   }, [setForceMount]);
 
-  return <UIPreviewLoading name="changed preview..." />;
+  return <UIPreviewLoading name="changing preview..." />;
 }
