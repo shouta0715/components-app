@@ -25,7 +25,7 @@ export const getContentType = (type: Extension): ContentType => {
 };
 
 export const getImageUrl = (id: string) => {
-  const endpoint = `${process.env.NEXT_PUBLIC_IMAGE_URL}/images`;
+  const endpoint = `${process.env.NEXT_PUBLIC_STORAGE_URL}/images`;
 
   return `${endpoint}/${id}`;
 };

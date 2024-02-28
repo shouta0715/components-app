@@ -123,7 +123,7 @@ function PreviewDropInputZone({
   return (
     <div
       className={clsx(
-        "relative h-full w-full max-w-96 items-end justify-end sm:w-2/3",
+        "relative h-full w-full max-w-96 items-end justify-end overflow-hidden sm:w-2/3",
         isLoading && "cursor-not-allowed opacity-50"
       )}
     >
@@ -133,16 +133,15 @@ function PreviewDropInputZone({
       />
       <Image
         alt={isDefault ? "default preview" : "preview"}
-        className="rounded-lg from-transparent object-cover object-top "
-        fill
+        className="absolute mx-auto h-auto w-auto rounded-lg from-transparent"
+        height={200}
         onLoad={() => {
           if (isDefault) return;
 
           URL.revokeObjectURL(preview);
         }}
-        priority
-        sizes="100%"
         src={isDefault ? getImageUrl(preview) : preview}
+        width={400}
       />
     </div>
   );

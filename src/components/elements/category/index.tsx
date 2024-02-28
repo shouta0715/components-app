@@ -27,11 +27,12 @@ export async function Category({ category }: { category: CategoriesByHome }) {
           <figure className="relative mx-16 mt-4 block h-full sm:mx-8  md:mx-16">
             <Image
               alt={`Image for ${category.name}`}
-              className="rounded-md object-cover object-top"
-              fill
+              className="mx-auto h-auto w-auto rounded-md"
+              height={200}
               priority
-              sizes="100%"
+              quality={70}
               src={`${getImageUrl(previewUrl)}`}
+              width={400}
             />
           </figure>
         </div>
