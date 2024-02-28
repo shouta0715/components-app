@@ -7,6 +7,8 @@ const nextConfig = {
   },
   images: {
     domains: ['127.0.0.1'],
+    loader: "custom",
+    loaderFile:"./image-loader.ts"
   },
 };
 
