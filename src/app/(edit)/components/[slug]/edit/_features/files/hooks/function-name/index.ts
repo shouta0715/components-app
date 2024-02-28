@@ -17,6 +17,7 @@ export function useFunctionNameInput({
   });
 
   const disabled = type === "html";
+
   const changed = fn !== value && value !== "";
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -68,7 +68,7 @@ export default async function Page({ params }: Params) {
               />
             </TabsContent>
             <TabsContent value="files">
-              <EditFile defaultValues={filesDefaultValues} />
+              <EditFile defaultValues={filesDefaultValues} draft={data.draft} />
             </TabsContent>
             <TabsContent value="document">
               <EditDocument />

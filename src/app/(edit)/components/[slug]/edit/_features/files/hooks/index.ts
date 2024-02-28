@@ -1,12 +1,12 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { toast } from "sonner";
 import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/files/context";
 import { useComponentFilesUpdater } from "@/app/(edit)/components/[slug]/edit/_features/files/hooks/upload";
-import { getNewPreviewType } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/change-type";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/files/utils/files-status";
 import {
   editStatusAtom,
@@ -21,12 +21,12 @@ import {
   EditFilesInput,
   editFilesSchema,
 } from "@/lib/schema/client/edit/files";
+import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { Params } from "@/types/next";
 
 export function useFilesForm(defaultValues: EditFilesInput) {
   const { files } = useAtomValue(editValueStatesAtom);
   const { slug } = useParams<Params["params"]>();
-  const prevFunctionName = useRef(defaultValues.previewType.functionName);
   const isPendingAtom = useAtomValue(isPendingEditAtom);
 
   const setForceMount = useSetAtom(isForceMountAtom);
@@ -40,9 +40,9 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setError,
     clearErrors,
     handleSubmit,
-    resetField,
     reset,
     register,
+
     formState: { errors, isDirty, defaultValues: defaultValuesForm, isLoading },
     control,
   } = useForm<EditFilesInput>({
@@ -65,13 +65,40 @@ export function useFilesForm(defaultValues: EditFilesInput) {
 
   const onSubmitHandler = handleSubmit(async (data) => {
     await onSubmit(data);
-    prevFunctionName.current = data.previewType.functionName;
     setEditStatus((prev) => ({
       ...prev,
       files: { ...prev.files, dataStatus: "CREATED" },
     }));
     onNextSection("files");
   });
+
+  async function handleDuringSave({
+    draft,
+  }: Pick<ComponentUpdateInput, "draft">) {
+    const data = getValues();
+    const errorsFields = Object.keys(errors);
+    const hasError = errorsFields.length > 0;
+
+    if (!hasError) {
+      await onSubmit(data, draft);
+
+      return;
+    }
+
+    const validKeys = Object.keys(data).filter(
+      (key) => !errorsFields.includes(key)
+    );
+
+    if (validKeys.length === 0) {
+      toast.error(
+        `変更するには、${errorsFields.join(", ")} を入力してください。`
+      );
+
+      return;
+    }
+
+    await onSubmit(data, draft);
+  }
 
   const [status, setStatus] = useState<FilesStatus>(
     calcStatus(
@@ -80,6 +107,24 @@ export function useFilesForm(defaultValues: EditFilesInput) {
       defaultValues.previewType.functionName
     )
   );
+
+  const onReset = () => {
+    reset();
+
+    const prevFiles: EditFilesInput["files"] =
+      (defaultValuesForm?.files as EditFilesInput["files"]) ??
+      defaultValues.files;
+
+    setStatus(
+      calcStatus(
+        prevFiles,
+        defaultValuesForm?.previewType?.type ?? defaultValues.previewType.type,
+        defaultValuesForm?.previewType?.functionName ??
+          defaultValues.previewType.functionName
+      )
+    );
+    setForceMount(true);
+  };
 
   const setFiles = (newFile: EditFilesInput["files"]) => {
     setValue("files", newFile, { shouldDirty: true, shouldValidate: true });
@@ -91,16 +136,14 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   const setPreviewType = (type: "html" | "react") => {
     const values = getValues();
 
-    const newPreviewType = getNewPreviewType({
-      type,
-      prevFunctionName: prevFunctionName.current,
-    });
-
     const { files: filesValue } = values;
 
-    resetField("previewType", {
-      defaultValue: newPreviewType,
-    });
+    const newPreviewType =
+      type === "html"
+        ? { type, functionName: null }
+        : { type, functionName: defaultValues.previewType.functionName ?? "" };
+
+    setValue("previewType", newPreviewType);
     setStatus(calcStatus(filesValue, type, newPreviewType.functionName));
     clearErrors("files");
     setForceMount(true);
@@ -117,7 +160,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
       shouldValidate: true,
     });
 
-    prevFunctionName.current = functionName;
     setStatus(calcStatus(filesValue, type, functionName));
     setForceMount(true);
   };
@@ -136,6 +178,8 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setPreviewType,
     onCompleteFunctionName,
     register,
+    handleDuringSave,
+    onReset,
     errors,
     slug,
     control,
