@@ -9,7 +9,7 @@ import { SummaryUpdateInputValue } from "@/app/(edit)/components/[slug]/edit/_fe
 import { getComponentChangedValues } from "@/app/(edit)/components/[slug]/edit/_features/section/utils";
 import {
   useMutateImage,
-  useMutateSummary,
+  useMutateComponent,
 } from "@/app/(edit)/components/[slug]/edit/_features/summary/api";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
@@ -29,7 +29,7 @@ export function useComponentUpdater({
   const setEditStatus = useSetAtom(editStatusAtom);
   const setAtomValues = useSetAtom(editValueStatesAtom);
 
-  const { mutateAsync, isPending: isMutating } = useMutateSummary(slug);
+  const { mutateAsync, isPending: isMutating } = useMutateComponent(slug);
   const { mutateAsync: uploadImage, isPending: isUploading } = useMutateImage();
   async function onSubmit(
     data: EditSummaryInput,
