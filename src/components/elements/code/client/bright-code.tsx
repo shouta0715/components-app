@@ -5,7 +5,7 @@
 import { highlight } from "@code-hike/lighter";
 import { BrightProps } from "bright";
 import { X } from "lucide-react";
-import { Suspense, memo, use, useState } from "react";
+import { Suspense, cache, memo, use, useState } from "react";
 import { LangIcon } from "@/components/elements/code/common";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,6 +29,8 @@ type BrightCodeProps = {
   wrapperClassName?: string;
 } & CodeProps;
 
+const cacheHighlight = cache(highlight);
+
 const Code = memo(
   ({
     children,
@@ -42,19 +44,19 @@ const Code = memo(
       lines,
       style,
       lang: language,
-    } = use(highlight(children, lang, theme ?? "github-dark-dimmed"));
+    } = use(cacheHighlight(children, lang, theme ?? "github-dark-dimmed"));
 
     return (
       <div
         className={cn("text-sm min-w-full absolute overflow-auto", className)}
       >
         <pre
-          className={cn("py-4", preClassName, language)}
+          className={cn("py-4 rounded-md", preClassName, language)}
           style={{ backgroundColor: style.background }}
         >
-          <code className={cn("w-full", codeClassName)}>
+          <code className={cn("w-full flex flex-col", codeClassName)}>
             {lines.map((tokenLine, i) => (
-              <div key={`line-${i}`} className="px-4">
+              <div key={`line-${i}`} className="my-auto px-4 text-white">
                 <span>
                   {tokenLine.map((token, j) => {
                     return (
