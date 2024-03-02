@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/hooks/image";
 import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/hooks/update";
+import { getHasErrorDuringSave } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/utils";
 import {
   editStatusAtom,
   editValueStatesAtom,
@@ -70,39 +71,81 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     reset,
   });
 
+  // toast submit functions
+  const toastOnSubmit = async (data: EditSummaryInput) => {
+    try {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "LOADING" },
+      }));
+      await onSubmit({ data });
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { dataStatus: "CREATED", status: "EDITING" },
+      }));
+      onNextSection("summary");
+    } catch (e) {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "EDITING" },
+      }));
+
+      throw e;
+    }
+  };
+
+  const toastOnDuringSave = async (input?: ComponentUpdateInput) => {
+    const data = getValues();
+    const { error, fields } = getHasErrorDuringSave({ data, errors });
+
+    if (error) {
+      const e = new Error(
+        `変更するには、${fields.join(", ")} を入力してください。`
+      );
+
+      throw e;
+    }
+
+    try {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "LOADING" },
+      }));
+
+      const all = await onSubmit({ data, updateInput: input });
+
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: {
+          status: "EDITING",
+          dataStatus: all ? "CREATED" : prev.summary.dataStatus,
+        },
+      }));
+    } catch (e) {
+      setEditStatus((prev) => ({
+        ...prev,
+        summary: { ...prev.summary, status: "EDITING" },
+      }));
+
+      throw e;
+    }
+  };
+
+  // submit functions
   const onSubmitHandler = handleSubmit(async (data) => {
-    await onSubmit(data);
-    setEditStatus((prev) => ({
-      ...prev,
-      summary: { ...prev.summary, dataStatus: "CREATED" },
-    }));
-    onNextSection("summary");
+    toast.promise(toastOnSubmit(data), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: "変更できませんでした。",
+    });
   });
 
   async function handleDuringSave(input?: ComponentUpdateInput) {
-    const data = getValues();
-    const errorsFields = Object.keys(errors);
-    const hasError = errorsFields.length > 0;
-
-    if (!hasError) {
-      await onSubmit(data, input);
-
-      return;
-    }
-
-    const validKeys = Object.keys(data).filter(
-      (key) => !errorsFields.includes(key)
-    );
-
-    if (validKeys.length === 0) {
-      toast.error(
-        `変更するには、${errorsFields.join(", ")} を入力してください。`
-      );
-
-      return;
-    }
-
-    await onSubmit(data, input);
+    toast.promise(toastOnDuringSave(input), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: (e) => e.message,
+    });
   }
 
   function onReset() {
