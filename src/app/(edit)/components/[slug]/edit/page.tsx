@@ -3,10 +3,10 @@ import { Suspense } from "react";
 
 import { cacheGetCompWithFiles } from "@/app/(edit)/components/[slug]/edit/_features/common/cache";
 import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/header";
-import { EditDocument } from "@/app/(edit)/components/[slug]/edit/_features/documents/components/server";
-import { EditFile } from "@/app/(edit)/components/[slug]/edit/_features/files/components/server";
+import { EditDocument } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/server";
+import { EditFile } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/server";
+import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/components/server";
 import { HydrateEditSection } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/hydrate-atom";
-import { EditSummary } from "@/app/(edit)/components/[slug]/edit/_features/summary/components/server";
 
 import { TabsContent, TabsList } from "@/components/ui/tabs";
 import { assertMine } from "@/lib/auth/handlers";
