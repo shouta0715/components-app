@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
 import { Area } from "react-easy-crop";
 import { toast } from "sonner";
-import { typeToAccept } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
+import { typeToAccept } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/utils";
 import { getCroppedImg } from "@/components/elements/cropper/cropper-trimming";
 
 export type DropzoneProps = {

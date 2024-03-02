@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 
 import { Control, FieldErrors, UseFormSetError } from "react-hook-form";
-import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/components/client/files-drop-zones";
-import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
+import { AcceptedFiles } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/components/client/files-drop-zones";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/utils";
 import { DropZoneNavigate } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/navigation/drop-zone";
 import { PreviewsNavigate } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/navigation/preview";
 import { usePreviewNavigation } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/hooks/navigation";

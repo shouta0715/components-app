@@ -7,12 +7,12 @@ import { AlertCircle, ImageIcon } from "lucide-react";
 import React from "react";
 import { DropzoneInputProps } from "react-dropzone";
 import { Area } from "react-easy-crop";
-import { PreviewDropZoneLoader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/loaders";
 import {
   DropzoneProps,
   usePreviewDropZone,
-} from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/hooks/preview";
-import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
+} from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/hooks/preview";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/utils";
+import { PreviewDropZoneLoader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/loaders";
 import { ImageCropper } from "@/components/elements/cropper";
 import {
   AlertDialog,

@@ -2,7 +2,7 @@
 import { FileCode2, Siren, X } from "lucide-react";
 import React, { memo } from "react";
 import { DropzoneInputProps } from "react-dropzone";
-import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
+import { accepts } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/utils";
 
 import { LangIcons } from "@/components/icons/LangIcons";
 import { Label } from "@/components/ui/label";

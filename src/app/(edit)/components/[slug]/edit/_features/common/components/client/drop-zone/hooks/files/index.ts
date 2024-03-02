@@ -8,7 +8,7 @@ import { v4 as randomUUID } from "uuid";
 import {
   accepts,
   typeToAccept,
-} from "@/app/(edit)/components/[slug]/edit/_features/drop-zone/utils";
+} from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/drop-zone/utils";
 import { EditFilesInput, InputFileType } from "@/lib/schema/client/edit/files";
 import { safeValidate } from "@/lib/validation";
 import { extensions } from "@/types/file";
