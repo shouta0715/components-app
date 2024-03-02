@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable tailwindcss/enforces-shorthand */
 import { ClassAttributes, HTMLAttributes, TableHTMLAttributes } from "react";
 import Markdown, { ExtraProps } from "react-markdown";
@@ -19,7 +20,9 @@ export function MarkdownAccordion({
   ...rest
 }: CodeProps) {
   const title =
-    typeof node?.data?.meta === "string" ? node.data.meta : "Details";
+    typeof (node?.data as any)?.meta === "string"
+      ? (node?.data as any)?.meta ?? "Details"
+      : "Details";
 
   const contents = node?.children.reduce<string>((acc, child) => {
     if (child.type === "text") return acc + child.value;
@@ -28,7 +31,7 @@ export function MarkdownAccordion({
   }, "");
 
   return (
-    <Accordion collapsible id="accordion" type="single">
+    <Accordion collapsible type="single">
       <AccordionItem value="item-1">
         <AccordionTrigger className="mb-0 mt-0 text-base">
           {title}
