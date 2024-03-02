@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldErrors } from "react-hook-form";
-import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 export const getHasErrorDuringSave = ({
   data,
   errors,
 }: {
-  data: EditSummaryInput;
-  errors: FieldErrors<EditSummaryInput>;
+  data: Record<string, any>;
+  errors: FieldErrors<Record<string, any>>;
 }): {
   error: boolean;
   fields: string[];

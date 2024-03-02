@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { getHasErrorDuringSave } from "@/app/(edit)/components/[slug]/edit/_features/common/utils";
 import { useUpdatePreview } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/hooks/image";
 import { useComponentUpdater } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/hooks/update";
-import { getHasErrorDuringSave } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/utils";
 import {
   editStatusAtom,
   editValueStatesAtom,
