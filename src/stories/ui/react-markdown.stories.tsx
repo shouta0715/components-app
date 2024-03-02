@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { ReactMarkdown } from "@/components/ui/react-markdown";
+import { ReactMarkdown } from "@/components/elements/markdown/server";
 
 export default {
   component: ReactMarkdown,

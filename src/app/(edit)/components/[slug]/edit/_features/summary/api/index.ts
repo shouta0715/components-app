@@ -23,7 +23,7 @@ async function updateSummary({
   if (!res.ok) throwHttpErrorFromStatus(res.status);
 }
 
-export function useMutateSummary(slug: string) {
+export function useMutateComponent(slug: string) {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (input: ComponentUpdateInput) => updateSummary({ slug, input }),
     onSuccess: () => {

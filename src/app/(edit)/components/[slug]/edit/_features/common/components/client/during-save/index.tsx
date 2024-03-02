@@ -46,13 +46,13 @@ function DuringComponentSave({
         </div>
         <div className="flex items-center justify-between">
           <Button
-            className="h-auto py-2 text-xs font-semibold transition-all"
+            className="h-auto w-28 py-2 text-xs font-semibold transition-all"
             disabled={!isChanged || isPending}
             onClick={onSubmit}
             size="sm"
             type="button"
           >
-            {isDirty ? (
+            {isChanged ? (
               "変更を保存する"
             ) : (
               <span className="flex items-center">
