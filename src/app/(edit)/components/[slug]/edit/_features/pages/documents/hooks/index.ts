@@ -16,6 +16,11 @@ import {
 } from "@/lib/schema/client/edit/document";
 import { Params } from "@/types/next";
 
+type OnSubmitProps = {
+  data: FormEditDocumentInput;
+  draft?: boolean;
+};
+
 export function useDocumentForm(defaultValues: EditDocumentInput) {
   const { document } = useAtomValue(editValueStatesAtom);
   const { slug } = useParams<Params["params"]>();
@@ -37,43 +42,64 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     resolver: valibotResolver(formEditDocumentSchema),
   });
 
-  async function onSubmit(values: FormEditDocumentInput, draft?: boolean) {
-    await mutateAsync({ ...values, draft });
-    reset(values);
-    setAtomValues((prev) => ({ ...prev, document: values.document }));
+  async function onSubmit({ data, draft }: OnSubmitProps) {
+    await mutateAsync({ ...data, draft });
+    reset(data);
+    setAtomValues((prev) => ({ ...prev, document: data.document }));
   }
 
-  async function handleDuringSave({ draft }: { draft?: boolean }) {
-    const data = getValues();
-    const hasDocument = Boolean(data.document);
-
-    if (hasDocument) {
-      await onSubmit(data, draft);
-
-      return;
-    }
-
-    toast.error(`変更するには、ドキュメントを入力してください。`);
-  }
-
-  const onSubmitHandler = handleSubmit(async (values) => {
-    setEditStatus((prev) => ({
-      ...prev,
-      document: { ...prev.document, status: "LOADING" },
-    }));
+  // toast submit function
+  const toastOnSubmit = async (data: FormEditDocumentInput) => {
     try {
-      await onSubmit(values);
+      setEditStatus((prev) => ({
+        ...prev,
+        document: { ...prev.document, status: "LOADING" },
+      }));
+      await onSubmit({ data });
 
       setEditStatus((prev) => ({
         ...prev,
         document: { status: "EDITING", dataStatus: "CREATED" },
       }));
-    } catch {
+    } catch (e) {
       setEditStatus((prev) => ({
         ...prev,
         summary: { ...prev.summary, status: "EDITING" },
       }));
+
+      throw e;
     }
+  };
+
+  const toastOnDuringSave = async ({ draft }: { draft?: boolean }) => {
+    const data = getValues();
+    const hasDocument = Boolean(data.document);
+
+    if (hasDocument) {
+      await onSubmit({ data, draft });
+
+      return;
+    }
+
+    const e = new Error(`変更するには、ドキュメントを入力してください。`);
+
+    throw e;
+  };
+
+  async function handleDuringSave({ draft }: { draft?: boolean }) {
+    toast.promise(toastOnDuringSave({ draft }), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: (e) => e.message,
+    });
+  }
+
+  const onSubmitHandler = handleSubmit(async (data) => {
+    toast.promise(toastOnSubmit(data), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: "変更できませんでした。",
+    });
   });
 
   const isPending = isLoading || isSubmitting;

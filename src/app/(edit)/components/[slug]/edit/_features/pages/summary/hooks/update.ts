@@ -1,23 +1,30 @@
 import { useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
+import { useCallback } from "react";
 import { DeepPartial } from "react-hook-form";
 import {
   useMutateImage,
   useMutateComponent,
 } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/api";
-import {
-  editStatusAtom,
-  editValueStatesAtom,
-} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
+import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import { SummaryUpdateInputValue } from "@/app/(edit)/components/[slug]/edit/_features/section/types";
 import { getComponentChangedValues } from "@/app/(edit)/components/[slug]/edit/_features/section/utils";
-import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
+import {
+  EditSummaryInput,
+  editSummarySchema,
+} from "@/lib/schema/client/edit/summary";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
+import { safeValidate } from "@/lib/validation";
 import { Params } from "@/types/next";
 
 type UseComponentUpdaterProps = {
   defaultValues?: Readonly<DeepPartial<EditSummaryInput>>;
   reset: (data: EditSummaryInput) => void;
+};
+
+type OnSubmitProps = {
+  data: EditSummaryInput;
+  updateInput?: ComponentUpdateInput;
 };
 
 export function useComponentUpdater({
@@ -26,34 +33,31 @@ export function useComponentUpdater({
 }: UseComponentUpdaterProps) {
   const { slug } = useParams<Params["params"]>();
 
-  const setEditStatus = useSetAtom(editStatusAtom);
   const setAtomValues = useSetAtom(editValueStatesAtom);
 
   const { mutateAsync, isPending: isMutating } = useMutateComponent(slug);
   const { mutateAsync: uploadImage, isPending: isUploading } = useMutateImage();
-  async function onSubmit(
-    data: EditSummaryInput,
-    updateInput?: ComponentUpdateInput
-  ) {
-    try {
-      setEditStatus((prev) => ({
-        ...prev,
-        summary: { ...prev.summary, status: "LOADING" },
-      }));
 
-      let previewUrl: string;
-
-      if (data.previewUrl.type !== "default") {
+  const onUploadImage = useCallback(
+    async (preview: EditSummaryInput["previewUrl"]) => {
+      if (preview.type !== "default") {
         const id = await uploadImage({
-          file: data.previewUrl.value,
+          file: preview.value,
           slug,
           prevValue: defaultValues?.previewUrl?.value,
         });
 
-        previewUrl = id;
-      } else {
-        previewUrl = data.previewUrl.value;
+        return id;
       }
+
+      return preview.value;
+    },
+    [defaultValues?.previewUrl?.value, slug, uploadImage]
+  );
+
+  const onSubmit = useCallback(
+    async ({ data, updateInput }: OnSubmitProps) => {
+      const previewUrl = await onUploadImage(data.previewUrl);
 
       const input: SummaryUpdateInputValue = {
         name: data.name,
@@ -83,13 +87,13 @@ export function useComponentUpdater({
         ...prev,
         summary: { ...data, previewUrl: newPreviewUrl },
       }));
-    } finally {
-      setEditStatus((prev) => ({
-        ...prev,
-        summary: { ...prev.summary, status: "EDITING" },
-      }));
-    }
-  }
+
+      const allCreated = safeValidate(data, editSummarySchema);
+
+      return allCreated.success;
+    },
+    [defaultValues, mutateAsync, onUploadImage, reset, setAtomValues]
+  );
 
   return { onSubmit, isMutating, isUploading };
 }
