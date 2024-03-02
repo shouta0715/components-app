@@ -40,7 +40,7 @@ export async function uploadImage(file: File | Blob) {
 }
 
 export async function deleteImage(id: string) {
-  const res = await fetch(`/api/images/components/${id}`, {
+  const res = await fetch(`/api/components/${id}/images`, {
     method: "DELETE",
   });
 
