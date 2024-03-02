@@ -1,8 +1,8 @@
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
 import { DeepPartial } from "react-hook-form";
-import { toast } from "sonner";
 import {
+  FilesUploaderProps,
   useMutateFiles,
   useUploadFiles,
 } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/api/files";
@@ -11,12 +11,13 @@ import {
   convertFiles,
   getResetDefaultFiles,
 } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/utils/convert";
+import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import {
-  editStatusAtom,
-  editValueStatesAtom,
-} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
-import { EditFilesInput } from "@/lib/schema/client/edit/files";
-import { FilesUpdateInput, UploadFileInput } from "@/lib/schema/server/files";
+  EditFilesInput,
+  editFilesSchema,
+} from "@/lib/schema/client/edit/files";
+import { FilesUpdateInput } from "@/lib/schema/server/files";
+import { safeValidate } from "@/lib/validation";
 
 type UseComponentFilesUpdaterProps = {
   defaultValues?: Readonly<DeepPartial<EditFilesInput>>;
@@ -24,25 +25,39 @@ type UseComponentFilesUpdaterProps = {
   slug: string;
 };
 
+type OnsubmitProps = {
+  data: EditFilesInput;
+  draft?: boolean;
+};
+
 export function useComponentFilesUpdater({
   defaultValues,
   reset,
   slug,
 }: UseComponentFilesUpdaterProps) {
-  const setEditStatus = useSetAtom(editStatusAtom);
   const setAtomValues = useSetAtom(editValueStatesAtom);
 
   const { mutateAsync, isPending } = useMutateFiles(slug);
   const { isPending: isUploading, mutateAsync: onUploadFiles } =
     useUploadFiles();
 
-  const onSubmit = useCallback(
-    async (data: EditFilesInput, draft?: boolean) => {
-      setEditStatus((prev) => ({
-        ...prev,
-        files: { ...prev.files, status: "LOADING" },
-      }));
+  const onUpload = useCallback(
+    async (data: FilesUploaderProps) => {
+      if (!data.length) return [];
 
+      const uploadedFiles = await onUploadFiles(data);
+
+      return uploadedFiles.map((file) => ({
+        objectId: file.objectId,
+        extension: file.extension,
+        name: file.name,
+      }));
+    },
+    [onUploadFiles]
+  );
+
+  const onSubmit = useCallback(
+    async ({ data, draft }: OnsubmitProps) => {
       const { files, previewType } = data;
 
       const { defaultTypeFiles, uploadData, deleteFiles } = convertFiles({
@@ -50,73 +65,49 @@ export function useComponentFilesUpdater({
         defaultFiles: defaultValues?.files,
       });
 
-      try {
-        let uploadFiles: UploadFileInput[] = [];
+      const uploadFiles = await onUpload(uploadData);
 
-        if (uploadData.length > 0) {
-          const uploadedFiles = await onUploadFiles(uploadData);
+      const functionName =
+        previewType.type === "react" ? previewType.functionName : undefined;
 
-          uploadFiles = uploadedFiles.map((file) => ({
-            objectId: file.objectId,
-            extension: file.extension,
-            name: file.name,
-          }));
-        }
+      const input: FilesUpdateInput = {
+        functionName,
+        draft,
+        uploadFiles,
+        deleteFiles,
+      };
 
-        const functionName =
-          previewType.type === "react" ? previewType.functionName : undefined;
+      const values = getChangedFilesValues({
+        input,
+        defaultValues,
+        defaultDraft: draft,
+      });
 
-        const input: FilesUpdateInput = {
-          functionName,
-          draft,
-          uploadFiles,
-          deleteFiles,
-        };
+      const ids = await mutateAsync(values);
 
-        const values = getChangedFilesValues({
-          input,
-          defaultValues,
-          defaultDraft: draft,
-        });
+      const resetFiles = getResetDefaultFiles({
+        uploadFiles,
+        ids,
+        defaultTypeFiles,
+      });
 
-        const ids = await mutateAsync(values);
+      const newData: EditFilesInput = {
+        ...data,
+        files: resetFiles,
+      };
 
-        const resetFiles = getResetDefaultFiles({
-          uploadFiles,
-          ids,
-          defaultTypeFiles,
-        });
+      reset(newData);
 
-        const newData: EditFilesInput = {
-          ...data,
-          files: resetFiles,
-        };
+      setAtomValues((prev) => ({
+        ...prev,
+        files: newData,
+      }));
 
-        reset(newData);
+      const allCreated = safeValidate(data, editFilesSchema);
 
-        setAtomValues((prev) => ({
-          ...prev,
-          files: newData,
-        }));
-      } catch (error) {
-        toast.error("更新できませんでした。", {
-          description: "環境が良いところで再度お試しください",
-        });
-      } finally {
-        setEditStatus((prev) => ({
-          ...prev,
-          files: { ...prev.files, status: "EDITING" },
-        }));
-      }
+      return allCreated.success;
     },
-    [
-      defaultValues,
-      mutateAsync,
-      onUploadFiles,
-      reset,
-      setAtomValues,
-      setEditStatus,
-    ]
+    [defaultValues, mutateAsync, onUpload, reset, setAtomValues]
   );
 
   return {

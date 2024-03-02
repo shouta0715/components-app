@@ -5,7 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
-import { isForceMountAtom } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/context";
+import { getHasErrorDuringSave } from "@/app/(edit)/components/[slug]/edit/_features/common/utils";
+import { useFilesHandler } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/hooks/handler";
 import { useComponentFilesUpdater } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/hooks/upload";
 import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/utils/files-status";
 import {
@@ -21,7 +22,6 @@ import {
   EditFilesInput,
   editFilesSchema,
 } from "@/lib/schema/client/edit/files";
-import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { Params } from "@/types/next";
 
 export function useFilesForm(defaultValues: EditFilesInput) {
@@ -29,10 +29,17 @@ export function useFilesForm(defaultValues: EditFilesInput) {
   const { slug } = useParams<Params["params"]>();
   const isPendingAtom = useAtomValue(isPendingEditAtom);
 
-  const setForceMount = useSetAtom(isForceMountAtom);
   const setIsEditing = useSetAtom(isEditingAtom);
   const { onNextSection } = useRedirectSectionHandler();
   const setEditStatus = useSetAtom(editStatusAtom);
+
+  const [status, setStatus] = useState<FilesStatus>(
+    calcStatus(
+      defaultValues.files,
+      defaultValues.previewType.type,
+      defaultValues.previewType.functionName
+    )
+  );
 
   const {
     setValue,
@@ -42,7 +49,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     handleSubmit,
     reset,
     register,
-
     formState: { errors, isDirty, defaultValues: defaultValuesForm, isLoading },
     control,
   } = useForm<EditFilesInput>({
@@ -57,112 +63,99 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     slug,
   });
 
+  const { setFiles, setPreviewType, onCompleteFunctionName, onReset } =
+    useFilesHandler({
+      reset,
+      setStatus,
+      setValue,
+      getValues,
+      clearErrors,
+      defaultValues,
+      defaultValuesForm,
+    });
+
   useEffect(() => {
     setIsEditing(isDirty);
 
     return () => setIsEditing(false);
   }, [isDirty, setIsEditing]);
 
-  const onSubmitHandler = handleSubmit(async (data) => {
-    await onSubmit(data);
-    setEditStatus((prev) => ({
-      ...prev,
-      files: { ...prev.files, dataStatus: "CREATED" },
-    }));
-    onNextSection("files");
-  });
+  // toast submit functions
+  const toastOnSubmit = async (data: EditFilesInput) => {
+    try {
+      setEditStatus((prev) => ({
+        ...prev,
+        files: { ...prev.files, status: "LOADING" },
+      }));
+      await onSubmit({ data });
+      setEditStatus((prev) => ({
+        ...prev,
+        files: { dataStatus: "CREATED", status: "EDITING" },
+      }));
+      onNextSection("files");
+    } catch (e) {
+      setEditStatus((prev) => ({
+        ...prev,
+        files: { ...prev.files, status: "EDITING" },
+      }));
 
-  async function handleDuringSave({
-    draft,
-  }: Pick<ComponentUpdateInput, "draft">) {
-    const data = getValues();
-    const errorsFields = Object.keys(errors);
-    const hasError = errorsFields.length > 0;
-
-    if (!hasError) {
-      await onSubmit(data, draft);
-
-      return;
+      throw e;
     }
+  };
 
-    const validKeys = Object.keys(data).filter(
-      (key) => !errorsFields.includes(key)
-    );
+  const toastOnDuringSave = async ({ draft }: { draft?: boolean }) => {
+    const data = getValues();
+    const { error, fields } = getHasErrorDuringSave({ data, errors });
 
-    if (validKeys.length === 0) {
-      toast.error(
-        `変更するには、${errorsFields.join(", ")} を入力してください。`
+    if (error) {
+      const e = new Error(
+        `変更するには、${fields.join(", ")} を入力してください。`
       );
 
-      return;
+      throw e;
     }
 
-    await onSubmit(data, draft);
-  }
+    try {
+      setEditStatus((prev) => ({
+        ...prev,
+        files: { ...prev.files, status: "LOADING" },
+      }));
 
-  const [status, setStatus] = useState<FilesStatus>(
-    calcStatus(
-      defaultValues.files,
-      defaultValues.previewType.type,
-      defaultValues.previewType.functionName
-    )
-  );
+      const all = await onSubmit({ data, draft });
 
-  const onReset = () => {
-    reset();
+      setEditStatus((prev) => ({
+        ...prev,
+        files: {
+          status: "EDITING",
+          dataStatus: all ? "CREATED" : prev.files.dataStatus,
+        },
+      }));
+    } catch (e) {
+      setEditStatus((prev) => ({
+        ...prev,
+        files: { ...prev.files, status: "EDITING" },
+      }));
 
-    const prevFiles: EditFilesInput["files"] =
-      (defaultValuesForm?.files as EditFilesInput["files"]) ??
-      defaultValues.files;
-
-    setStatus(
-      calcStatus(
-        prevFiles,
-        defaultValuesForm?.previewType?.type ?? defaultValues.previewType.type,
-        defaultValuesForm?.previewType?.functionName ??
-          defaultValues.previewType.functionName
-      )
-    );
-    setForceMount(true);
+      throw e;
+    }
   };
 
-  const setFiles = (newFile: EditFilesInput["files"]) => {
-    setValue("files", newFile, { shouldDirty: true, shouldValidate: true });
-
-    const { type, functionName } = getValues("previewType");
-    setStatus(calcStatus(newFile, type, functionName));
-  };
-
-  const setPreviewType = (type: "html" | "react") => {
-    const values = getValues();
-
-    const { files: filesValue } = values;
-
-    const newPreviewType =
-      type === "html"
-        ? { type, functionName: null }
-        : { type, functionName: defaultValues.previewType.functionName ?? "" };
-
-    setValue("previewType", newPreviewType);
-    setStatus(calcStatus(filesValue, type, newPreviewType.functionName));
-    clearErrors("files");
-    setForceMount(true);
-  };
-
-  const onCompleteFunctionName = (functionName: string) => {
-    const {
-      files: filesValue,
-      previewType: { type },
-    } = getValues();
-
-    setValue("previewType.functionName", functionName, {
-      shouldDirty: true,
-      shouldValidate: true,
+  // submit functions
+  const onSubmitHandler = handleSubmit(async (data) => {
+    toast.promise(toastOnSubmit(data), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: "変更できませんでした。",
     });
+  });
 
-    setStatus(calcStatus(filesValue, type, functionName));
-    setForceMount(true);
-  };
+  async function handleDuringSave({ draft }: { draft?: boolean }) {
+    toast.promise(toastOnDuringSave({ draft }), {
+      loading: "変更中...",
+      success: "変更しました。",
+      error: "変更できませんでした。",
+    });
+  }
 
   const isAllSuccess = useMemo(() => {
     return Object.values(status).every((s) => s.status === "success");
