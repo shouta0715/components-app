@@ -8,7 +8,6 @@ import {
   editStatusAtom,
   editValueStatesAtom,
 } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
-import { useRedirectSectionHandler } from "@/app/(edit)/components/[slug]/edit/_features/section/hooks";
 import { useMutateComponent } from "@/app/(edit)/components/[slug]/edit/_features/summary/api";
 import {
   EditDocumentInput,
@@ -23,7 +22,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
 
   const setEditStatus = useSetAtom(editStatusAtom);
   const setAtomValues = useSetAtom(editValueStatesAtom);
-  const { onNextSection } = useRedirectSectionHandler();
 
   const { mutateAsync, isPending: isSubmitting } = useMutateComponent(slug);
 
@@ -70,7 +68,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
         ...prev,
         document: { status: "EDITING", dataStatus: "CREATED" },
       }));
-      onNextSection("document");
     } catch {
       setEditStatus((prev) => ({
         ...prev,

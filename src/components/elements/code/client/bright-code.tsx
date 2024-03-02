@@ -61,7 +61,7 @@ const Code = memo(
         >
           <code className={cn("block min-w-fit", codeClassName)}>
             {lines.map((tokenLine, i) => (
-              <div key={`line-${i}`} className="px-4 text-white">
+              <div key={`line-${i}`} className="px-4 text-[#ADBAC7]">
                 <span>
                   {tokenLine.map((token, j) => {
                     return (

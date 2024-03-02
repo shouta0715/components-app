@@ -1,11 +1,12 @@
 "use client";
 
+import { Check } from "lucide-react";
 import dynamic from "next/dynamic";
 import React from "react";
 import { DocumentNavigation } from "@/app/(edit)/components/[slug]/edit/_features/documents/components/client/navigation";
 import { useDocumentForm } from "@/app/(edit)/components/[slug]/edit/_features/documents/hooks";
-import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/next-section-button";
 
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EditDocumentInput } from "@/lib/schema/client/edit/document";
 
@@ -62,11 +63,20 @@ export function EditDocumentForm({
           defaultValues={defaultValues}
           register={register}
         />
-        <NextSectionButton
-          currentSection="document"
-          isDirty={isDirty}
-          isLoading={isPending}
-        />
+        <Button
+          className="ml-auto h-auto w-32 py-2 font-semibold transition-all"
+          disabled={!isDirty || isPending}
+          type="submit"
+        >
+          {isDirty ? (
+            "変更を保存する"
+          ) : (
+            <span className="flex items-center">
+              <Check className="mr-1 size-4" />
+              保存済み
+            </span>
+          )}
+        </Button>
       </form>
     </>
   );
