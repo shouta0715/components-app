@@ -28,7 +28,11 @@ export function DocumentNavigation({
   register,
 }: DocumentNavigationProps) {
   return (
-    <NavigateTabs className="grid gap-8" defaultValue="write" params="mode">
+    <NavigateTabs
+      className="flex flex-col gap-8"
+      defaultValue="write"
+      params="mode"
+    >
       <TabsList className="h-9 w-full justify-between rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
         <div>
           <NavigateTabsTrigger

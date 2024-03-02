@@ -65,6 +65,10 @@
     @apply text-primary [&>:first-child]:!mt-0 [&>:last-child]:!mb-0 leading-7;
   }
 
+  .markdown > * {
+    @apply whitespace-pre-wrap break-words;
+  }
+
   .markdown > * + * {
     @apply mt-4;
   }

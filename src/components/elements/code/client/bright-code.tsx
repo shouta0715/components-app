@@ -48,15 +48,20 @@ const Code = memo(
 
     return (
       <div
-        className={cn("text-sm min-w-full absolute overflow-auto", className)}
+        className={cn("text-sm absolute", className)}
+        style={{ overflow: "hidden" }}
       >
         <pre
-          className={cn("py-4 rounded-md", preClassName, language)}
-          style={{ backgroundColor: style.background }}
+          className={cn(
+            "py-4 rounded-md m-0 overflow-auto",
+            preClassName,
+            language
+          )}
+          style={{ backgroundColor: style.background, colorScheme: "dark" }}
         >
-          <code className={cn("w-full flex flex-col", codeClassName)}>
+          <code className={cn("block min-w-fit", codeClassName)}>
             {lines.map((tokenLine, i) => (
-              <div key={`line-${i}`} className="my-auto px-4 text-white">
+              <div key={`line-${i}`} className="px-4 text-white">
                 <span>
                   {tokenLine.map((token, j) => {
                     return (
