@@ -67,7 +67,6 @@ export function EditFileForm({
     onSubmitHandler,
     onCompleteFunctionName,
     register,
-    onReset,
   } = useFilesForm(defaultValues);
 
   return (
@@ -77,7 +76,6 @@ export function EditFileForm({
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
-        onReset={onReset}
       />
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
         <div className="flex flex-col justify-between gap-16 sm:flex-row">

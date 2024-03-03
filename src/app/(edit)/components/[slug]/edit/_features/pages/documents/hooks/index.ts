@@ -111,7 +111,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     isPending,
     onSubmitHandler,
     handleDuringSave,
-    reset,
     register,
   };
 }

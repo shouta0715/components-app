@@ -42,7 +42,6 @@ export function EditDocumentForm({
     register,
     onSubmitHandler,
     handleDuringSave,
-    reset,
     isDirty,
     control,
     isPending,
@@ -55,7 +54,6 @@ export function EditDocumentForm({
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
-        onReset={reset}
       />
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
         <DocumentNavigation

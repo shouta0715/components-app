@@ -63,16 +63,15 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     slug,
   });
 
-  const { setFiles, setPreviewType, onCompleteFunctionName, onReset } =
-    useFilesHandler({
-      reset,
-      setStatus,
-      setValue,
-      getValues,
-      clearErrors,
-      defaultValues,
-      defaultValuesForm,
-    });
+  const { setFiles, setPreviewType, onCompleteFunctionName } = useFilesHandler({
+    reset,
+    setStatus,
+    setValue,
+    getValues,
+    clearErrors,
+    defaultValues,
+    defaultValuesForm,
+  });
 
   useEffect(() => {
     setIsEditing(isDirty);
@@ -172,7 +171,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     onCompleteFunctionName,
     register,
     handleDuringSave,
-    onReset,
     errors,
     slug,
     control,

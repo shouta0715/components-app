@@ -81,7 +81,6 @@ export function EditSummaryForm({
     onSubmitHandler,
     setValue,
     handleDuringSave,
-    onReset,
     setPreviews,
   } = useSummaryForm(defaultValues);
 
@@ -92,7 +91,6 @@ export function EditSummaryForm({
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
-        onReset={onReset}
       />
 
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
