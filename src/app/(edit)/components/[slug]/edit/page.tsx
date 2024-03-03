@@ -62,28 +62,32 @@ export default async function Page({ params }: Params) {
   };
 
   return (
-    <Suspense fallback={null}>
-      <HydrateEditSection data={data}>
-        <TabsList className="block h-auto items-center bg-transparent p-0 text-primary">
-          <EditHeader />
-          {/* Tab Contents */}
-
-          <div className="mt-8">
-            <TabsContent value="summary">
-              <EditSummary
-                defaultValues={summaryDefaultValues}
-                draft={data.draft}
-              />
-            </TabsContent>
-            <TabsContent value="files">
-              <EditFile defaultValues={filesDefaultValues} draft={data.draft} />
-            </TabsContent>
-            <TabsContent value="document">
-              <EditDocument defaultValues={document} draft={data.draft} />
-            </TabsContent>
-          </div>
-        </TabsList>
-      </HydrateEditSection>
-    </Suspense>
+    <div className="animate-fade-in">
+      <Suspense fallback={null}>
+        <HydrateEditSection data={data}>
+          <TabsList className="block h-auto items-center bg-transparent p-0 text-primary">
+            <EditHeader />
+            {/* Tab Contents */}
+            <div className="mt-8">
+              <TabsContent value="summary">
+                <EditSummary
+                  defaultValues={summaryDefaultValues}
+                  draft={data.draft}
+                />
+              </TabsContent>
+              <TabsContent value="files">
+                <EditFile
+                  defaultValues={filesDefaultValues}
+                  draft={data.draft}
+                />
+              </TabsContent>
+              <TabsContent value="document">
+                <EditDocument defaultValues={document} draft={data.draft} />
+              </TabsContent>
+            </div>
+          </TabsList>
+        </HydrateEditSection>
+      </Suspense>
+    </div>
   );
 }

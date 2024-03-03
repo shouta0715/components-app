@@ -5,20 +5,14 @@ import { Suspense } from "react";
 import { useMediaQuery } from "@/components/elements/category/form/useCategoryForm";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function DesktopLoading() {
-  return [1, 2, 3].map((i) => (
-    <Skeleton key={i} className="my-2 h-10 w-full flex-1" />
-  ));
-}
-
 const DynamicDesktopComponentBreadcrumbs = dynamic(
   () =>
     import(
       "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/desktop"
     ),
   {
-    ssr: false,
-    loading: () => <DesktopLoading />,
+    ssr: true,
+    loading: () => <Skeleton className="mx-2 h-10 flex-1" />,
   }
 );
 
@@ -28,8 +22,8 @@ const DynamicMobileComponentBreadcrumbs = dynamic(
       "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/mobile"
     ),
   {
-    ssr: false,
-    loading: () => <Skeleton className="h-10 w-full flex-1" />,
+    ssr: true,
+    loading: () => <Skeleton className="mx-2 h-10 flex-1" />,
   }
 );
 
@@ -40,14 +34,14 @@ function ComponentBreadcrumbs() {
     <div className="h-full flex-1">
       <nav className="flex">
         {isDesktop ? (
-          <div className="hidden flex-1  grid-cols-3 divide-x divide-border sm:grid">
-            <Suspense fallback={<DesktopLoading />}>
+          <div className="hidden flex-1 sm:flex sm:gap-x-2 md:gap-x-1 lg:gap-x-3">
+            <Suspense fallback={<Skeleton className="mx-2 h-10 flex-1" />}>
               <DynamicDesktopComponentBreadcrumbs />
             </Suspense>
           </div>
         ) : (
-          <div className="flex-1 py-2 sm:hidden">
-            <Suspense fallback={<Skeleton className="h-10 flex-1" />}>
+          <div className="flex-1 sm:hidden">
+            <Suspense fallback={<Skeleton className="mx-2 h-10 flex-1" />}>
               <DynamicMobileComponentBreadcrumbs />
             </Suspense>
           </div>

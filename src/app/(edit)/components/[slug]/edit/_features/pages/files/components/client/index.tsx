@@ -3,8 +3,8 @@
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { DuringSaveLoader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/loaders";
 import { FunctionNameInput } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/function-name-input";
-import { FileNavigationLoading } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/loading";
 import { FilesStatus } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/status";
 import { TogglePreviewType } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/components/client/toggle-preview-type";
 import { useFilesForm } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/hooks";
@@ -21,7 +21,7 @@ const DynamicEditFilesNavigate = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <FileNavigationLoading />,
+    loading: () => <DuringSaveLoader />,
   }
 );
 

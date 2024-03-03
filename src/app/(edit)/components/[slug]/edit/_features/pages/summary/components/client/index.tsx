@@ -5,6 +5,7 @@ import React, { Suspense } from "react";
 
 import {
   CategoryFormLoader,
+  DuringSaveLoader,
   PreviewDropZoneLoader,
 } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/loaders";
 import { useSummaryForm } from "@/app/(edit)/components/[slug]/edit/_features/pages/summary/hooks";
@@ -13,7 +14,6 @@ import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_features
 import { ErrorMessage } from "@/components/ui/error-message";
 import { InputLength } from "@/components/ui/input-length";
 import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AutoSizeTextarea, Textarea } from "@/components/ui/textarea";
 import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
@@ -51,15 +51,7 @@ const DynamicDuringComponentSave = dynamic(
     ),
   {
     ssr: false,
-    loading: () => (
-      <div className="sticky top-[57px] z-20 -mx-4 -mt-8 flex h-12 flex-1 items-center justify-between border-b border-border  bg-background px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
-        <Skeleton className="h-full w-36" />
-        <div className="flex h-full w-full items-center justify-end gap-x-4">
-          <Skeleton className="h-full w-28" />
-          <Skeleton className="h-full w-24" />
-        </div>
-      </div>
-    ),
+    loading: () => <DuringSaveLoader />,
   }
 );
 

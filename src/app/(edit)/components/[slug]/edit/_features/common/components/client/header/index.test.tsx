@@ -1,3 +1,4 @@
+import "@/tests/mocks/session";
 import { composeStories } from "@storybook/react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -34,7 +35,7 @@ const spyHistory = vi
 const { Default, Empty, Loading } = composeStories(Stories);
 const basePath = "/components/xxx/edit";
 
-describe("@app/components/[slug]/edit//server/header", async () => {
+describe("@app/components/[slug]/edit/header", async () => {
   beforeEach(() => {
     mockRouter.setCurrentUrl("/components/xxx/edit?section=summary");
   });
