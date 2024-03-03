@@ -21,3 +21,10 @@ vi.mock("@/lib/auth", () => {
     auth: vi.fn(() => mock),
   };
 });
+
+vi.mock("next-auth/react", () => {
+  return {
+    useSession: vi.fn(() => mockSession),
+    SessionProvider: vi.fn(),
+  };
+});
