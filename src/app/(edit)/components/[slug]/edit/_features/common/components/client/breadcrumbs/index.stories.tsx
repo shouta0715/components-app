@@ -1,7 +1,7 @@
 import { expect } from "@storybook/jest";
 import { Meta, StoryObj, StoryFn } from "@storybook/react";
 import { within } from "@storybook/testing-library";
-import { EditHeader } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/header";
+import ComponentBreadcrumbs from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs";
 import { editStatusAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import {
   CheckEditStatusData,
@@ -58,15 +58,15 @@ function createDecorators(
 
 export default {
   title: "app/components/edit/server/header",
-  component: EditHeader,
+  component: ComponentBreadcrumbs,
   tags: ["server", "app", "autodocs"],
   decorators: [createDecorators()],
   parameters: setupNextParameter("components/xxx/edit", {
     section: "summary",
   }),
-} satisfies Meta<typeof EditHeader>;
+} satisfies Meta<typeof ComponentBreadcrumbs>;
 
-type Story = StoryObj<typeof EditHeader>;
+type Story = StoryObj<typeof ComponentBreadcrumbs>;
 
 export const Default: Story = {};
 
