@@ -21,7 +21,7 @@ const DynamicComponentBreadcrumbs = dynamic(
 
 export function EditHeader() {
   return (
-    <StickyTrigger className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border bg-background px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
+    <StickyTrigger className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border bg-background/90 px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
       <div className="flex h-full items-center justify-between">
         <div className="flex h-full">
           <NavSheet preview />

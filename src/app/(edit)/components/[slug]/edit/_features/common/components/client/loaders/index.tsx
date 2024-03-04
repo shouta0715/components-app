@@ -6,12 +6,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function CategoryFormLoader() {
   return (
     <div className="group inline-block">
-      <Label required>Category</Label>
+      <Label required>UIのカテゴリーを選択</Label>
       <Skeleton
         aria-busy
         className="mt-3 inline-flex h-10 w-72 items-center justify-between rounded-md border border-input px-4 py-2 text-sm sm:w-80"
       >
-        Loading Category
+        Loading...
         <Loader2 className="ml-2 h-4 w-4 shrink-0 animate-spin opacity-50" />
       </Skeleton>
     </div>
