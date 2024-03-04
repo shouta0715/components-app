@@ -1,5 +1,5 @@
 import { Extension } from "@prisma/client";
-import { extension } from "mime-types";
+
 import { throwHttpErrorFromStatus } from "@/lib/errors";
 import { UploadFileInput } from "@/lib/schema/server/files";
 
@@ -10,7 +10,9 @@ type ResData = {
 };
 
 export async function uploadImage(file: File | Blob) {
-  const ex = extension(file.type);
+  const ex =
+    file instanceof File ? file.name.split(".").pop() : ("png" as Extension);
+
   const type = encodeURIComponent(file.type);
 
   const res = await fetch(`/api/images?extension=${ex}&type=${type}`, {
