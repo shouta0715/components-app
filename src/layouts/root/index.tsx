@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Pattern } from "@/components/ui/pattern";
 import { Providers } from "@/layouts/providers";
 import { Footer } from "@/layouts/root/footer";
 import { AppHeader, AuthHeader, PreviewHeader } from "@/layouts/root/header";
@@ -62,6 +63,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 export const EditLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Providers>
+      <Pattern />
       <div className="flex min-h-screen flex-col">
         <div className="mx-auto h-full w-full max-w-7xl flex-1 items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
           <main>{children}</main>

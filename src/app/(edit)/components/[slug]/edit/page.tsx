@@ -62,7 +62,7 @@ export default async function Page({ params }: Params) {
   };
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in bg-background/20">
       <Suspense fallback={null}>
         <HydrateEditSection data={data}>
           <TabsList className="block h-auto items-center bg-transparent p-0 text-primary">
