@@ -21,6 +21,7 @@ import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 type EditSummaryFormProps = {
   defaultValues: EditSummaryInput;
   draft: boolean;
+  name: string;
 };
 
 const DynamicCategoryForm = dynamic(
@@ -59,6 +60,7 @@ const DynamicDuringComponentSave = dynamic(
 export function EditSummaryForm({
   defaultValues,
   draft,
+  name,
 }: EditSummaryFormProps) {
   const {
     control,
@@ -84,6 +86,7 @@ export function EditSummaryForm({
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
+        name={name}
       />
 
       <EditSectionTitle className="flex-1">

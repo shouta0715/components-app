@@ -75,5 +75,6 @@ export const getEditDefaultValues = (data: EditComp) => {
     summary: summaryDefaultValues,
     document,
     draft: data.draft,
+    name,
   };
 };

@@ -24,11 +24,13 @@ const DynamicDuringComponentSave = dynamic(
 type EdiDocumentFormProps = {
   defaultValues: EditDocumentInput;
   draft: boolean;
+  name: string;
 };
 
 export function EditDocumentForm({
   defaultValues,
   draft,
+  name,
 }: EdiDocumentFormProps) {
   const {
     register,
@@ -46,6 +48,7 @@ export function EditDocumentForm({
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
+        name={name}
       />
       <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
         <DocumentNavigation

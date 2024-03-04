@@ -18,7 +18,7 @@ export default async function Page({ params }: Params) {
   const data = await cacheGetCompWithFiles(params.slug);
   await assertMine(data.creatorId, notFound);
 
-  const { files, summary, document, draft } = getEditDefaultValues(data);
+  const { files, summary, document, draft, name } = getEditDefaultValues(data);
 
   return (
     <div className="animate-fade-in bg-background/20">
@@ -31,13 +31,21 @@ export default async function Page({ params }: Params) {
             {/* Tab Contents */}
             <div className="mt-8">
               <TabsContent value="summary">
-                <EditSummary defaultValues={summary} draft={draft} />
+                <EditSummary
+                  defaultValues={summary}
+                  draft={draft}
+                  name={name}
+                />
               </TabsContent>
               <TabsContent value="files">
-                <EditFile defaultValues={files} draft={draft} />
+                <EditFile defaultValues={files} draft={draft} name={name} />
               </TabsContent>
               <TabsContent value="document">
-                <EditDocument defaultValues={document} draft={draft} />
+                <EditDocument
+                  defaultValues={document}
+                  draft={draft}
+                  name={name}
+                />
               </TabsContent>
             </div>
           </TabsList>
