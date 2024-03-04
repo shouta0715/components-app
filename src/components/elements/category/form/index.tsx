@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import * as React from "react";
 
 import {
@@ -17,7 +18,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTrigger,
@@ -37,7 +37,7 @@ function CategoryForm({
   defaultValue,
   onCreated,
 }: CategoryFormProps & { className?: string }) {
-  const { register, errors, control, onSubmit } = useCategoryForm(
+  const { register, errors, control, onSubmit, isPending } = useCategoryForm(
     defaultValue,
     onCreated
   );
@@ -46,7 +46,7 @@ function CategoryForm({
     <div className="grid items-start gap-4 px-4" id="category-form">
       <div className="grid gap-2">
         <Label htmlFor="name" required>
-          Name
+          カテゴリーの名前
           <InputLength
             className="ml-2"
             control={control}
@@ -55,8 +55,10 @@ function CategoryForm({
           />
         </Label>
         <Input
+          className="placeholder:text-sm"
           defaultValue={defaultValue}
           id="name"
+          placeholder="カテゴリー名を入力..."
           type="text"
           {...register("name")}
         />
@@ -66,7 +68,7 @@ function CategoryForm({
       </div>
       <div className="grid gap-2">
         <Label htmlFor="description" required>
-          Description
+          カテゴリーの説明
           <InputLength
             className="ml-2"
             control={control}
@@ -74,7 +76,12 @@ function CategoryForm({
             name="description"
           />
         </Label>
-        <Textarea id="description" {...register("description")} />
+        <Textarea
+          className="placeholder:pt-0.5 placeholder:text-sm"
+          id="description"
+          placeholder="カテゴリーの説明を入力..."
+          {...register("description")}
+        />
         {errors.description?.message && (
           <ErrorMessage className="mt-1">
             {errors.description?.message}
@@ -82,12 +89,20 @@ function CategoryForm({
         )}
       </div>
       <Button
-        className="w-full"
+        className="w-full font-semibold"
+        disabled={isPending}
         onClick={onSubmit}
         type="button"
         variant="default"
       >
-        Create Category
+        {isPending ? (
+          <span className="flex items-center justify-center">
+            <Loader2 className="size-4 animate-spin" />
+            作成中...
+          </span>
+        ) : (
+          "作成する"
+        )}
       </Button>
     </div>
   );
@@ -116,8 +131,8 @@ export function CategoryFormDialog({
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>
-              新しいカテゴリを作成します。完了したら保存をクリックしてください。
+            <DialogDescription className="pt-2 text-xs">
+              新しいカテゴリを作成します。項目を入力後、作成するをクリックしてください。
             </DialogDescription>
           </DialogHeader>
           <CategoryForm defaultValue={defaultValue} onCreated={onCreated} />
@@ -139,11 +154,9 @@ export function CategoryFormDialog({
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DialogTitle>{title}</DialogTitle>
-          <DrawerDescription>
-            新しいカテゴリを作成します。完了したら
-            <span className="px-2 text-destructive">Create Category</span>
-            をクリックしてください。
-          </DrawerDescription>
+          <DialogDescription className="pt-2 text-xs">
+            新しいカテゴリを作成します。項目を入力後、作成するをクリックしてください。
+          </DialogDescription>
         </DrawerHeader>
         <CategoryForm defaultValue={defaultValue} onCreated={onCreated} />
         <DrawerFooter className="pt-2">

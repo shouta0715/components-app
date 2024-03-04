@@ -28,6 +28,7 @@ const Label = React.forwardRef<
   >
     {required && (
       <Asterisk
+        aria-label="required"
         className={cn(
           "inline-block mr-1 w-3 h-3 text-red-500",
           requiredProps?.className

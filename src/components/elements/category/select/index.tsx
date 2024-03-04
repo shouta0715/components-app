@@ -15,14 +15,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SearchCategory } from "@/types/prisma";
 import { cn } from "@/utils";
 
-function SearchingLoader() {
-  return (
-    <div className="grid gap-2 p-2">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Skeleton key={`searching-loader-${i}`} className="h-8 w-full" />
-      ))}
-    </div>
-  );
+function SearchingLoader({ type }: { type: "command" | "item" }) {
+  switch (type) {
+    case "command":
+      return (
+        <>
+          <CommandInput disabled isLoading placeholder="Searching..." />
+          <SearchingLoader type="item" />
+        </>
+      );
+    case "item":
+      return (
+        <div className="grid gap-2 p-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={`searching-loader-${i}`} className="h-8 w-full" />
+          ))}
+        </div>
+      );
+    default:
+      return null;
+  }
 }
 
 type CategoryItemProps = {
@@ -37,23 +49,25 @@ const CategoryItem = memo(
     return (
       <CommandItem
         key={category.name}
-        className="mt-2 flex items-center justify-between text-sm capitalize first:mt-0"
+        className="-mx-2 flex items-center justify-between rounded-none py-2 text-sm font-semibold capitalize first:mt-0 aria-selected:bg-primary aria-selected:text-background"
         onSelect={(currentValue) => {
           setCategory(currentValue);
           setOpen?.(false);
         }}
         value={category.name}
       >
-        <div className="flex items-center">
+        <div className="flex flex-1 items-center">
           <Check
             className={cn(
-              "mr-2 h-4 w-4",
+              "mr-2 h-4 w-4 min-w-min",
               category.name === value ? "opacity-100" : "opacity-0"
             )}
           />
-          <span>{category.name}</span>
+          <span className="line-clamp-2 w-52 whitespace-pre-wrap break-words">
+            {category.name}
+          </span>
         </div>
-        <span className="text-muted-foreground">
+        <span className="inline-block self-start font-normal text-current">
           {category._count.components}種類
         </span>
       </CommandItem>
@@ -83,16 +97,17 @@ function Categories({
   return (
     <>
       <CommandInput
+        className="placeholder:text-sm"
         isLoading={isSearching}
         onValueChange={(v) => {
           onChangeQuery(v);
           setInputValue(v);
         }}
-        placeholder="Search category"
+        placeholder="カテゴリーの検索"
       />
       <CommandEmpty className="py-0 text-left text-sm">
         {isSearching ? (
-          <SearchingLoader />
+          <SearchingLoader type="item" />
         ) : (
           <div className="flex w-full flex-col  gap-4 overflow-hidden px-2 py-4">
             <div className="flex justify-center">
@@ -130,14 +145,14 @@ function Categories({
       {hasMore && (
         <div className="mb-2 border-t border-border px-2 pt-6">
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-full font-semibold"
             disabled={isSearching}
             onClick={() => fetchNextPage()}
             size="sm"
             variant="default"
           >
-            {isSearching && <Loader2 className="mr-4 h-5 w-5 animate-spin" />}
-            {isSearching ? "Loading..." : "Load more"}
+            {isSearching && <Loader2 className="mr-4 h-5 w-5 animate-spin " />}
+            {isSearching ? "Loading..." : "さらに読み込む"}
           </Button>
         </div>
       )}
@@ -158,14 +173,7 @@ export function SelectCategories({
 }: SearchCategoriesProps) {
   return (
     <Command>
-      <Suspense
-        fallback={
-          <>
-            <CommandInput disabled isLoading placeholder="Searching..." />
-            <SearchingLoader />
-          </>
-        }
-      >
+      <Suspense fallback={<SearchingLoader type="command" />}>
         <Categories setCategory={setCategory} setOpen={setOpen} value={value} />
       </Suspense>
     </Command>
