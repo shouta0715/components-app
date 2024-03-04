@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
-import { AuthUser } from "@/components/global/auth/client";
+
+import { ClientAuth } from "@/components/global/auth/client";
 import { CommandPallet } from "@/components/global/server/command-pallet";
 import { NavSheet } from "@/components/global/server/nav-sheet";
 
@@ -37,7 +38,7 @@ function CommonHeader({
 export function AppHeader() {
   return (
     <CommonHeader>
-      <AuthUser />
+      <ClientAuth />
     </CommonHeader>
   );
 }
@@ -45,7 +46,7 @@ export function AppHeader() {
 export function PreviewHeader() {
   return (
     <CommonHeader preview>
-      <AuthUser />
+      <ClientAuth />
     </CommonHeader>
   );
 }
