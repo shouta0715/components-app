@@ -1,9 +1,7 @@
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 
-import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/sticky-trigger";
-
-import { AuthUser } from "@/components/global/auth/client";
+import { ServerAuth } from "@/components/global/auth/server";
 import { NavSheet } from "@/components/global/server/nav-sheet";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,9 +17,9 @@ const DynamicComponentBreadcrumbs = dynamic(
   }
 );
 
-export function EditHeader() {
+export async function EditHeader() {
   return (
-    <StickyTrigger className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border bg-background/90 px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
+    <div className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border bg-background/90 px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
       <div className="flex h-full items-center justify-between">
         <div className="flex h-full">
           <NavSheet preview />
@@ -36,10 +34,12 @@ export function EditHeader() {
           <div aria-hidden className="my-1 mr-2 w-px  bg-border" />
           <div className="flex items-center gap-x-4">
             <ThemeToggle />
-            <AuthUser />
+            <Suspense>
+              <ServerAuth />
+            </Suspense>
           </div>
         </div>
       </div>
-    </StickyTrigger>
+    </div>
   );
 }
