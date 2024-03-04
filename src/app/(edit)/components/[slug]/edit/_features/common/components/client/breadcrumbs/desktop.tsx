@@ -51,7 +51,7 @@ function Step({
         aria-disabled={isPending}
         aria-label={name}
         aria-selected={active}
-        className="group relative min-w-0 rounded-md bg-background px-4 text-center text-sm capitalize text-muted-foreground hover:text-destructive hover:shadow-none focus:z-10 data-[state=active]:font-bold data-[state=active]:text-destructive data-[state=active]:shadow-none"
+        className="group relative min-w-0 rounded-md bg-transparent px-4 text-center text-sm capitalize text-muted-foreground hover:text-primary hover:shadow-none focus:z-10 data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
         onClick={() => {
@@ -67,11 +67,11 @@ function Step({
         {status === "CREATED" ? (
           <ListChecks className="mr-2 size-5 text-success" />
         ) : status === "EDITING" ? (
-          <PencilRuler className="mr-2 size-5 text-destructive" />
+          <PencilRuler className="mr-2 size-5 text-primary" />
         ) : status === "LOADING" ? (
           <Loader2 className="mr-2 size-5 animate-spin text-primary" />
         ) : status === "EMPTY" ? (
-          <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-destructive" />
+          <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-primary" />
         ) : null}
         {status === "LOADING" ? `Saving...` : name}
         <span

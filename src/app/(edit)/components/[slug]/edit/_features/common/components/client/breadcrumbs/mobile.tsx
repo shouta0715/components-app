@@ -62,7 +62,7 @@ function SelectStep({
           ) : status === "LOADING" ? (
             <Loader2 className="mr-2 size-5 animate-spin text-primary" />
           ) : status === "EMPTY" ? (
-            <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-destructive" />
+            <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-primary" />
           ) : null}
           <span
             className={clsx(
@@ -124,7 +124,7 @@ function MobileComponentBreadcrumbs() {
         />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
+        <SelectGroup className="space-y-3">
           <SelectLabel>編集する内容を選択してください</SelectLabel>
           {editPaths.map(({ name }) => {
             return (
