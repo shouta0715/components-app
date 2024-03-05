@@ -39,12 +39,12 @@ export function DocumentNavigation({
 
   return (
     <NavigateTabs
-      className="relative h-[85vh] min-h-96 overflow-y-scroll border border-border bg-background pb-8"
+      className="relative h-[85vh] min-h-96 overflow-y-scroll rounded-md border border-border bg-background pb-8"
       customRef={ref}
       defaultValue="write"
       params="mode"
     >
-      <TabsList className="sticky top-0 z-20 flex w-full items-center justify-between rounded-none border border-border bg-accent p-2">
+      <TabsList className="sticky top-0 z-10 flex w-full items-center justify-between border border-border bg-accent p-2">
         <div className="space-x-4">
           <NavigateTabsTrigger
             className="rounded-md border border-transparent bg-transparent transition-none hover:bg-background/50 hover:text-primary data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-none"
@@ -91,11 +91,21 @@ export function DocumentNavigation({
         </div>
       </TabsList>
 
-      <div className="p-6">
+      <div className="relative p-6">
         <TabsContent className="mt-0" value="write">
           <DocumentWriter defaultValues={defaultValues} register={register} />
         </TabsContent>
-        <TabsContent className="mt-0" value="preview">
+        <TabsContent className="mt-0 pt-4" value="preview">
+          <span className="absolute right-0 top-0 inline-flex items-center  rounded-bl-md border-b border-l border-border bg-secondary px-2 py-1 text-sm font-medium text-primary">
+            <svg
+              aria-hidden="true"
+              className="mr-2 size-2 fill-yellow-500"
+              viewBox="0 0 6 6"
+            >
+              <circle cx={3} cy={3} r={3} />
+            </svg>
+            Preview
+          </span>
           <DocumentPreview control={control} />
         </TabsContent>
       </div>
