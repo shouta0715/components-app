@@ -2,11 +2,12 @@
 
 import { TabsList } from "@radix-ui/react-tabs";
 import { ArrowBigUpDash, Check, Eye, Pencil } from "lucide-react";
+import dynamic from "next/dynamic";
 import React from "react";
 import { Control, UseFormRegister } from "react-hook-form";
+import { DocumentLoader } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/loader";
 import { DocumentPreview } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/preview";
 import { MarkdownWriteRule } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/write-rule";
-import { DocumentWriter } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/writer";
 
 import { Button } from "@/components/ui/button";
 
@@ -27,6 +28,19 @@ type DocumentNavigationProps = {
   isDirty: boolean;
   isPending: boolean;
 };
+
+const DynamicDocumentWriter = dynamic(
+  () =>
+    import(
+      "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/writer"
+    ).then((mod) => mod.DocumentWriter),
+  {
+    ssr: false,
+    loading: () => (
+      <DocumentLoader>ドキュメントを読み込んでいます...</DocumentLoader>
+    ),
+  }
+);
 
 export function DocumentNavigation({
   control,
@@ -93,7 +107,10 @@ export function DocumentNavigation({
 
       <div className="relative p-6">
         <TabsContent className="mt-0" value="write">
-          <DocumentWriter defaultValues={defaultValues} register={register} />
+          <DynamicDocumentWriter
+            defaultValues={defaultValues}
+            register={register}
+          />
         </TabsContent>
         <TabsContent className="mt-0 pt-4" value="preview">
           <span className="absolute right-0 top-0 inline-flex items-center  rounded-bl-md border-b border-l border-border bg-secondary px-2 py-1 text-sm font-medium text-primary">
