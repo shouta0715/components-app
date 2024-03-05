@@ -45,6 +45,7 @@ export type NavigateTabsProps<T extends string> = Omit<
   defaultValue?: T;
   onValueChange?: (value: T) => void;
   redirectType?: "replace" | "push" | "manual";
+  customRef?: React.RefObject<HTMLDivElement>;
 };
 
 const NavigateTabs = <T extends string = string>({
@@ -53,6 +54,7 @@ const NavigateTabs = <T extends string = string>({
   defaultValue,
   onValueChange,
   redirectType = "replace",
+  customRef,
   ...props
 }: NavigateTabsProps<T>) => {
   const searchParams = useSearchParams();
@@ -61,6 +63,7 @@ const NavigateTabs = <T extends string = string>({
 
   return (
     <TabsPrimitive.Root
+      ref={customRef}
       className={className}
       defaultValue={defaultTab}
       onValueChange={(value) => {

@@ -25,7 +25,7 @@ export function DocumentPreview({ control }: DocumentPreviewProps) {
   });
 
   return (
-    <div className="min-h-[50dvh]">
+    <div className="max-w-full">
       {value ? (
         <DynamicMarkdown>{value}</DynamicMarkdown>
       ) : (
