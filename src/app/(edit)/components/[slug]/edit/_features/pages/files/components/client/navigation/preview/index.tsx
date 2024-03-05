@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { FileUp, Siren, Video } from "lucide-react";
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
@@ -57,12 +58,15 @@ export function PreviewsNavigate({
   return (
     <>
       {canPreview && (
-        <p className="-mb-3 flex items-center gap-x-2 px-2 text-xs leading-5 text-primary">
+        <p className="flex items-center gap-x-2 px-2 text-xs leading-5 text-primary">
           <Video className="size-6" />
           プレビューを表示中
         </p>
       )}
-      <TabsContent value="preview">
+      <TabsContent
+        className={clsx(canPreview && "bg-background")}
+        value="preview"
+      >
         {canPreview ? (
           <ErrorBoundary FallbackComponent={UIPreviewError}>
             <Suspense fallback={<UIPreviewLoading name="Loading..." />}>

@@ -1,3 +1,4 @@
+import { Code2, Eye } from "lucide-react";
 import React, { Suspense } from "react";
 
 import { Control, FieldErrors, UseFormSetError } from "react-hook-form";
@@ -53,24 +54,25 @@ function EditFileNavigate({
   });
 
   return (
-    <div className="grid gap-4">
-      <NavigateTabs className="grid gap-8" defaultValue="preview">
-        <TabsList className="h-9 w-full justify-between rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
-          <div>
-            <NavigateTabsTrigger
-              className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
-              value="preview"
-            >
-              Preview
-            </NavigateTabsTrigger>
-            <NavigateTabsTrigger
-              className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
-              value="code"
-            >
-              Code
-            </NavigateTabsTrigger>
-          </div>
+    <div className="space-y-4">
+      <NavigateTabs defaultValue="preview">
+        <TabsList className="block h-9 w-full space-x-4 rounded-none border-b border-border bg-transparent p-0">
+          <NavigateTabsTrigger
+            className="h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none hover:text-primary data-[state=active]:border-b-primary data-[state=active]:bg-transparent"
+            value="preview"
+          >
+            <Eye className="mr-2 size-5" />
+            Preview
+          </NavigateTabsTrigger>
+          <NavigateTabsTrigger
+            className="h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none hover:text-primary data-[state=active]:border-b-primary data-[state=active]:bg-transparent"
+            value="code"
+          >
+            <Code2 className="mr-2 size-5" />
+            Code
+          </NavigateTabsTrigger>
         </TabsList>
+
         <div
           {...getRootProps({
             disabled: isLoading,
@@ -80,12 +82,10 @@ function EditFileNavigate({
             accept: accepts.files,
             "aria-label": "Upload a file",
           })}
-          className="flex flex-col gap-4"
+          className="mt-6"
         >
           {hasFiles ? (
-            <Suspense
-              fallback={<UIPreviewLoading className="mt-2" name="Loading..." />}
-            >
+            <Suspense fallback={<UIPreviewLoading name="Loading..." />}>
               <PreviewsNavigate
                 files={files}
                 functionName={

@@ -89,10 +89,10 @@ export function DropZoneInfo({
   return (
     <>
       <Label
-        className="mb-3 flex gap-x-2 text-xs leading-5 text-primary"
+        className="mb-1 flex text-xs leading-5 text-primary"
         htmlFor="files"
       >
-        <Siren className="size-6 text-destructive" />
+        <Siren className="mr-2 size-6 text-destructive" />
         <span className="self-end">
           {type === "preview"
             ? "ファイルのステータス の項目をすべて満たすと、プレビューが表示されます。"
@@ -101,7 +101,7 @@ export function DropZoneInfo({
       </Label>
       <div
         className={cn(
-          "flex justify-center flex-col rounded-lg  border-dashed pt-10 pb-5 px-4 sm:px-0 transition-colors relative h-code-frame duration-150 cursor-pointer  border-2 border-border hover:border-primary",
+          "flex justify-center flex-col rounded-lg pt-10 border-dashed pb-5 px-4 sm:px-0 transition-colors relative h-code-frame duration-150 cursor-pointer  border-2 border-border hover:border-primary",
           isLoading && "cursor-not-allowed",
           isDragActive && "border-primary"
         )}

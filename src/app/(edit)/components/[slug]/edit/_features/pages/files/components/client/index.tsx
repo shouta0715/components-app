@@ -12,7 +12,6 @@ import { TogglePreviewType } from "@/app/(edit)/components/[slug]/edit/_features
 import { useFilesForm } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/hooks";
 import { NextSectionButton } from "@/app/(edit)/components/[slug]/edit/_features/section/components/client/next-section-button";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
-import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { EditFilesInput } from "@/lib/schema/client/edit/files";
 
 const DynamicEditFilesNavigate = dynamic(
@@ -96,7 +95,7 @@ export function EditFileForm({
           />
         </div>
         <ErrorBoundary FallbackComponent={UIPreviewError}>
-          <Suspense fallback={<UIPreviewLoading name="Loading" />}>
+          <Suspense fallback={<FileNavigationLoading />}>
             <DynamicEditFilesNavigate
               controls={control}
               errors={errors}
