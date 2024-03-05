@@ -80,19 +80,19 @@ export function EditFileForm({
         <span className="px-2 font-black">UI</span>のファイルの投稿
       </EditSectionTitle>
 
-      <form className="mt-8 flex flex-col gap-8" onSubmit={onSubmitHandler}>
-        <div className="flex flex-col justify-between gap-16 sm:flex-row">
+      <form className="mt-8 space-y-8" onSubmit={onSubmitHandler}>
+        <div className="flex flex-col justify-between gap-x-4 space-y-8 md:flex-row md:space-y-0">
+          <TogglePreviewType
+            control={control}
+            defaultType={defaultValuesForm?.previewType?.type}
+            setPreviewType={setPreviewType}
+          />
           <FunctionNameInput
             control={control}
             defaultValues={defaultValuesForm}
             errors={errors}
             onCompleteFunctionName={onCompleteFunctionName}
             register={register}
-          />
-          <TogglePreviewType
-            control={control}
-            defaultType={defaultValuesForm?.previewType?.type}
-            setPreviewType={setPreviewType}
           />
         </div>
         <ErrorBoundary FallbackComponent={UIPreviewError}>

@@ -22,13 +22,13 @@ export function FunctionNameInput({
     });
 
   return (
-    <fieldset className="grid flex-1 gap-3" disabled={disabled}>
+    <fieldset className="grid max-w-sm flex-1 gap-3" disabled={disabled}>
       <Label
-        className={disabled ? "opacity-50" : ""}
+        className={clsx("text-sm", disabled ? "opacity-50" : "h-5")}
         htmlFor="function-name"
         required={type === "react"}
       >
-        <span>表示するコンポーネントの関数名</span>
+        表示するコンポーネントの関数名
       </Label>
       <span
         className={clsx(
@@ -38,15 +38,17 @@ export function FunctionNameInput({
       >
         ※HTMLの場合は関数名は不要です
       </span>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-x-2">
         <Input
           {...register("previewType.functionName")}
-          className="placeholder:text-sm sm:max-w-md"
+          className="bg-background/30 placeholder:text-sm"
           defaultValue={defaultValues?.previewType?.functionName ?? ""}
           disabled={disabled}
           id="function-name"
           onChange={onChange}
-          placeholder="Example"
+          placeholder={
+            disabled ? "HTMLの場合は関数名は不要です" : "関数名を入力..."
+          }
           type="text"
         />
         <Button
