@@ -51,6 +51,7 @@ export function MarkdownWriteRule() {
           こちら
         </Link>
         で確認できます。
+        <br />※ 拡張構文内でコードブロックは使用できません。
         <Accordion collapsible type="single">
           <AccordionItem value="item-1">
             <AccordionTrigger>拡張構文一覧</AccordionTrigger>
