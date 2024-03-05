@@ -1,9 +1,9 @@
-import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import { Control, useWatch } from "react-hook-form";
 
+import { DocumentLoader } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/loader";
 import { Button } from "@/components/ui/button";
 import { FormEditDocumentInput } from "@/lib/schema/client/edit/document";
 
@@ -12,17 +12,7 @@ type DocumentPreviewProps = {
 };
 
 const Loader = () => {
-  return (
-    <div className="flex h-full flex-col items-center justify-center space-y-4">
-      <Loader2
-        aria-busy="true"
-        aria-label="loading"
-        aria-live="polite"
-        className="mx-auto size-8 animate-spin text-primary"
-      />
-      <p>プレビューを準備しています...</p>
-    </div>
-  );
+  return <DocumentLoader>プレビューを準備しています...</DocumentLoader>;
 };
 
 const ErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
