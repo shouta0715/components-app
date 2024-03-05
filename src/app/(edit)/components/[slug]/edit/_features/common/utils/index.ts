@@ -19,6 +19,7 @@ export const getHasErrorDuringSave = ({
   const validKeys = Object.keys(data).filter(
     (key) => !errorsFields.includes(key)
   );
+
   const hasError = validKeys.length === 0 || errorsFields.length > 0;
 
   return {

@@ -11,10 +11,9 @@ export function FunctionNameInput({
   control,
   defaultValues,
   onCompleteFunctionName,
-  register,
   errors,
 }: FunctionNameInputProps) {
-  const { disabled, type, changed, onChange, onClickComplete } =
+  const { disabled, type, changed, value, onChange, onClickComplete, onBlur } =
     useFunctionNameInput({
       control,
       defaultValues,
@@ -40,16 +39,17 @@ export function FunctionNameInput({
       </span>
       <div className="flex items-center gap-x-2">
         <Input
-          {...register("previewType.functionName")}
           className="bg-background/30 placeholder:text-sm"
           defaultValue={defaultValues?.previewType?.functionName ?? ""}
           disabled={disabled}
           id="function-name"
+          onBlur={onBlur}
           onChange={onChange}
           placeholder={
             disabled ? "HTMLの場合は関数名は不要です" : "関数名を入力..."
           }
           type="text"
+          value={value}
         />
         <Button
           className="font-semibold"

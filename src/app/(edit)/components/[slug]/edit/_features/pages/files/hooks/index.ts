@@ -48,7 +48,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     clearErrors,
     handleSubmit,
     reset,
-    register,
     formState: { errors, isDirty, defaultValues: defaultValuesForm, isLoading },
     control,
   } = useForm<EditFilesInput>({
@@ -104,12 +103,27 @@ export function useFilesForm(defaultValues: EditFilesInput) {
 
   const toastOnDuringSave = async ({ draft }: { draft?: boolean }) => {
     const data = getValues();
+    const newStatus = calcStatus(
+      data.files,
+      data.previewType.type,
+      data.previewType.functionName
+    );
+
+    const allSuccess = Object.values(newStatus).every(
+      (s) => s.status === "success"
+    );
+
     const { error, fields } = getHasErrorDuringSave({ data, errors });
 
-    if (error) {
-      const e = new Error(
-        `変更するには、${fields.join(", ")} を入力してください。`
-      );
+    if (error || !allSuccess) {
+      const hasCustomFilesError = errors.files;
+
+      const m =
+        hasCustomFilesError || !allSuccess
+          ? "ステータスをすべて満たしてください。"
+          : `変更するには、${fields.join(", ")} を入力してください。`;
+
+      const e = new Error(m);
 
       throw e;
     }
@@ -152,7 +166,7 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     toast.promise(toastOnDuringSave({ draft }), {
       loading: "変更中...",
       success: "変更しました。",
-      error: "変更できませんでした。",
+      error: (e) => e.message,
     });
   }
 
@@ -169,7 +183,6 @@ export function useFilesForm(defaultValues: EditFilesInput) {
     setError,
     setPreviewType,
     onCompleteFunctionName,
-    register,
     handleDuringSave,
     errors,
     slug,

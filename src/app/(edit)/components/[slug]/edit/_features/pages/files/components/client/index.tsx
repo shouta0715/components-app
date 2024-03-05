@@ -62,7 +62,6 @@ export function EditFileForm({
     setPreviewType,
     onSubmitHandler,
     onCompleteFunctionName,
-    register,
   } = useFilesForm(defaultValues);
 
   return (
@@ -91,7 +90,6 @@ export function EditFileForm({
             defaultValues={defaultValuesForm}
             errors={errors}
             onCompleteFunctionName={onCompleteFunctionName}
-            register={register}
           />
         </div>
         <ErrorBoundary FallbackComponent={UIPreviewError}>
