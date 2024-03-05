@@ -3,7 +3,7 @@
 /* eslint-disable no-nested-ternary */
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { AlertCircle, ListChecks, Loader2, PencilRuler } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Pencil } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import { DonNotSaveAlert } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/alert";
@@ -53,21 +53,27 @@ function SelectStep({
         open={openAlert}
         setOpenAlert={setOpenAlert}
       />
-      <SelectItem className="w-full flex-1" disabled={isPending} value={name}>
+      <SelectItem
+        className="group w-full flex-1 focus:bg-primary focus:text-background"
+        disabled={isPending}
+        value={name}
+      >
         <span className="flex items-center">
           {status === "CREATED" ? (
-            <ListChecks className="mr-2 size-5 text-success" />
+            <CheckCircle2 className="mr-2 size-5 text-success" />
           ) : status === "EDITING" ? (
-            <PencilRuler className="mr-2 size-5 text-primary" />
+            <Pencil className="mr-2 size-5 text-current" />
           ) : status === "LOADING" ? (
-            <Loader2 className="mr-2 size-5 animate-spin text-primary" />
+            <Loader2 className="mr-2 size-5 animate-spin text-current" />
           ) : status === "EMPTY" ? (
-            <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-primary" />
+            <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-current" />
           ) : null}
           <span
             className={clsx(
               "capitalize",
-              active ? " font-semibold text-primary" : "text-muted-foreground"
+              active
+                ? " font-semibold text-current"
+                : "text-muted-foreground group-focus:text-current"
             )}
           >
             {isPending || status === "LOADING" ? `Saving...` : name}

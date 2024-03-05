@@ -3,7 +3,7 @@
 /* eslint-disable no-nested-ternary */
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { AlertCircle, ListChecks, Loader2, PencilRuler } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Pencil } from "lucide-react";
 import React, { Suspense } from "react";
 import { DonNotSaveAlert } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/alert";
 import {
@@ -65,9 +65,9 @@ function Step({
         value={name}
       >
         {status === "CREATED" ? (
-          <ListChecks className="mr-2 size-5 text-success" />
+          <CheckCircle2 className="mr-2 size-5 text-success" />
         ) : status === "EDITING" ? (
-          <PencilRuler className="mr-2 size-5 text-primary" />
+          <Pencil className="mr-2 size-5 text-primary" />
         ) : status === "LOADING" ? (
           <Loader2 className="mr-2 size-5 animate-spin text-primary" />
         ) : status === "EMPTY" ? (
