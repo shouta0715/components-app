@@ -40,7 +40,6 @@ export function FunctionNameInput({
       <div className="flex items-center gap-x-2">
         <Input
           className="bg-background/30 placeholder:text-sm"
-          defaultValue={defaultValues?.previewType?.functionName ?? ""}
           disabled={disabled}
           id="function-name"
           onBlur={onBlur}
