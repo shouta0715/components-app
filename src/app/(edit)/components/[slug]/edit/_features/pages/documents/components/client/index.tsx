@@ -55,8 +55,6 @@ export function EditDocumentForm({
           control={control}
           defaultValues={defaultValues}
           getValues={getValues}
-          isDirty={isDirty}
-          isPending={isPending}
           reset={reset}
           setValue={setValue}
         />

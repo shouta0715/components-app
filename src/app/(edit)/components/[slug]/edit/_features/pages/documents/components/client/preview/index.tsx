@@ -40,6 +40,7 @@ const DynamicMarkdown = dynamic(
       (mod) => mod.ReactMarkdown
     ),
   {
+    ssr: false,
     loading: () => <DocumentLoader>プレビューを準備中...</DocumentLoader>,
   }
 );
