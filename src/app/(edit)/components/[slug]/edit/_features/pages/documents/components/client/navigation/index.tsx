@@ -4,11 +4,17 @@ import { TabsList } from "@radix-ui/react-tabs";
 import { ArrowBigUpDash, Check, Eye, Pencil } from "lucide-react";
 import dynamic from "next/dynamic";
 import React from "react";
-import { Control, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  UseFormGetValues,
+  UseFormReset,
+  UseFormSetValue,
+} from "react-hook-form";
 import { DocumentLoader } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/loader";
 import { DocumentPreview } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/preview";
 import { MarkdownWriteRule } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/components/client/write-rule";
 
+import { useDocumentNavigation } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/hooks/navigation";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -23,10 +29,12 @@ import {
 
 type DocumentNavigationProps = {
   control: Control<FormEditDocumentInput>;
-  register: UseFormRegister<FormEditDocumentInput>;
   defaultValues: EditDocumentInput;
   isDirty: boolean;
   isPending: boolean;
+  setValue: UseFormSetValue<FormEditDocumentInput>;
+  reset: UseFormReset<FormEditDocumentInput>;
+  getValues: UseFormGetValues<FormEditDocumentInput>;
 };
 
 const DynamicDocumentWriter = dynamic(
@@ -47,9 +55,11 @@ export function DocumentNavigation({
   defaultValues,
   isDirty,
   isPending,
-  register,
+  setValue,
+  reset,
+  getValues,
 }: DocumentNavigationProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const { mode, ref } = useDocumentNavigation();
 
   return (
     <NavigateTabs
@@ -57,6 +67,7 @@ export function DocumentNavigation({
       customRef={ref}
       defaultValue="write"
       params="mode"
+      value={mode}
     >
       <TabsList className="sticky top-0 z-10 flex w-full items-center justify-between border border-border bg-accent p-2">
         <div className="space-x-4">
@@ -109,7 +120,9 @@ export function DocumentNavigation({
         <TabsContent className="mt-0" value="write">
           <DynamicDocumentWriter
             defaultValues={defaultValues}
-            register={register}
+            getValues={getValues}
+            reset={reset}
+            setValue={setValue}
           />
         </TabsContent>
         <TabsContent className="mt-0 pt-4" value="preview">
