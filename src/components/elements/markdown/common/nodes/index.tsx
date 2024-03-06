@@ -5,6 +5,8 @@
 
 import type { PhrasingContent, RootContentMap, RootContent } from "mdast";
 import React from "react";
+import { BuiltinLanguage } from "shiki";
+import { SyntaxCode } from "@/components/elements/code/common";
 import { cn } from "@/utils";
 
 const HeadingNode = ({ node }: { node: RootContentMap["heading"] }) => {
@@ -146,15 +148,9 @@ const ImageNode = ({ node }: { node: RootContentMap["image"] }) => {
 };
 
 const CodeNode = ({ node }: { node: RootContentMap["code"] }) => {
-  // TODO: Syntax highlighting
+  const lang = (node.lang as BuiltinLanguage) ?? "文言";
 
-  // const lang = node.lang ?? "";
-
-  // const highlighted = await highlightWithShiki(node.value, lang);
-
-  // return <div dangerouslySetInnerHTML={{ __html: highlighted }} />;
-
-  return <code>{node.value}</code>;
+  return <SyntaxCode lang={lang}>{node.value}</SyntaxCode>;
 };
 
 const DeleteNode = ({ node }: { node: RootContentMap["delete"] }) => {
