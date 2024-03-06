@@ -3,7 +3,7 @@
 /* eslint-disable no-nested-ternary */
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { CheckCircle2, CircleDashed, Loader2, Pencil } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Pencil } from "lucide-react";
 import React, { Suspense } from "react";
 import { DonNotSaveAlert } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/alert";
 import {
@@ -51,7 +51,7 @@ function Step({
         aria-disabled={isPending}
         aria-label={name}
         aria-selected={active}
-        className="group relative  min-w-0 flex-1 overflow-hidden rounded-none bg-background p-4 text-center text-sm font-medium capitalize text-muted-foreground focus:z-10 data-[state=active]:text-primary data-[state=active]:shadow-none"
+        className="group relative min-w-0 rounded-md bg-transparent px-4 text-center text-sm capitalize text-muted-foreground hover:text-primary hover:shadow-none focus:z-10 data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-primary data-[state=active]:shadow-none"
         disabled={isPending}
         id={`tabs-${name}`}
         onClick={() => {
@@ -65,20 +65,22 @@ function Step({
         value={name}
       >
         {status === "CREATED" ? (
-          <CheckCircle2 className="mr-2 size-6 fill-green-500 text-green-50" />
+          <CheckCircle2 className="mr-2 size-5 text-success" />
         ) : status === "EDITING" ? (
-          <Pencil className="mr-2 size-6 text-primary" />
+          <Pencil className="mr-2 size-5 text-primary" />
         ) : status === "LOADING" ? (
-          <Loader2 className="mr-2 size-6 animate-spin text-primary" />
+          <Loader2 className="mr-2 size-5 animate-spin text-primary" />
         ) : status === "EMPTY" ? (
-          <CircleDashed className="mr-2 size-6 text-muted-foreground" />
+          <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-primary" />
         ) : null}
-        {isPending || status === "LOADING" ? `Saving...` : name}
+        {status === "LOADING" ? `Saving...` : name}
         <span
           aria-hidden="true"
           className={clsx(
-            active ? "bg-destructive" : "bg-transparent",
-            "absolute inset-x-0 bottom-0 h-0.5"
+            active
+              ? "bg-destructive"
+              : "bg-transparent group-hover:bg-destructive/30",
+            "absolute inset-x-0 -bottom-3  h-0.5"
           )}
         />
       </NavigateTabsTrigger>

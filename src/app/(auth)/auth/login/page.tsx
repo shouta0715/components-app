@@ -1,7 +1,10 @@
 import { Blocks, CheckIcon, UserPlus } from "lucide-react";
 import React from "react";
 
-import { GitHubButton, GoogleButton } from "@/components/global/auth/client";
+import {
+  GitHubButton,
+  GoogleButton,
+} from "@/components/global/auth/server/auth-button";
 import { Icon } from "@/components/icons/Icon";
 import {
   Table,

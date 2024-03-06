@@ -25,42 +25,12 @@ type UseFilesHandlerProps = {
 
 export function useFilesHandler({
   defaultValues,
-  defaultValuesForm,
-  reset,
   setStatus,
   setValue,
   getValues,
   clearErrors,
 }: UseFilesHandlerProps) {
   const setForceMount = useSetAtom(isForceMountAtom);
-
-  const onReset = useCallback(() => {
-    reset();
-
-    const {
-      files: filesValue,
-      previewType: { type, functionName },
-    } = defaultValues;
-
-    const prevFiles: EditFilesInput["files"] =
-      (defaultValuesForm?.files as EditFilesInput["files"]) ?? filesValue;
-
-    const newType = defaultValuesForm?.previewType?.type ?? type;
-
-    const newFunctionName =
-      defaultValuesForm?.previewType?.functionName ?? functionName;
-
-    setStatus(calcStatus(prevFiles, newType, newFunctionName));
-    setForceMount(true);
-  }, [
-    defaultValues,
-    defaultValuesForm?.files,
-    defaultValuesForm?.previewType?.functionName,
-    defaultValuesForm?.previewType?.type,
-    reset,
-    setForceMount,
-    setStatus,
-  ]);
 
   const setFiles = useCallback(
     (newFile: EditFilesInput["files"]) => {
@@ -130,6 +100,5 @@ export function useFilesHandler({
     setFiles,
     setPreviewType,
     onCompleteFunctionName,
-    onReset,
   };
 }

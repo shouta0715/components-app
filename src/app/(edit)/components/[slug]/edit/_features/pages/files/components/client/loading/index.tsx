@@ -4,12 +4,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function FileNavigationLoading() {
   return (
-    <div className="grid gap-4">
-      <div aria-busy="true" aria-live="polite" className="grid gap-9">
-        <div className="flex h-9 items-center gap-x-6 border-b px-3 text-sm font-semibold">
-          Loading Preview...
+    <div className="space-y-4">
+      <div aria-busy="true" aria-live="polite">
+        <div className="flex h-9 items-center gap-x-6 border-b px-3 text-xs">
+          プレビューをロード中...
         </div>
-        <UIPreviewLoading name="Loading..." />
+        <div className="mt-6">
+          <UIPreviewLoading name="Loading..." />
+        </div>
       </div>
       <div className=" flex items-center gap-x-4">
         <Skeleton className="h-9 w-28" />

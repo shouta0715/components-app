@@ -24,6 +24,10 @@ export function useFunctionNameInput({
     setValue(e.target.value);
   };
 
+  const onBlur = () => {
+    if (!value) setValue(fn ?? "");
+  };
+
   const onClickComplete = () => {
     if (disabled) return;
     if (value === "") return;
@@ -45,6 +49,8 @@ export function useFunctionNameInput({
     disabled,
     changed,
     type,
+    value,
+    onBlur,
     onChange,
     onClickComplete,
   };

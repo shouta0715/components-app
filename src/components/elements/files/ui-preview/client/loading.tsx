@@ -11,7 +11,7 @@ export function UIPreviewLoading({
 }) {
   return (
     <div className={className}>
-      <div className="grid overflow-hidden rounded-md border border-border">
+      <div className="overflow-hidden rounded-md border border-border">
         <div className="flex items-center gap-2 border-b border-border p-4">
           <Loader className="animate-spin" size={16}>
             <span className="sr-only">

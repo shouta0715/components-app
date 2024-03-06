@@ -148,14 +148,6 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     });
   }
 
-  function onReset() {
-    reset();
-    setPreviews({
-      crop: undefined,
-      preview: defaultPreviewUrl,
-    });
-  }
-
   const isPending = isMutating || isLoading || isPendingAtom || isUploading;
 
   return {
@@ -174,7 +166,6 @@ export function useSummaryForm(defaultValues: EditSummaryInput) {
     watch,
     register,
     handleDuringSave,
-    onReset,
     setPreviews,
   };
 }

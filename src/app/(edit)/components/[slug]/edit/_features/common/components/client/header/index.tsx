@@ -1,12 +1,9 @@
-import { ArrowBigUpDash } from "lucide-react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import React, { Suspense } from "react";
 
-import { ScrollButton } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/scroll-button";
-import { StickyTrigger } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/sticky-trigger";
-
-import { Icon } from "@/components/icons/Icon";
+import { ServerAuth } from "@/components/global/auth/server";
+import { NavSheet } from "@/components/global/server/nav-sheet";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const DynamicComponentBreadcrumbs = dynamic(
@@ -16,41 +13,33 @@ const DynamicComponentBreadcrumbs = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <Skeleton className="my-2 h-10 flex-1" />,
+    loading: () => <Skeleton className="mx-2 h-10 flex-1" />,
   }
 );
 
-export function EditHeader() {
+export async function EditHeader() {
   return (
-    <StickyTrigger className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border  bg-background px-2.5 sm:-mx-6 md:px-4 lg:-mx-8">
+    <div className="sticky top-0 z-20 -mx-4 -mt-10 border-b border-border bg-background/90 px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
       <div className="flex h-full items-center justify-between">
         <div className="flex h-full">
-          <Link
-            className="flex h-8  w-8 flex-1 items-center justify-center sm:h-10 sm:w-10"
-            href="/"
-          >
-            <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-            <span className="sr-only">ホームに戻る</span>
-          </Link>
+          <NavSheet preview />
           <div aria-hidden className="mx-2 my-1 w-px bg-border" />
         </div>
 
-        <Suspense fallback={<Skeleton className="my-2 h-10 flex-1" />}>
+        <Suspense fallback={<Skeleton className="my-2 h-10" />}>
           <DynamicComponentBreadcrumbs />
         </Suspense>
 
         <div className="flex h-full">
-          <div aria-hidden className="mx-2 my-1 w-px  bg-border" />
-          <ScrollButton
-            className="h-8 w-8 sm:h-10 sm:w-10"
-            size="icon"
-            variant="ghost"
-          >
-            <span className="sr-only">1番上にスクロール</span>
-            <ArrowBigUpDash className="h-5 w-5 sm:h-6 sm:w-6" />
-          </ScrollButton>
+          <div aria-hidden className="my-1 mr-2 w-px  bg-border" />
+          <div className="flex items-center gap-x-4">
+            <ThemeToggle />
+            <Suspense>
+              <ServerAuth />
+            </Suspense>
+          </div>
         </div>
       </div>
-    </StickyTrigger>
+    </div>
   );
 }

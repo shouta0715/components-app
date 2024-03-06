@@ -47,7 +47,10 @@ export const NextSectionButton = ({
 
   return (
     <Button
-      className={cn("w-52 ml-auto font-semibold", className)}
+      className={cn(
+        "w-52 ml-auto block z-20 font-semibold sticky bottom-6",
+        className
+      )}
       disabled={isLoading || disabled}
       onClick={isDirty ? undefined : onNext}
       type={isDirty ? "submit" : "button"}

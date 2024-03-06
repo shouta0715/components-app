@@ -9,6 +9,7 @@ export const errors = {
   401: { message: "Unauthorized" },
   403: { message: "Forbidden" },
   404: { message: "Not Found" },
+  409: { message: "Conflict" },
   500: { message: "Internal Server Error" },
 } as const;
 
@@ -61,6 +62,12 @@ export class NotFoundError extends HttpError {
   }
 }
 
+export class ConflictError extends HttpError {
+  constructor() {
+    super(409);
+  }
+}
+
 export class InternalServerError extends HttpError {
   constructor() {
     super(500);
@@ -77,11 +84,48 @@ export const throwHttpErrorFromStatus = (status: ErrorType | number): never => {
       throw new ForbiddenError();
     case 404:
       throw new NotFoundError();
+    case 409:
+      throw new ConflictError();
     case 500:
       throw new InternalServerError();
     default:
       throw new InternalServerError();
   }
+};
+
+export const getErrorStatusFromError = (error: unknown): ErrorType => {
+  if (error instanceof ValiError) {
+    return 400;
+  }
+
+  if (error instanceof UnauthorizedError) {
+    return 401;
+  }
+
+  if (error instanceof ForbiddenError) {
+    return 403;
+  }
+
+  if (error instanceof HttpError) {
+    return error.status;
+  }
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code.includes("P10")) {
+      return 500;
+    }
+    if (error.code === "P2002" || error.code === "P2003") {
+      return 409;
+    }
+
+    return 404;
+  }
+
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    return 404;
+  }
+
+  return 500;
 };
 
 export const handleApiError = ({ error }: { error: unknown }) => {
@@ -113,6 +157,19 @@ export const handleApiError = ({ error }: { error: unknown }) => {
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code.includes("P10")) {
+      const status = 500;
+      const { message } = errors[status];
+
+      return Response.json({ message }, { status });
+    }
+    if (error.code === "P2002" || error.code === "P2003") {
+      const status = 409;
+      const { message } = errors[status];
+
+      return Response.json({ message }, { status });
+    }
+
     const status = 404;
     const { message } = errors[status];
 

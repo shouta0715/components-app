@@ -96,7 +96,7 @@ describe("POST Categories API Test", async () => {
 
       const res = await createCategoryHandler(req);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(409);
     });
 
     test("if createCategory throws Prisma.PrismaClientValidationError, should return 404", async () => {

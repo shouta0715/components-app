@@ -3,7 +3,7 @@
 /* eslint-disable no-nested-ternary */
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { CheckCircle2, CircleDashed, Loader2, Pencil } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Pencil } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import { DonNotSaveAlert } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/breadcrumbs/alert";
@@ -53,21 +53,27 @@ function SelectStep({
         open={openAlert}
         setOpenAlert={setOpenAlert}
       />
-      <SelectItem className="w-full flex-1" disabled={isPending} value={name}>
+      <SelectItem
+        className="group w-full flex-1 focus:bg-primary focus:text-background"
+        disabled={isPending}
+        value={name}
+      >
         <span className="flex items-center">
           {status === "CREATED" ? (
-            <CheckCircle2 className="mr-2 size-6 fill-green-500 text-green-50" />
+            <CheckCircle2 className="mr-2 size-5 text-success" />
           ) : status === "EDITING" ? (
-            <Pencil className="mr-2 size-6 text-primary" />
+            <Pencil className="mr-2 size-5 text-current" />
           ) : status === "LOADING" ? (
-            <Loader2 className="mr-2 size-6 text-primary" />
+            <Loader2 className="mr-2 size-5 animate-spin text-current" />
           ) : status === "EMPTY" ? (
-            <CircleDashed className="mr-2 size-6 text-muted-foreground" />
+            <AlertCircle className="mr-2 size-5 text-muted-foreground group-hover:text-current" />
           ) : null}
           <span
             className={clsx(
               "capitalize",
-              active ? " font-semibold text-primary" : "text-muted-foreground"
+              active
+                ? " font-semibold text-current"
+                : "text-muted-foreground group-focus:text-current"
             )}
           >
             {isPending || status === "LOADING" ? `Saving...` : name}
@@ -110,16 +116,22 @@ function MobileComponentBreadcrumbs() {
       }}
       value={currentSection}
     >
-      <SelectTrigger className="flex rounded-none border-none capitalize focus:ring-0 [&_span]:flex-1">
+      <SelectTrigger className="relative flex rounded-none border-none p-0 px-2 capitalize focus:ring-0 [&_span]:flex-1">
         <SelectValue
           className="flex flex-1 text-primary"
           placeholder="選択してください"
         />
+        <span
+          aria-hidden="true"
+          className={clsx(
+            "bg-destructive",
+            "absolute inset-x-0 -bottom-2  h-0.5"
+          )}
+        />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
+        <SelectGroup className="space-y-3">
           <SelectLabel>編集する内容を選択してください</SelectLabel>
-
           {editPaths.map(({ name }) => {
             return (
               <SelectStep

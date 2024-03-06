@@ -11,10 +11,9 @@ export function FunctionNameInput({
   control,
   defaultValues,
   onCompleteFunctionName,
-  register,
   errors,
 }: FunctionNameInputProps) {
-  const { disabled, type, changed, onChange, onClickComplete } =
+  const { disabled, type, changed, value, onChange, onClickComplete, onBlur } =
     useFunctionNameInput({
       control,
       defaultValues,
@@ -22,13 +21,13 @@ export function FunctionNameInput({
     });
 
   return (
-    <fieldset className="grid flex-1 gap-3" disabled={disabled}>
+    <fieldset className="grid max-w-sm flex-1 gap-3" disabled={disabled}>
       <Label
-        className={disabled ? "opacity-50" : ""}
+        className={clsx("text-sm", disabled ? "opacity-50" : "h-5")}
         htmlFor="function-name"
         required={type === "react"}
       >
-        <span>表示するコンポーネントの関数名</span>
+        表示するコンポーネントの関数名
       </Label>
       <span
         className={clsx(
@@ -38,16 +37,18 @@ export function FunctionNameInput({
       >
         ※HTMLの場合は関数名は不要です
       </span>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-x-2">
         <Input
-          {...register("previewType.functionName")}
-          className="placeholder:text-sm sm:max-w-md"
-          defaultValue={defaultValues?.previewType?.functionName ?? ""}
+          className="bg-background/30 placeholder:text-sm"
           disabled={disabled}
           id="function-name"
+          onBlur={onBlur}
           onChange={onChange}
-          placeholder="Example"
+          placeholder={
+            disabled ? "HTMLの場合は関数名は不要です" : "関数名を入力..."
+          }
           type="text"
+          value={value}
         />
         <Button
           className="font-semibold"

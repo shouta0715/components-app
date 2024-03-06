@@ -5,6 +5,7 @@ import { EditDocumentInput } from "@/lib/schema/client/edit/document";
 type EditDocumentProps = {
   defaultValues: EditDocumentInput;
   draft: boolean;
+  name: string;
 };
 
 export function EditDocument(props: EditDocumentProps) {

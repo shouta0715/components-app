@@ -32,7 +32,7 @@ const AutoSizeTextarea = React.forwardRef<
     <TextareaAutosize
       ref={ref}
       className={cn(
-        "flex h-7 w-full resize-none items-center bg-background text-xl placeholder:text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-7 w-full resize-none items-center bg-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

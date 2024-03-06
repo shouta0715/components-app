@@ -163,7 +163,10 @@ export function MultipleBrightCode({
       onValueChange={setValue}
       value={value}
     >
-      <TabsList className="relative -mb-2 w-full justify-start gap-2 overflow-hidden overflow-y-scroll rounded-none  bg-code data-[state=active]:shadow-none">
+      <TabsList
+        className="relative -mb-2 w-full justify-start gap-2 overflow-hidden overflow-y-scroll rounded-none  bg-code data-[state=active]:shadow-none"
+        style={{ colorScheme: "dark" }}
+      >
         <div className="scroll-bar-hidden absolute z-10 flex w-full flex-1 overflow-scroll pr-4">
           {objects.map((object) => (
             <div key={object.id} className="relative">
@@ -203,6 +206,7 @@ export function MultipleBrightCode({
         <TabsContent
           key={object.id}
           className="relative mt-0 bg-code"
+          style={{ colorScheme: "dark" }}
           value={object.id}
         >
           <CopyButton
