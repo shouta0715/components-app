@@ -1,10 +1,10 @@
 import React from "react";
-import { ReactMarkdown } from "@/components/elements/markdown/server";
+import { Markdown } from "@/components/elements/markdown/common";
 
 export function ComponentDocument({ children }: { children: string }) {
   return (
     <section className="w-full overflow-hidden">
-      <ReactMarkdown>{children}</ReactMarkdown>
+      <Markdown>{children}</Markdown>
     </section>
   );
 }

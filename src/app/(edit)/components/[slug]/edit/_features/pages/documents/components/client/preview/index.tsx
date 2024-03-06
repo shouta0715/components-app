@@ -36,9 +36,7 @@ const ErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
 
 const DynamicMarkdown = dynamic(
   () =>
-    import("@/components/elements/markdown/client").then(
-      (mod) => mod.ReactMarkdown
-    ),
+    import("@/components/elements/markdown").then((mod) => mod.ReactMarkdown),
   {
     ssr: false,
     loading: () => <DocumentLoader>プレビューを準備中...</DocumentLoader>,

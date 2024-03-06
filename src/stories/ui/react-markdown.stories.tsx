@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { ReactMarkdown } from "@/components/elements/markdown/server";
+import { Markdown } from "@/components/elements/markdown/common";
 
 export default {
-  component: ReactMarkdown,
-} satisfies Meta<typeof ReactMarkdown>;
+  component: Markdown,
+} satisfies Meta<typeof Markdown>;
 
-type Story = StoryObj<typeof ReactMarkdown>;
+type Story = StoryObj<typeof Markdown>;
 
 export const Default: Story = {
   tags: ["ui", "autodocs"],
