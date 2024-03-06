@@ -103,19 +103,19 @@
   /* Markdown Heading Style */
 
   .markdown h1 {
-    @apply scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl first:mt-0 mt-6;
+    @apply scroll-m-20 text-2xl font-extrabold tracking-tight sm:text-3xl first:mt-0 mt-6;
   }
 
   .markdown h2 {
-    @apply scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight sm:text-3xl first:mt-0 mt-6;
+    @apply scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight sm:text-2xl first:mt-0 mt-6;
   }
 
   .markdown h3 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight sm:text-2xl first:mt-0 mt-6;
+    @apply scroll-m-20 text-lg font-semibold tracking-tight sm:text-xl first:mt-0 mt-6;
   }
 
   .markdown h4 {
-    @apply scroll-m-20 font-semibold tracking-tight text-lg sm:text-xl;
+    @apply scroll-m-20 font-semibold tracking-tight text-base sm:text-lg;
   }
 
   /* Markdown Link Style */

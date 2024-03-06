@@ -42,23 +42,31 @@ export const onBold = (view: EditorView) => {
 export const highlightStyle = HighlightStyle.define([
   {
     tag: tags.heading1,
-    fontSize: "1.875rem",
+    fontSize: "1.5rem",
     fontWeight: "800",
     color: "var(--primary)",
   },
 
   {
     tag: tags.heading2,
-    fontSize: "1.5rem",
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    color: "var(--primary)",
+    borderBottom: "1px solid var(--border)",
+  },
+  {
+    tag: tags.heading3,
+    fontSize: "1.125rem",
     fontWeight: "600",
     color: "var(--primary)",
   },
   {
-    tag: tags.heading3,
-    fontSize: "1.25rem",
+    tag: tags.heading4,
+    fontSize: "1rem",
     fontWeight: "600",
     color: "var(--primary)",
   },
+
   { tag: tags.strong, fontWeight: "700" },
   { tag: tags.quote, fontStyle: "italic", color: "var(--primary)" },
   { tag: tags.link, textDecoration: "underline", color: "var(--primary)" },
