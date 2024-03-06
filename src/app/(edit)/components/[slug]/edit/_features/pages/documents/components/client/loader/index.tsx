@@ -3,7 +3,7 @@ import React from "react";
 
 export function DocumentLoader({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center space-y-4">
+    <div className="flex flex-col items-center justify-center space-y-4">
       <Loader2
         aria-busy="true"
         aria-label="loading"
