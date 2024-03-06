@@ -31,9 +31,11 @@ export function EditDocumentForm({
   name,
 }: EdiDocumentFormProps) {
   const {
-    register,
+    setValue,
     onSubmitHandler,
     handleDuringSave,
+    reset,
+    getValues,
     isDirty,
     control,
     isPending,
@@ -52,9 +54,11 @@ export function EditDocumentForm({
         <DocumentNavigation
           control={control}
           defaultValues={defaultValues}
+          getValues={getValues}
           isDirty={isDirty}
           isPending={isPending}
-          register={register}
+          reset={reset}
+          setValue={setValue}
         />
       </form>
     </>

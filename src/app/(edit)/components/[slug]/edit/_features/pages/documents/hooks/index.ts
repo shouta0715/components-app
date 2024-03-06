@@ -31,7 +31,7 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
   const { mutateAsync, isPending: isSubmitting } = useMutateComponent(slug);
 
   const {
-    register,
+    setValue,
     handleSubmit,
     reset,
     getValues,
@@ -111,6 +111,8 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     isPending,
     onSubmitHandler,
     handleDuringSave,
-    register,
+    setValue,
+    reset,
+    getValues,
   };
 }

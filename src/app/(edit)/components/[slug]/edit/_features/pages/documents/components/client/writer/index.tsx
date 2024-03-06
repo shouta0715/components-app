@@ -1,27 +1,35 @@
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
+import {
+  UseFormGetValues,
+  UseFormReset,
+  UseFormSetValue,
+} from "react-hook-form";
 
-import { AutoSizeTextarea } from "@/components/ui/textarea";
+import { useMarkdownEditor } from "@/app/(edit)/components/[slug]/edit/_features/pages/documents/hooks/editor";
 import {
   EditDocumentInput,
   FormEditDocumentInput,
 } from "@/lib/schema/client/edit/document";
 
 type DocumentWriterProps = {
-  register: UseFormRegister<FormEditDocumentInput>;
+  setValue: UseFormSetValue<FormEditDocumentInput>;
+  reset: UseFormReset<FormEditDocumentInput>;
+  getValues: UseFormGetValues<FormEditDocumentInput>;
   defaultValues: EditDocumentInput;
 };
 
-export function DocumentWriter({
-  register,
+export const DocumentWriter = ({
+  setValue,
+  reset,
+  getValues,
   defaultValues,
-}: DocumentWriterProps) {
-  return (
-    <AutoSizeTextarea
-      className="h-full overflow-hidden rounded-md bg-background/30 text-primary placeholder:pt-0.5 placeholder:text-sm"
-      defaultValue={defaultValues}
-      placeholder="ドキュメントを入力してください"
-      {...register("document")}
-    />
-  );
-}
+}: DocumentWriterProps) => {
+  const { container } = useMarkdownEditor({
+    defaultValues,
+    setValue,
+    reset,
+    getValues,
+  });
+
+  return <div ref={container} />;
+};
