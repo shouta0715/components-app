@@ -30,6 +30,12 @@ export const getImageUrl = (id: string) => {
   return `${endpoint}/${id}`;
 };
 
+export const getOGImageUrl = (url: string) => {
+  const endpoint = `${process.env.NEXT_PUBLIC_STORAGE_URL}/metadata/og`;
+
+  return `${endpoint}?url=${url}`;
+};
+
 export const getDisplayName = (name?: string | null, slice?: number) => {
   if (!name) return "Unknown";
 

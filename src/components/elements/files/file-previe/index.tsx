@@ -3,7 +3,7 @@ import "server-only";
 import React, { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
-import { MultipleBrightCode } from "@/components/elements/code/server/bright-code";
+import { MultipleSyntaxCode } from "@/components/elements/code/server";
 import { UIPreviewError } from "@/components/elements/files/ui-preview/client/error";
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
 import { UIPreview } from "@/components/elements/files/ui-preview/server";
@@ -66,7 +66,7 @@ export async function FilePreviews({
         </ErrorBoundary>
       </TabsContent>
       <TabsContent value="code">
-        <MultipleBrightCode objects={objects} />
+        <MultipleSyntaxCode objects={objects} />
       </TabsContent>
     </NavigateTabs>
   );

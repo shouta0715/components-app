@@ -24,10 +24,10 @@ const DynamicEditFilePreviews = dynamic(
   }
 );
 
-const DynamicMultipleBrightCode = dynamic(
+const DynamicMultipleSyntaxCode = dynamic(
   () =>
-    import("@/components/elements/code/client/bright-code").then(
-      (mod) => mod.MultipleBrightCode
+    import("@/components/elements/code/client").then(
+      (mod) => mod.MultipleSyntaxCode
     ),
   {
     loading: () => <UIPreviewLoading name="Loading..." />,
@@ -102,7 +102,7 @@ export function PreviewsNavigate({
             </span>
           </p>
         )}
-        <DynamicMultipleBrightCode
+        <DynamicMultipleSyntaxCode
           objects={data}
           onClickDelete={onDeleteFile}
         />

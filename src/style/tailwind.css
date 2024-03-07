@@ -64,7 +64,7 @@
 
 @layer components {
   .markdown {
-    @apply text-primary [&>:first-child]:!mt-0 [&>:last-child]:!mb-0 leading-7;
+    @apply text-primary [&>:first-child]:!mt-0 [&>:last-child]:!mb-0 leading-6;
   }
 
   .markdown > * {
@@ -75,95 +75,7 @@
     @apply mt-4;
   }
 
-  /* Markdown Table Style */
-  .markdown thead {
-    @apply [&_tr]:border-b;
-  }
-
-  .markdown tbody {
-    @apply [&_tr:last-child]:border-0;
-  }
-
-  .markdown tr {
-    @apply border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted;
-  }
-
-  .markdown th {
-    @apply h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0;
-  }
-
-  .markdown td {
-    @apply p-4 align-middle [&:has([role=checkbox])]:pr-0;
-  }
-
-  .markdown tfoot {
-    @apply border-t bg-muted/50 font-medium [&>tr]:last:border-b-0;
-  }
-
-  /* Markdown Heading Style */
-
-  .markdown h1 {
-    @apply scroll-m-20 text-2xl font-extrabold tracking-tight sm:text-3xl first:mt-0 mt-6;
-  }
-
-  .markdown h2 {
-    @apply scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight sm:text-2xl first:mt-0 mt-6;
-  }
-
-  .markdown h3 {
-    @apply scroll-m-20 text-lg font-semibold tracking-tight sm:text-xl first:mt-0 mt-6;
-  }
-
-  .markdown h4 {
-    @apply scroll-m-20 font-semibold tracking-tight text-base sm:text-lg;
-  }
-
-  /* Markdown Link Style */
-
-  .markdown a {
-    @apply underline-offset-4 underline;
-  }
-
-  .markdown strong a {
-    @apply font-bold;
-  }
-
-  .markdown ul {
-    @apply my-6 ml-6 list-disc [&>li]:mt-0;
-  }
-
-  .markdown ol {
-    @apply my-6 ml-6 list-decimal [&>li]:mt-2;
-  }
-
   .markdown ul:has(input[type="checkbox"]) {
     @apply list-none px-0;
-  }
-
-  /* Markdown Blockquote Style */
-
-  .markdown blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
-  }
-
-  .markdown blockquote * {
-    @apply m-0 !important;
-  }
-
-  .markdown p {
-    @apply leading-7 [&:not(:first-child)]:mt-6;
-  }
-
-  .markdown strong {
-    @apply font-semibold;
-  }
-
-  /* Markdown Accordion Style */
-  .markdown #accordion h3 {
-    @apply mt-0 mb-0;
-  }
-
-  .markdown #accordion-content > div > * {
-    @apply m-0;
   }
 }

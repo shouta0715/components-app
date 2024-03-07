@@ -22,7 +22,7 @@ export function useDocumentNavigation() {
 
   const ref = React.useRef<HTMLDivElement>(null);
 
-  const mode = get("mode") ?? "write";
+  const mode = get("mode") === "preview" ? "preview" : "write";
 
   return { ref, mode };
 }
