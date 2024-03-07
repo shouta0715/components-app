@@ -173,6 +173,9 @@ dependencies:
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
+  shiki:
+    specifier: ^1.1.7
+    version: 1.1.7
   sonner:
     specifier: ^1.2.4
     version: 1.2.4(react-dom@18.2.0)(react@18.2.0)
@@ -352,9 +355,6 @@ devDependencies:
   prisma:
     specifier: ^5.7.0
     version: 5.7.0
-  shiki:
-    specifier: ^1.1.7
-    version: 1.1.7
   storybook:
     specifier: ^8.0.0-alpha.9
     version: 8.0.0-alpha.9
@@ -4920,7 +4920,7 @@ packages:
 
   /@shikijs/core@1.1.7:
     resolution: {integrity: sha512-gTYLUIuD1UbZp/11qozD3fWpUTuMqPSf3svDMMrL0UmlGU7D9dPw/V1FonwAorCUJBltaaESxq90jrSjQyGixg==}
-    dev: true
+    dev: false
 
   /@sideway/address@4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
@@ -15288,7 +15288,7 @@ packages:
     resolution: {integrity: sha512-9kUTMjZtcPH3i7vHunA6EraTPpPOITYTdA5uMrvsJRexktqP0s7P3s9HVK80b4pP42FRVe03D7fT3NmJv2yYhw==}
     dependencies:
       '@shikijs/core': 1.1.7
-    dev: true
+    dev: false
 
   /short-uuid@4.2.2:
     resolution: {integrity: sha512-IE7hDSGV2U/VZoCsjctKX6l5t5ak2jE0+aeGJi3KtvjIUNuZVmHVYUjNBhmo369FIWGDtaieRaO8A83Lvwfpqw==}

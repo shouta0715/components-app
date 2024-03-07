@@ -5,7 +5,7 @@
 
 import type { PhrasingContent, RootContentMap, RootContent } from "mdast";
 import React from "react";
-import { BuiltinLanguage } from "shiki";
+
 import { SyntaxCode } from "@/components/elements/code/common";
 import { cn } from "@/utils";
 
@@ -148,7 +148,7 @@ const ImageNode = ({ node }: { node: RootContentMap["image"] }) => {
 };
 
 const CodeNode = ({ node }: { node: RootContentMap["code"] }) => {
-  const lang = (node.lang as BuiltinLanguage) ?? "文言";
+  const lang = node.lang ?? "文言";
 
   return <SyntaxCode lang={lang}>{node.value}</SyntaxCode>;
 };
@@ -204,6 +204,14 @@ const ThematicBreakNode = () => {
   return <hr />;
 };
 
+const EmphasisNode = ({ node }: { node: RootContentMap["emphasis"] }) => {
+  return (
+    <em>
+      <NodesRenderer nodes={node.children} />
+    </em>
+  );
+};
+
 const HTMLNode = ({ node }: { node: RootContentMap["html"] }) => {
   return node.value;
 };
@@ -253,6 +261,13 @@ export const NodesRenderer = ({ nodes }: { nodes: RootContent[] }) => {
       case "thematicBreak": {
         return <ThematicBreakNode key={`${node.type}-${index}`} />;
       }
+      case "emphasis": {
+        return <EmphasisNode key={`${node.type}-${index}`} node={node} />;
+      }
+      case "break": {
+        return <br key={`${node.type}-${index}`} />;
+      }
+
       case "html": {
         return <HTMLNode key={`${node.type}-${index}`} node={node} />;
       }

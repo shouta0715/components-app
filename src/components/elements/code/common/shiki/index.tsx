@@ -1,23 +1,39 @@
 import { cache, memo, use } from "react";
 
-import { BuiltinLanguage, codeToHtml } from "shiki";
+import { getShikiHighlighter } from "@/lib/client/shiki";
 import { cn } from "@/utils";
 
 type HighlightWithShikiProps = {
   code: string;
-  lang: BuiltinLanguage;
+  lang: string;
 };
+
+const cacheShiki = cache(getShikiHighlighter);
 
 export async function highlightWithShiki({
   code,
   lang,
 }: HighlightWithShikiProps): Promise<string> {
-  return codeToHtml(code, { lang, theme: "github-dark-dimmed" });
+  const highlighter = await cacheShiki();
+
+  try {
+    const html = highlighter.codeToHtml(code, {
+      lang,
+      theme: "github-dark-dimmed",
+    });
+
+    return html;
+  } catch (e) {
+    return highlighter.codeToHtml(code, {
+      lang: "plaintext",
+      theme: "github-dark-dimmed",
+    });
+  }
 }
 
 export type ShikiCodeProps = {
   children: string;
-  lang: BuiltinLanguage;
+  lang: string;
   className?: string;
 };
 
@@ -48,15 +64,10 @@ export const ShikiCode = memo(
 );
 
 export function ShikiLoading() {
-  const code = `#include <stdio.h>\n
-int main() {
-    printf("loading...");
-    return 0; 
-}
-`.trim();
+  const code = `const code = "Loading...";`.trim();
 
   return (
-    <div className="h-full bg-code p-4 text-xs">
+    <div className="h-full bg-code p-4 text-sm">
       <pre className="text-primary-foreground">
         <code>{code}</code>
       </pre>

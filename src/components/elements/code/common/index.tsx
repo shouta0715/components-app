@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { BuiltinLanguage } from "shiki";
 
 import {
   ShikiCode,
@@ -31,7 +30,7 @@ export function LangIcon({
 }
 
 export type SyntaxCodeProps = {
-  lang: BuiltinLanguage;
+  lang: string;
   children: string;
   wrapperClassName?: string;
   copy?: boolean;
