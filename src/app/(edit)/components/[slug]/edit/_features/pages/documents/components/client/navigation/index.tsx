@@ -1,12 +1,7 @@
 "use client";
 
 import { TabsList } from "@radix-ui/react-tabs";
-import {
-  ArrowBigUpDash,
-  Eye,
-  Pencil,
-  SplitSquareHorizontal,
-} from "lucide-react";
+import { ArrowBigUpDash, Eye, Pencil } from "lucide-react";
 import dynamic from "next/dynamic";
 import React from "react";
 import {
@@ -85,13 +80,6 @@ export function DocumentNavigation({
             <Eye className="mr-2 size-4" />
             Preview
           </NavigateTabsTrigger>
-          <NavigateTabsTrigger
-            className="rounded-md border border-transparent bg-transparent transition-none hover:bg-background/50 hover:text-primary data-[state=active]:border-border data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-none"
-            value="split"
-          >
-            <SplitSquareHorizontal className="mr-2 size-4" />
-            Split
-          </NavigateTabsTrigger>
         </div>
         <div className="flex items-center justify-center gap-x-4">
           <MarkdownWriteRule />
@@ -129,29 +117,6 @@ export function DocumentNavigation({
             Preview
           </span>
           <DocumentPreview control={control} />
-        </TabsContent>
-        <TabsContent className="mt-0 flex justify-between" value="split">
-          <div className="w-1/2 border-r bg-background px-6">
-            <DynamicDocumentWriter
-              defaultValues={defaultValues}
-              getValues={getValues}
-              reset={reset}
-              setValue={setValue}
-            />
-          </div>
-          <div className="w-1/2 bg-background px-6">
-            <span className="absolute right-0 top-0 inline-flex items-center  rounded-bl-md border-b border-l border-border bg-secondary px-2 py-1 text-sm font-medium text-primary">
-              <svg
-                aria-hidden="true"
-                className="mr-2 size-2 fill-yellow-500"
-                viewBox="0 0 6 6"
-              >
-                <circle cx={3} cy={3} r={3} />
-              </svg>
-              Preview
-            </span>
-            <DocumentPreview control={control} />
-          </div>
         </TabsContent>
       </div>
     </NavigateTabs>

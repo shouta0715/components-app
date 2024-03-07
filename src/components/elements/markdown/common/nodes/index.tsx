@@ -4,9 +4,10 @@
 /* eslint-disable react/no-array-index-key */
 
 import type { PhrasingContent, RootContentMap, RootContent } from "mdast";
-import React from "react";
+import React, { memo } from "react";
 
 import { SyntaxCode } from "@/components/elements/code/common";
+
 import { cn } from "@/utils";
 
 const HeadingNode = ({ node }: { node: RootContentMap["heading"] }) => {
@@ -148,7 +149,7 @@ const ImageNode = ({ node }: { node: RootContentMap["image"] }) => {
 };
 
 const CodeNode = ({ node }: { node: RootContentMap["code"] }) => {
-  const lang = node.lang ?? "文言";
+  const lang = node.lang ?? "plaintext";
 
   return <SyntaxCode lang={lang}>{node.value}</SyntaxCode>;
 };
@@ -216,7 +217,7 @@ const HTMLNode = ({ node }: { node: RootContentMap["html"] }) => {
   return node.value;
 };
 
-export const NodesRenderer = ({ nodes }: { nodes: RootContent[] }) => {
+export const NodesRenderer = memo(({ nodes }: { nodes: RootContent[] }) => {
   return nodes.map((node, index) => {
     switch (node.type) {
       case "heading": {
@@ -277,4 +278,4 @@ export const NodesRenderer = ({ nodes }: { nodes: RootContent[] }) => {
       }
     }
   });
-};
+});
