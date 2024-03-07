@@ -1,6 +1,7 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ import { useMutateComponent } from "@/app/(edit)/components/[slug]/edit/_feature
 import {
   editStatusAtom,
   editValueStatesAtom,
+  isEditingAtom,
 } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import {
   EditDocumentInput,
@@ -25,6 +27,7 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
   const { document } = useAtomValue(editValueStatesAtom);
   const { slug } = useParams<Params["params"]>();
 
+  const setIsEditing = useSetAtom(isEditingAtom);
   const setEditStatus = useSetAtom(editStatusAtom);
   const setAtomValues = useSetAtom(editValueStatesAtom);
 
@@ -41,6 +44,12 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     defaultValues: { document: document ?? defaultValues },
     resolver: valibotResolver(formEditDocumentSchema),
   });
+
+  useEffect(() => {
+    setIsEditing(isDirty);
+
+    return () => setIsEditing(false);
+  }, [isDirty, setIsEditing]);
 
   async function onSubmit({ data, draft }: OnSubmitProps) {
     await mutateAsync({ ...data, draft });

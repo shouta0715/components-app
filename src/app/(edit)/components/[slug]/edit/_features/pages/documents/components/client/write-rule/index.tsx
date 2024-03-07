@@ -15,6 +15,11 @@ import {
 
 const shortcuts = [
   {
+    id: "toggle-preview",
+    name: "プレビューの切り替え",
+    command: "command + p",
+  },
+  {
     id: "bold",
     name: "太字",
     command: "command + b",
@@ -43,9 +48,12 @@ export function MarkdownWriteRule() {
           <AccordionItem value="item-1">
             <AccordionTrigger>ショートカット一覧</AccordionTrigger>
             <AccordionContent>
-              <ol className="list-inside list-decimal	">
+              <ol className="list-inside list-decimal">
                 {shortcuts.map((shortcut) => (
-                  <li key={shortcut.id} className="font-semibold">
+                  <li
+                    key={shortcut.id}
+                    className="mb-2 font-semibold last:mb-0"
+                  >
                     <span className="mb-2 inline-block ">{shortcut.name}</span>
                     <pre className="font-normal">{shortcut.command}</pre>
                   </li>
