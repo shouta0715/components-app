@@ -4,10 +4,16 @@
 /* eslint-disable react/no-array-index-key */
 
 import type { PhrasingContent, RootContentMap, RootContent } from "mdast";
-import React, { memo } from "react";
+import React, { Suspense, memo } from "react";
 
+import { ErrorBoundary } from "react-error-boundary";
 import { SyntaxCode } from "@/components/elements/code/common";
 
+import {
+  ErrorLinkCard,
+  LinkCard,
+  LoadingLinkCard,
+} from "@/components/elements/markdown/common/custom/link-card";
 import { cn } from "@/utils";
 
 const HeadingNode = ({ node }: { node: RootContentMap["heading"] }) => {
@@ -213,6 +219,16 @@ const EmphasisNode = ({ node }: { node: RootContentMap["emphasis"] }) => {
   );
 };
 
+const LinkCardNode = ({ node }: { node: RootContentMap["link-card"] }) => {
+  return (
+    <ErrorBoundary fallback={<ErrorLinkCard node={node} />}>
+      <Suspense fallback={<LoadingLinkCard node={node} />}>
+        <LinkCard node={node} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
 const HTMLNode = ({ node }: { node: RootContentMap["html"] }) => {
   return node.value;
 };
@@ -267,6 +283,9 @@ export const NodesRenderer = memo(({ nodes }: { nodes: RootContent[] }) => {
       }
       case "break": {
         return <br key={`${node.type}-${index}`} />;
+      }
+      case "link-card": {
+        return <LinkCardNode key={`${node.type}-${index}`} node={node} />;
       }
 
       case "html": {

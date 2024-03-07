@@ -1,7 +1,8 @@
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
+import { remarkLinkCard } from "@/components/elements/markdown/common/custom/link-card/remark";
 
-const remarks = remark().use(remarkGfm);
+const remarks = remark().use(remarkLinkCard).use(remarkGfm);
 
 type Root = ReturnType<typeof remarks.parse>;
 
