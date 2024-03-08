@@ -44,6 +44,7 @@ export function OrderButton({
             pathname: `/categories/${name}`,
             query: { order: o.name },
           }}
+          replace
           type="button"
         >
           {o.label}

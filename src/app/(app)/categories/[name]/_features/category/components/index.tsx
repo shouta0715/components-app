@@ -1,4 +1,5 @@
 import { Milestone, Sparkles } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 import { getCountLabel } from "@/app/(app)/categories/[name]/_features/category/utils";
 import { AvatarLink } from "@/components/elements/users/avatar-link";
@@ -38,7 +39,15 @@ export function CategoryInfo({ data }: CategoryComponentProps) {
   return (
     <div className="flex gap-8 border-b pb-4">
       <figure className="w-40 shrink-0 sm:w-60">
-        <div className="relative h-40 w-full  overflow-hidden rounded-3xl sm:h-60">
+        <Link
+          className="group relative block h-40  w-full overflow-hidden rounded-3xl sm:h-60"
+          href={`/components/${data.componentId}`}
+        >
+          <span className="sr-only">{data.name}の1番人気のコンポーネント</span>
+          <span
+            aria-hidden
+            className="absolute inset-0 z-10 transition-colors duration-300 group-hover:bg-accent/30"
+          />
           <Image
             alt={`${data.name}の1番人気のコンポーネント`}
             fill
@@ -46,7 +55,7 @@ export function CategoryInfo({ data }: CategoryComponentProps) {
             sizes="(min-width: 640px) 240px, 160px"
             src={getImageUrl(data.previewUrl)}
           />
-        </div>
+        </Link>
         <figcaption>
           <span className="text-xs text-muted-foreground">
             <Sparkles className="-mt-1 mb-1 mr-1 inline-block size-4 fill-yellow-500 text-yellow-500" />

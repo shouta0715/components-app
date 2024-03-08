@@ -132,6 +132,7 @@ export const getCategoryByName = async (name: string) => {
     description: result.description,
     count: result._count.components,
     previewUrl: component?.previewUrl,
+    componentId: component?.id,
     creator: component?.creator,
   };
 };
