@@ -18,7 +18,7 @@ import { Params } from "@/types/next";
 export default async function Page({ params }: Params) {
   return (
     <InterceptingModalProvider>
-      <DialogContent className="top-10 z-[100] block max-h-[91.666667%] max-w-none translate-y-0 overflow-y-auto data-[state=closed]:slide-out-to-top-8 data-[state=open]:slide-in-from-top-8">
+      <DialogContent className="top-10 z-[100] block max-h-[91.666667%] max-w-none translate-y-0 overflow-y-auto data-[state=closed]:slide-out-to-top-0 data-[state=open]:slide-in-from-top-0">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold">
             Quick View
