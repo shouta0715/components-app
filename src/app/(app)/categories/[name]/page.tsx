@@ -4,6 +4,7 @@ import { CategoryInfo } from "@/app/(app)/categories/[name]/_features/category/c
 import { OrderButton } from "@/app/(app)/categories/[name]/_features/common/components/order-button";
 import { ComponentsOrder } from "@/app/(app)/categories/[name]/_features/common/types";
 import { CategoryComponents } from "@/app/(app)/categories/[name]/_features/ui-components/components/category-component";
+import { UIComponentLoader } from "@/components/elements/ui-components/loader";
 import { getCategoryByName } from "@/services/category/get";
 import { Params, SearchParams } from "@/types/next";
 import { parseSearchParams } from "@/utils";
@@ -14,6 +15,14 @@ const getOrder = (order: string): ComponentsOrder => {
 
   return "trend";
 };
+
+function CategoryLoader() {
+  return (
+    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-y-10">
+      <UIComponentLoader />
+    </div>
+  );
+}
 
 export default async function Page({
   params,
@@ -34,7 +43,7 @@ export default async function Page({
         <h2 className="text-2xl font-bold">Components</h2>
         <OrderButton name={params.name} order={order} />
       </div>
-      <Suspense fallback="loading">
+      <Suspense fallback={<CategoryLoader />}>
         <CategoryComponents
           name={params.name}
           order={order}
