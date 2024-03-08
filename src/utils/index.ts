@@ -47,3 +47,23 @@ export const getDisplayName = (name?: string | null, slice?: number) => {
 
   return name;
 };
+
+type SearchParams = {
+  [key: string]: string | string[] | undefined;
+};
+export const parseSearchParams = (
+  searchParams?: SearchParams
+): {
+  [key: string]: string;
+} => {
+  if (!searchParams) return {};
+  const parsed: { [key: string]: string } = {};
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (typeof value === "string") {
+      parsed[key] = value;
+    }
+  });
+
+  return parsed;
+};
