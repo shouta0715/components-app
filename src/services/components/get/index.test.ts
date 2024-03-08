@@ -37,7 +37,7 @@ describe("GET Component RDB Test", async () => {
     }).create();
     const mockFile = defineFileFactory({
       defaultData: async () => ({
-        Component: {
+        component: {
           connect: {
             id: mockComponent.id,
           },

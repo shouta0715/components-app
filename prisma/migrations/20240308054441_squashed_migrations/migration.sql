@@ -1,9 +1,6 @@
 -- CreateEnum
 CREATE TYPE "Extension" AS ENUM ('html', 'css', 'js', 'jsx', 'ts', 'tsx');
 
--- CreateEnum
-CREATE TYPE "Responsive" AS ENUM ('mobile', 'desktop');
-
 -- CreateTable
 CREATE TABLE "accounts" (
     "id" TEXT NOT NULL,
@@ -79,44 +76,6 @@ CREATE TABLE "files" (
 );
 
 -- CreateTable
-CREATE TABLE "componentSets" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "draft" BOOLEAN NOT NULL DEFAULT true,
-    "document" TEXT NOT NULL,
-    "previewImageUrl" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "creatorId" TEXT NOT NULL,
-
-    CONSTRAINT "componentSets_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "componentReviews" (
-    "id" TEXT NOT NULL,
-    "comment" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "componentId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "componentReviews_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "componentSetReviews" (
-    "id" TEXT NOT NULL,
-    "comment" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "componentSetId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "componentSetReviews_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "componentLikes" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -124,22 +83,6 @@ CREATE TABLE "componentLikes" (
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "componentLikes_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "componentSetLikes" (
-    "id" SERIAL NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "componentSetId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "componentSetLikes_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_ComponentToComponentSet" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -173,34 +116,31 @@ CREATE INDEX "files_componentId_idx" ON "files"("componentId");
 CREATE INDEX "files_objectId_idx" ON "files"("objectId");
 
 -- CreateIndex
-CREATE INDEX "componentSets_creatorId_idx" ON "componentSets"("creatorId");
-
--- CreateIndex
-CREATE INDEX "componentReviews_componentId_idx" ON "componentReviews"("componentId");
-
--- CreateIndex
-CREATE INDEX "componentReviews_userId_idx" ON "componentReviews"("userId");
-
--- CreateIndex
-CREATE INDEX "componentSetReviews_componentSetId_idx" ON "componentSetReviews"("componentSetId");
-
--- CreateIndex
-CREATE INDEX "componentSetReviews_userId_idx" ON "componentSetReviews"("userId");
-
--- CreateIndex
 CREATE INDEX "componentLikes_componentId_idx" ON "componentLikes"("componentId");
 
 -- CreateIndex
 CREATE INDEX "componentLikes_userId_idx" ON "componentLikes"("userId");
 
--- CreateIndex
-CREATE INDEX "componentSetLikes_componentSetId_idx" ON "componentSetLikes"("componentSetId");
+-- AddForeignKey
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE INDEX "componentSetLikes_userId_idx" ON "componentSetLikes"("userId");
+-- AddForeignKey
+ALTER TABLE "follows" ADD CONSTRAINT "follows_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE UNIQUE INDEX "_ComponentToComponentSet_AB_unique" ON "_ComponentToComponentSet"("A", "B");
+-- AddForeignKey
+ALTER TABLE "follows" ADD CONSTRAINT "follows_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE INDEX "_ComponentToComponentSet_B_index" ON "_ComponentToComponentSet"("B");
+-- AddForeignKey
+ALTER TABLE "components" ADD CONSTRAINT "components_categoryName_fkey" FOREIGN KEY ("categoryName") REFERENCES "categories"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "components" ADD CONSTRAINT "components_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "files" ADD CONSTRAINT "files_componentId_fkey" FOREIGN KEY ("componentId") REFERENCES "components"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "componentLikes" ADD CONSTRAINT "componentLikes_componentId_fkey" FOREIGN KEY ("componentId") REFERENCES "components"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "componentLikes" ADD CONSTRAINT "componentLikes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
