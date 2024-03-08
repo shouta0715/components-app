@@ -1,27 +1,14 @@
 up:
-	docker compose up -d
+	supabase start -x realtime,storage-api,inbucket  && docker compose up -d
 
 down:
-	docker compose down
+	supabase stop && docker compose down
 
-up-test:
-	docker compose -f docker-compose.test.yaml up -d
-
-down-test:
-	docker compose -f docker-compose.test.yaml down
-
-up-all:
-	docker compose -f docker-compose.yaml -f docker-compose.test.yaml up -d
-
-down-all:
-	docker compose -f docker-compose.yaml -f docker-compose.test.yaml down
-	
-reset-volume:
+reset:
+	supabase db reset
 	docker volume rm ui-trade_minio
 	docker volume rm ui-trade_minio-test
-	docker volume rm ui-trade_mysql
-	docker volume rm ui-trade_mysql-test
 	rm -rf .next
+	
 
-
-.PHONY: up down up-test down-test up-all down-all reset-volume
+.PHONY: up down reset
