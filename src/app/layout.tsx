@@ -36,6 +36,7 @@ export default async function RootLayout({
       >
         {modal}
         {children}
+
         <Toaster closeButton position="top-right" />
       </body>
     </html>
