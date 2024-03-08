@@ -201,6 +201,12 @@ export const getCategoryComponents = async ({
         id: true,
         name: true,
         previewUrl: true,
+        createdAt: true,
+        files: {
+          select: {
+            extension: true,
+          },
+        },
         creator: {
           select: {
             name: true,
