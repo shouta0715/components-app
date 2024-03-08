@@ -1,10 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import {
-  PrismaClientInitializationError,
-  PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
-  PrismaClientValidationError,
-} from "@prisma/client/runtime/library";
+import { Prisma, PrismaClient } from "@prisma/client";
+
 import { BadRequestError, InternalServerError } from "@/lib/errors";
 
 // PrismaClient is attached to the `global` object in development to prevent
@@ -20,16 +15,16 @@ export const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export function handlePrismaError(err: unknown): never {
-  if (err instanceof PrismaClientValidationError) {
+  if (err instanceof Prisma.PrismaClientValidationError) {
     throw new BadRequestError();
   }
-  if (err instanceof PrismaClientKnownRequestError) {
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
     throw new BadRequestError();
   }
-  if (err instanceof PrismaClientUnknownRequestError) {
+  if (err instanceof Prisma.PrismaClientUnknownRequestError) {
     throw new BadRequestError();
   }
-  if (err instanceof PrismaClientInitializationError) {
+  if (err instanceof Prisma.PrismaClientInitializationError) {
     throw new InternalServerError();
   }
   throw err;
