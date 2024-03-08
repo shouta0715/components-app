@@ -1,7 +1,7 @@
 import { Category } from "@prisma/client";
 
 import { toResCategoriesByHome } from "@/domain/categories";
-import { prisma } from "@/lib/client/prisma";
+import { prisma, runPrisma } from "@/lib/client/prisma";
 
 import { CategoriesByHome, SearchCategory } from "@/types/prisma";
 
@@ -87,4 +87,51 @@ export const getCategoriesByHome = async (
   });
 
   return toResCategoriesByHome(result);
+};
+
+export const getCategoryByName = async (name: string) => {
+  const result = await runPrisma(() =>
+    prisma.category.findUnique({
+      where: { name },
+      include: {
+        _count: {
+          select: {
+            components: true,
+          },
+        },
+        components: {
+          take: 1,
+          where: { draft: false },
+          select: {
+            id: true,
+            previewUrl: true,
+            creator: {
+              select: {
+                name: true,
+                image: true,
+                id: true,
+              },
+            },
+          },
+          orderBy: {
+            likes: {
+              _count: "desc",
+            },
+          },
+        },
+      },
+    })
+  );
+
+  if (!result) return null;
+
+  const component = result.components[0];
+
+  return {
+    name: result.name,
+    description: result.description,
+    count: result._count.components,
+    previewUrl: component?.previewUrl,
+    creator: component?.creator,
+  };
 };
