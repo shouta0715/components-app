@@ -1,7 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { prisma } from "@/lib/client/prisma";
-import { defineCategoryFactory } from "@/tests/fabbrica";
 import { Extension } from "@/types/file";
 
 export function cn(...inputs: ClassValue[]) {
@@ -68,15 +66,4 @@ export const parseSearchParams = (
   });
 
   return parsed;
-};
-
-export const createOtherCategory = async () => {
-  const category = await defineCategoryFactory({
-    defaultData: { name: "other" },
-  }).build();
-
-  return prisma.category.createMany({
-    data: category,
-    skipDuplicates: true,
-  });
 };

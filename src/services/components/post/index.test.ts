@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 
+import { createOtherCategory } from "@/services/category/get/mocks";
 import { createDraftComponent } from "@/services/components/post";
 import { defineUserFactory } from "@/tests/fabbrica";
-import { createOtherCategory } from "@/utils";
 
 describe("POST Component RDB test", () => {
   test("createDraftComponent", async () => {
