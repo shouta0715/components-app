@@ -1,37 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 
+import { InterceptingModalProvider } from "@/components/elements/intercepting-modal";
 import {
   GitHubButton,
   GoogleButton,
 } from "@/components/global/auth/server/auth-button";
 import { Icon } from "@/components/icons/Icon";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader } from "@/components/ui/dialog";
 
 export function AuthModal() {
-  const router = useRouter();
-
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
-
-  const onKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") onDismiss();
-    },
-    [onDismiss]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onKeyDown]);
-
   return (
-    <Dialog defaultOpen onOpenChange={onDismiss}>
+    <InterceptingModalProvider>
       <DialogContent className="grid max-w-sm gap-8">
         <DialogHeader>
           <h2 className="mx-auto flex flex-col items-center gap-2 text-center text-3xl   text-primary">
@@ -50,6 +31,6 @@ export function AuthModal() {
           <GoogleButton />
         </div>
       </DialogContent>
-    </Dialog>
+    </InterceptingModalProvider>
   );
 }
