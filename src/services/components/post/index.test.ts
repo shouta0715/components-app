@@ -2,10 +2,12 @@ import { describe, expect, test } from "vitest";
 
 import { createDraftComponent } from "@/services/components/post";
 import { defineUserFactory } from "@/tests/fabbrica";
+import { createOtherCategory } from "@/utils";
 
 describe("POST Component RDB test", () => {
   test("createDraftComponent", async () => {
     const user = await defineUserFactory().create();
+    await createOtherCategory();
 
     const component = await createDraftComponent(user.id);
 

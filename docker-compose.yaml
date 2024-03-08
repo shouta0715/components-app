@@ -1,20 +1,5 @@
 version: "3.9"
 services:
-  mysql:
-    platform: linux/x86_64
-    image: mysql:8.0.28
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ui-trade
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      TZ: "Asia/Tokyo"
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    ports:
-      - 3306:3306
-    volumes:
-      - mysql:/var/lib/mysql
   minio:
     image: minio/minio:latest
     command: ["server", "/data", "--console-address", ":9090"]
@@ -45,5 +30,4 @@ services:
       "
 
 volumes:
-  mysql:
   minio:
