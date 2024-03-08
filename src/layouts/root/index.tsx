@@ -17,7 +17,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           <aside className="sticky top-20 hidden h-full w-52 shrink-0 rounded-md p-2 lg:block">
             <LeftSide />
           </aside>
-          <main className="flex-1">{children}</main>
+          <main className="min-w-0 flex-1">{children}</main>
         </div>
         <Footer />
       </div>
