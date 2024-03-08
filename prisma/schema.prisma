@@ -11,8 +11,8 @@ generator fabbrica {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ************************************************************
@@ -49,14 +49,10 @@ model User {
   accounts      Account[]
 
   // CUSTOM FIELDS
-  components          Component[]
-  componentSets       ComponentSet[]
-  componentReviews    ComponentReview[]
-  componentSetReviews ComponentSetReview[]
-  componentLikes      ComponentLike[]
-  componentSetLikes   ComponentSetLike[]
-  followers           Follow[]             @relation("follower")
-  followings          Follow[]             @relation("following")
+  components     Component[]
+  componentLikes ComponentLike[]
+  followers      Follow[]        @relation("follower")
+  followings     Follow[]        @relation("following")
 
   @@map("users")
 }
@@ -65,9 +61,8 @@ model Follow {
   createdAt DateTime @default(now())
 
   // RELATIONSHIPS
-  followerId String
-  follower   User   @relation("follower", fields: [followerId], references: [id])
-
+  followerId  String
+  follower    User   @relation("follower", fields: [followerId], references: [id])
   followingId String
   following   User   @relation("following", fields: [followingId], references: [id])
 
@@ -102,15 +97,12 @@ model Component {
   // RELATIONSHIPS
   category     Category @relation(fields: [categoryName], references: [name])
   categoryName String
-
-  creatorId String
-  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId    String
+  creator      User     @relation(fields: [creatorId], references: [id])
 
   // MANY FILEDS
-  files         File[]
-  componentSets ComponentSet[]
-  reviews       ComponentReview[]
-  likes         ComponentLike[]
+  files File[]
+  likes ComponentLike[]
 
   @@index([creatorId])
   @@index([categoryName])
@@ -134,74 +126,11 @@ model File {
 
   // RELATIONSHIPS
   componentId String
-  Component   Component @relation(fields: [componentId], references: [id])
+  component   Component @relation(fields: [componentId], references: [id])
 
   @@index([componentId])
   @@index([objectId])
   @@map("files")
-}
-
-model ComponentSet {
-  id              String   @id @default(cuid())
-  name            String
-  draft           Boolean  @default(true)
-  document        String   @db.Text
-  previewImageUrl String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  // RELATIONSHIPS
-  creatorId String
-  creator   User   @relation(fields: [creatorId], references: [id])
-
-  // MANY FILEDS
-  components Component[]
-  reviews    ComponentSetReview[]
-  likes      ComponentSetLike[]
-
-  @@index([creatorId])
-  @@map("componentSets")
-}
-
-enum Responsive {
-  mobile
-  desktop
-}
-
-model ComponentReview {
-  id        String   @id @default(cuid())
-  comment   String
-  rating    Int
-  createdAt DateTime @default(now())
-
-  // RELATIONSHIPS
-  componentId String
-  Component   Component @relation(fields: [componentId], references: [id])
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
-
-  @@index([componentId])
-  @@index([userId])
-  @@map("componentReviews")
-}
-
-model ComponentSetReview {
-  id        String   @id @default(cuid())
-  comment   String
-  rating    Int
-  createdAt DateTime @default(now())
-
-  // RELATIONSHIPS
-  componentSetId String
-  ComponentSet   ComponentSet @relation(fields: [componentSetId], references: [id])
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
-
-  @@index([componentSetId])
-  @@index([userId])
-  @@map("componentSetReviews")
 }
 
 model ComponentLike {
@@ -210,28 +139,12 @@ model ComponentLike {
 
   // RELATIONSHIPS
   componentId String
-  Component   Component @relation(fields: [componentId], references: [id])
+  component   Component @relation(fields: [componentId], references: [id])
 
   userId String
-  User   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   @@index([componentId])
   @@index([userId])
   @@map("componentLikes")
-}
-
-model ComponentSetLike {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-
-  // RELATIONSHIPS
-  componentSetId String
-  ComponentSet   ComponentSet @relation(fields: [componentSetId], references: [id])
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
-
-  @@index([componentSetId])
-  @@index([userId])
-  @@map("componentSetLikes")
 }
