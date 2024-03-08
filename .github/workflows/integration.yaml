@@ -8,7 +8,7 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - ".env.example.test"
-      - "docker-compose.test.yaml"
+      - "supabase/**"
 
 jobs:
   test:
@@ -19,18 +19,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: SetUp Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2.2.2
         with:
           version: 8.7.4
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      - name: Run Supabase Database
+        run: supabase db start
 
-      - name: Run Docker Compose
-        run: docker-compose -f docker-compose.test.yaml up -d
+      - name: Run Supabase Lint
+        run: supabase db lint
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
