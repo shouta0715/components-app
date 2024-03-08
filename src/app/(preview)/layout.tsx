@@ -1,16 +1,9 @@
 import { PreviewLayout } from "@/layouts/root";
 
-export default async function RootLayout({
+export default async function Layout({
   children,
-  quick,
 }: {
   children: React.ReactNode;
-  quick: React.ReactNode;
 }) {
-  return (
-    <PreviewLayout>
-      {quick}
-      {children}
-    </PreviewLayout>
-  );
+  return <PreviewLayout>{children}</PreviewLayout>;
 }
