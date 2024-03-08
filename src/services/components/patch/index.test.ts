@@ -12,13 +12,14 @@ import { createMockComponentFiles } from "@/services/components/patch/fixtures/c
 import { createDraftComponent } from "@/services/components/post";
 import * as aws from "@/services/files/delete";
 import { defineUserFactory } from "@/tests/fabbrica";
+import { createOtherCategory } from "@/utils";
 import { randomExtension, randomString } from "@/utils/random";
 
 describe("PATCH Component RDB test", () => {
   describe("updateComponent", () => {
     test("update all fields", async () => {
       const user = await defineUserFactory().create();
-
+      await createOtherCategory();
       const component = await createDraftComponent(user.id);
 
       const newData: ComponentUpdateInput = {
@@ -26,7 +27,7 @@ describe("PATCH Component RDB test", () => {
         description: "new description",
         previewUrl: "new previewUrl",
         draft: false,
-        categoryName: "new category",
+        categoryName: "other",
         document: "new document",
       };
 
@@ -50,6 +51,7 @@ describe("PATCH Component RDB test", () => {
     test("update some fields", async () => {
       const user = await defineUserFactory().create();
 
+      await createOtherCategory();
       const component = await createDraftComponent(user.id);
 
       const newData: ComponentUpdateInput = {
