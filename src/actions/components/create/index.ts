@@ -6,11 +6,20 @@ import { ActionResult } from "@/lib/next/actions";
 import { assertUser } from "@/lib/validation";
 import { createDraftComponent } from "@/services/components/post";
 
-export const createDraftComp = async (): Promise<ActionResult> => {
+export type CreateDraftCompInitialValues =
+  | {
+      name?: string;
+      categoryName?: string;
+    }
+  | undefined;
+
+export const createDraftComp = async (
+  initialValues?: CreateDraftCompInitialValues
+): Promise<ActionResult> => {
   try {
     const { user } = await getSession();
     assertUser(user);
-    const component = await createDraftComponent(user.id);
+    const component = await createDraftComponent(user.id, initialValues);
 
     return {
       success: true,

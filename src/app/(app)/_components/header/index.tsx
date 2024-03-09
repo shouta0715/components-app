@@ -2,11 +2,8 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import { createDraftComp } from "@/actions/components/create";
-import { AuthForm } from "@/components/ui/auth-form";
-import { Button, buttonVariants } from "@/components/ui/button";
-
-import { cn } from "@/utils";
+import { CreateComponentButton } from "@/components/elements/ui-components/create-button";
+import { Button } from "@/components/ui/button";
 
 export async function TopHeader() {
   return (
@@ -32,24 +29,7 @@ export async function TopHeader() {
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>
         </Button>
-        <AuthForm
-          action={createDraftComp}
-          className={cn(
-            buttonVariants({
-              variant: "outline",
-              className: "font-bold",
-            }),
-            "px-0 py-0"
-          )}
-        >
-          <button
-            className="flex w-full items-center justify-center px-4 py-2 text-center"
-            type="submit"
-          >
-            投稿する
-            <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
-          </button>
-        </AuthForm>
+        <CreateComponentButton />
       </div>
     </div>
   );
