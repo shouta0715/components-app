@@ -1,8 +1,8 @@
-import { Component, User } from "@prisma/client";
+import { Component, Prisma, User } from "@prisma/client";
 
 import { notFound } from "next/navigation";
 
-import { prisma } from "@/lib/client/prisma";
+import { prisma, runPrisma } from "@/lib/client/prisma";
 import { NotFoundError } from "@/lib/errors";
 import { CompWithFiles, ComponentWithParent, EditComp } from "@/types/prisma";
 
@@ -153,4 +153,78 @@ export const getComponentPreview = async (
     previewUrl: component.previewUrl,
     creatorId: component.creatorId,
   };
+};
+
+type GetComponentsByCategory = {
+  name: string;
+  take: number;
+  skip: number;
+  order: "popular" | "new";
+};
+
+const getOrderBy = (
+  order: "popular" | "new"
+): Prisma.ComponentOrderByWithRelationInput => {
+  if (order === "popular") {
+    return {
+      likes: {
+        _count: "desc",
+      },
+    };
+  }
+
+  return {
+    createdAt: "desc",
+  };
+};
+
+export const getCategoryComponentsCount = async (name: string) => {
+  const count = await prisma.component.count({
+    where: { categoryName: name, draft: false },
+  });
+
+  return count;
+};
+
+export const getCategoryComponents = async ({
+  name,
+  take,
+  skip,
+  order,
+}: GetComponentsByCategory) => {
+  const orderBy = getOrderBy(order);
+
+  const components = await runPrisma(() =>
+    prisma.component.findMany({
+      where: { categoryName: name, draft: false },
+      select: {
+        id: true,
+        name: true,
+        previewUrl: true,
+        createdAt: true,
+        files: {
+          select: {
+            extension: true,
+          },
+        },
+        creator: {
+          select: {
+            name: true,
+            image: true,
+            id: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
+      take,
+      skip,
+      orderBy,
+    })
+  );
+
+  return components;
 };

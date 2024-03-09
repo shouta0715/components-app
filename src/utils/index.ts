@@ -1,7 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { prisma } from "@/lib/client/prisma";
-import { defineCategoryFactory } from "@/tests/fabbrica";
 import { Extension } from "@/types/file";
 
 export function cn(...inputs: ClassValue[]) {
@@ -50,13 +48,22 @@ export const getDisplayName = (name?: string | null, slice?: number) => {
   return name;
 };
 
-export const createOtherCategory = async () => {
-  const category = await defineCategoryFactory({
-    defaultData: { name: "other" },
-  }).build();
+type SearchParams = {
+  [key: string]: string | string[] | undefined;
+};
+export const parseSearchParams = (
+  searchParams?: SearchParams
+): {
+  [key: string]: string;
+} => {
+  if (!searchParams) return {};
+  const parsed: { [key: string]: string } = {};
 
-  return prisma.category.createMany({
-    data: category,
-    skipDuplicates: true,
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (typeof value === "string") {
+      parsed[key] = value;
+    }
   });
+
+  return parsed;
 };

@@ -29,7 +29,7 @@ export async function FilePreviews({
   const objects = await getObject();
 
   return (
-    <NavigateTabs className="grid gap-8" defaultValue="preview">
+    <NavigateTabs className="space-y-6" defaultValue="preview">
       <TabsList className="h-9 w-full justify-between rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
         <div>
           <NavigateTabsTrigger

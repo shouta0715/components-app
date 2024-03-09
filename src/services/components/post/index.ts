@@ -1,7 +1,15 @@
 import { Component } from "@prisma/client";
 import { prisma } from "@/lib/client/prisma";
 
-export async function createDraftComponent(userId: string): Promise<Component> {
+type InitialValues = {
+  name: string;
+  categoryName: string;
+};
+
+export async function createDraftComponent(
+  userId: string,
+  initialValues?: Partial<InitialValues>
+): Promise<Component> {
   return prisma.component.create({
     data: {
       name: "",
@@ -10,6 +18,7 @@ export async function createDraftComponent(userId: string): Promise<Component> {
       categoryName: "other",
       creatorId: userId,
       document: "",
+      ...initialValues,
     },
   });
 }

@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import { prisma } from "@/lib/client/prisma";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 import { FilesUpdateInput, UploadFileInput } from "@/lib/schema/server/files";
+import { createOtherCategory } from "@/services/category/get/mocks";
 import {
   updateComponent,
   updateComponentFiles,
@@ -12,7 +13,7 @@ import { createMockComponentFiles } from "@/services/components/patch/fixtures/c
 import { createDraftComponent } from "@/services/components/post";
 import * as aws from "@/services/files/delete";
 import { defineUserFactory } from "@/tests/fabbrica";
-import { createOtherCategory } from "@/utils";
+
 import { randomExtension, randomString } from "@/utils/random";
 
 describe("PATCH Component RDB test", () => {

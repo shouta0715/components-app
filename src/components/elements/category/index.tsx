@@ -38,12 +38,12 @@ export async function Category({ category }: { category: CategoriesByHome }) {
         </div>
       </BentoBackground>
       <BentoHeader>
-        <BentoTitle className="group-hover:text-destructive">
+        <BentoTitle className="capitalize group-hover:text-destructive">
           {category.name}
         </BentoTitle>
         <BentoDescription className="grid gap-y-1">
           <span>{category.description ?? ""}</span>
-          <span>{category._count.components ?? 0} components</span>
+          <span>{category._count.components ?? 0} 件</span>
         </BentoDescription>
       </BentoHeader>
     </BentoCard>

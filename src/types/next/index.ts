@@ -7,3 +7,9 @@ export type Params<T extends string[] | string = "slug"> = {
       ? never
       : { [key in T[number]]: string };
 };
+
+export type SearchParams = {
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+};
