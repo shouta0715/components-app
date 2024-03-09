@@ -1,7 +1,7 @@
 import { Extension, User } from "@prisma/client";
 import { HeartIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { LangIcons } from "@/components/icons/LangIcons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
@@ -120,6 +120,10 @@ export function UIComponent({
   createdAt,
   extensions,
 }: UIComponentProps) {
+  const exs = useMemo(() => {
+    return [...new Set(extensions.map((e) => e.extension))];
+  }, [extensions]);
+
   return (
     <article
       key={id}
@@ -159,10 +163,10 @@ export function UIComponent({
           </Link>
 
           <div className="flex gap-x-2">
-            {extensions.map((e) => {
-              const Icons = LangIcons[e.extension];
+            {exs.map((e) => {
+              const Icons = LangIcons[e];
 
-              return <Icons key={e.extension} className="size-6" />;
+              return <Icons key={e} className="size-6" />;
             })}
           </div>
         </div>
