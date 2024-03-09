@@ -34,7 +34,9 @@ export function OrderButton({
             size: "sm",
             variant: o.name === order ? "default" : "outline",
             className: cn(
-              o.name === order ? "font-semibold" : "text-muted-foreground",
+              o.name === order
+                ? "font-semibold pointer-events-none"
+                : "text-muted-foreground",
               i === 0 && "rounded-r-none",
               i !== 0 && i !== orders.length - 1 && "rounded-none",
               i === orders.length - 1 && "rounded-l-none"

@@ -96,7 +96,7 @@ export const getCategoryByName = async (name: string) => {
       include: {
         _count: {
           select: {
-            components: true,
+            components: { where: { draft: false } },
           },
         },
         components: {
@@ -125,7 +125,7 @@ export const getCategoryByName = async (name: string) => {
 
   if (!result) return null;
 
-  const component = result.components[0];
+  const component = result.components.length ? result.components[0] : null;
 
   return {
     name: result.name,
@@ -133,6 +133,6 @@ export const getCategoryByName = async (name: string) => {
     count: result._count.components,
     previewUrl: component?.previewUrl,
     componentId: component?.id,
-    creator: component?.creator,
+    creator: component?.creator || null,
   };
 };
