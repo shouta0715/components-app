@@ -6,21 +6,19 @@ import { getCategoryComponents } from "@/services/components/get";
 
 type CategoryComponentProps = {
   name: string;
-  take?: string;
-  skip?: string;
+  skip?: number;
   order: ComponentsOrder;
 };
 
 export async function CategoryComponents({
-  take,
   skip,
   order,
   name,
 }: CategoryComponentProps) {
   const components = await getCategoryComponents({
     name,
-    take: take ? +take : 20,
-    skip: skip ? +skip : 0,
+    take: 20,
+    skip: skip || 0,
     order: order === "trend" ? "popular" : order,
   });
 
