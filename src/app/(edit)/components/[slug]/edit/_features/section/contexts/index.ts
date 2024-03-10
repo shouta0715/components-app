@@ -127,3 +127,7 @@ export const editValueStatesAtom = atom<EditValueStates>({
 });
 
 export const isEditingAtom = atom<boolean>(false);
+
+// draft
+
+export const initialDraftAtom = atom<boolean>(false);

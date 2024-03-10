@@ -21,13 +21,11 @@ const DynamicDuringComponentSave = dynamic(
 
 type EdiDocumentFormProps = {
   defaultValues: EditDocumentInput;
-  draft: boolean;
   name: string;
 };
 
 export function EditDocumentForm({
   defaultValues,
-  draft,
   name,
 }: EdiDocumentFormProps) {
   const {
@@ -44,7 +42,6 @@ export function EditDocumentForm({
   return (
     <>
       <DynamicDuringComponentSave
-        draft={draft}
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}

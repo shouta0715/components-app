@@ -38,15 +38,10 @@ const DynamicDuringComponentSave = dynamic(
 
 type EditFileFormProps = {
   defaultValues: EditFilesInput;
-  draft: boolean;
   name: string;
 };
 
-export function EditFileForm({
-  defaultValues,
-  draft,
-  name,
-}: EditFileFormProps) {
+export function EditFileForm({ defaultValues, name }: EditFileFormProps) {
   const {
     control,
     slug,
@@ -67,7 +62,6 @@ export function EditFileForm({
   return (
     <>
       <DynamicDuringComponentSave
-        draft={draft}
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}
