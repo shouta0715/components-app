@@ -48,7 +48,7 @@ export const NextSectionButton = ({
   return (
     <Button
       className={cn(
-        "w-52 ml-auto block z-20 font-semibold sticky bottom-6",
+        "w-52 ml-auto flex z-20 font-semibold sticky bottom-6",
         className
       )}
       disabled={isLoading || disabled}
