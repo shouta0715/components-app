@@ -1,3 +1,4 @@
+import FileTypeComponents from "@/app/(app)/_components/file-type-component";
 import { TopHeader } from "@/app/(app)/_components/header";
 import { Categories } from "@/components/elements/category";
 import { Section } from "@/components/ui/section";
@@ -21,6 +22,14 @@ export default async function Home() {
             トレンドをもっと見る
           </Section.MoreLink>
         </Section>
+
+        <Section>
+          <Section.Title>Files Types</Section.Title>
+          <Section.Content>
+            <FileTypeComponents />
+          </Section.Content>
+        </Section>
+
         <Section>
           <Section.Title>Popular Categories</Section.Title>
           <Section.Content>
