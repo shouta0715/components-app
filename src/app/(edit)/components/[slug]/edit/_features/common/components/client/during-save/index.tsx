@@ -1,15 +1,17 @@
 "use client";
 
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { Check } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { TogglePublish } from "@/app/(edit)/components/[slug]/edit/_features/common/components/client/draft";
-import { editValueStatesAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
+import {
+  editValueStatesAtom,
+  initialDraftAtom,
+} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import { Button } from "@/components/ui/button";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
 
 type DuringComponentSaveProps = {
-  draft: boolean;
   isDirty: boolean;
   isPending: boolean;
   name: string;
@@ -19,20 +21,23 @@ type DuringComponentSaveProps = {
 };
 
 function DuringComponentSave({
-  draft,
   isDirty,
   isPending,
   name,
   handleDuringSave,
 }: DuringComponentSaveProps) {
-  const [publish, setPublish] = React.useState(!draft);
+  const [initialDraft, setInitialDraft] = useAtom(initialDraftAtom);
+  const [draft, setDraft] = useState(initialDraft);
   const { summary } = useAtomValue(editValueStatesAtom);
 
   const onSubmit = async () => {
-    await handleDuringSave({ draft: !publish });
+    await handleDuringSave({ draft });
+
+    setDraft(draft);
+    setInitialDraft(draft);
   };
 
-  const isChanged = isDirty || publish !== !draft;
+  const isChanged = isDirty || draft !== initialDraft;
 
   return (
     <div className="sticky top-[57px] z-20 -mx-4 -mt-8 flex items-center justify-between border-b border-border bg-background/90 px-2.5 py-2 sm:-mx-6 md:px-4 lg:-mx-8">
@@ -41,7 +46,7 @@ function DuringComponentSave({
       </div>
       <div className="flex items-center gap-x-4">
         <div className="flex h-full items-center justify-end">
-          <TogglePublish onChangePublish={setPublish} publish={publish} />
+          <TogglePublish onChangePublish={setDraft} publish={draft} />
         </div>
         <div className="flex items-center justify-between">
           <Button

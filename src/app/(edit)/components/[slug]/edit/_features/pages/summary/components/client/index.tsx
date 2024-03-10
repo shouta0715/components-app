@@ -20,7 +20,6 @@ import { EditSummaryInput } from "@/lib/schema/client/edit/summary";
 
 type EditSummaryFormProps = {
   defaultValues: EditSummaryInput;
-  draft: boolean;
   name: string;
 };
 
@@ -57,11 +56,7 @@ const DynamicDuringComponentSave = dynamic(
   }
 );
 
-export function EditSummaryForm({
-  defaultValues,
-  draft,
-  name,
-}: EditSummaryFormProps) {
+export function EditSummaryForm({ defaultValues, name }: EditSummaryFormProps) {
   const {
     control,
     errors,
@@ -82,7 +77,6 @@ export function EditSummaryForm({
   return (
     <>
       <DynamicDuringComponentSave
-        draft={draft}
         handleDuringSave={handleDuringSave}
         isDirty={isDirty}
         isPending={isPending}

@@ -2,7 +2,10 @@ import { useSetAtom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { editStatusAtom } from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
+import {
+  editStatusAtom,
+  initialDraftAtom,
+} from "@/app/(edit)/components/[slug]/edit/_features/section/contexts";
 import {
   CheckEditStatusData,
   EditStatus,
@@ -116,6 +119,8 @@ export const useHydrateSection = (data: EditComp) => {
   useHydrateAtoms(
     new Map([[editStatusAtom, getInitialEditStatus(checkStatusData, section)]])
   );
+
+  useHydrateAtoms(new Map([[initialDraftAtom, draft]]));
 
   return {
     section,
