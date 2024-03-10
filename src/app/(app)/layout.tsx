@@ -1,9 +1,16 @@
-import { AppLayout } from "@/layouts/root";
+import React from "react";
 
-export default async function RootLayout({
+export default function Layout({
   children,
+  quick,
 }: {
   children: React.ReactNode;
+  quick: React.ReactNode;
 }) {
-  return <AppLayout>{children}</AppLayout>;
+  return (
+    <>
+      {children}
+      {quick}
+    </>
+  );
 }
