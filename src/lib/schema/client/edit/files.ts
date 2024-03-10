@@ -16,7 +16,7 @@ import {
   string,
   variant,
 } from "valibot";
-import { calcStatus } from "@/app/(edit)/components/[slug]/edit/_features/pages/files/utils/files-status";
+import { calcStatus } from "@/app/(app)/(edit)/components/[slug]/edit/_features/pages/files/utils/files-status";
 import { safeValidate } from "@/lib/validation";
 import { isBadCombination } from "@/scripts/ui-preview/utils";
 import { extensions } from "@/types/file";
