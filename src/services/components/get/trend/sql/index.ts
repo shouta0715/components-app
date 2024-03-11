@@ -45,6 +45,7 @@ export const getTrendComponentSQL = ({
       ${where}
       ORDER BY
         COALESCE(lwd.weight, 0) DESC,
+        lwd.likes_count DESC,
         comp."createdAt" DESC
       LIMIT ${limit} OFFSET ${offset}
     )
