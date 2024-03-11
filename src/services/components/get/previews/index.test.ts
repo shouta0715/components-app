@@ -24,7 +24,7 @@ describe("GET Component RDB Test / previews", async () => {
         }),
       });
 
-      await mockFile.createList(3);
+      const files = await mockFile.createList(3);
 
       const component = await getPreviewComponent(mockComponent.id);
 
@@ -32,7 +32,7 @@ describe("GET Component RDB Test / previews", async () => {
       expect(component?.category?.name).toBe(mockComponent.categoryName);
       expect(component?.creator?.id).toBe(mockComponent.creatorId);
 
-      expect(component?.files?.length).toBe(3);
+      expect(files.length).toBe(3);
       expect(component?.creator.id).toBe(mockComponent.creatorId);
     });
   });

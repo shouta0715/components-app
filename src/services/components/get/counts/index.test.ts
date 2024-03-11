@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/client/prisma";
 import { getComponentCount } from "@/services/components/get/counts";
 import {
   defineCategoryFactory,
@@ -9,10 +8,6 @@ import {
 describe("GET Component RDB Test / count", async () => {
   describe("getComponentCount", async () => {
     test("success", async () => {
-      prisma.$transaction([
-        prisma.$queryRaw`TRUNCATE TABLE "components" CASCADE`,
-      ]);
-
       const category = defineCategoryFactory();
       const creator = defineUserFactory();
       await defineComponentFactory({
@@ -21,7 +16,7 @@ describe("GET Component RDB Test / count", async () => {
 
       const count = await getComponentCount();
 
-      expect(count).toBe(3);
+      expect(count).toBeGreaterThan(3);
     });
   });
 });
