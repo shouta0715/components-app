@@ -1,11 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { prisma, runPrisma } from "@/lib/client/prisma";
+import { getTrendComponents } from "@/services/components/get/trend";
 
 type GetComponentsByCategory = {
   name: string;
   take: number;
   skip: number;
-  order: "popular" | "new";
+  order: "popular" | "new" | "trend";
 };
 
 const getOrderBy = (
@@ -30,6 +31,14 @@ export const getCategoryComponents = async ({
   skip,
   order,
 }: GetComponentsByCategory) => {
+  if (order === "trend") {
+    return getTrendComponents({
+      limit: take,
+      offset: skip,
+      categoryName: name,
+    });
+  }
+
   const orderBy = getOrderBy(order);
 
   const components = await runPrisma(() =>

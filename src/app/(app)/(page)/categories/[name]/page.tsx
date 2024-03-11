@@ -2,21 +2,14 @@ import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 import { CategoryInfo } from "@/app/(app)/(page)/categories/[name]/_features/category/components";
 import { OrderButton } from "@/app/(app)/(page)/categories/[name]/_features/common/components/order-button";
-import { ComponentsOrder } from "@/app/(app)/(page)/categories/[name]/_features/common/types";
 import { CategoryComponents } from "@/app/(app)/(page)/categories/[name]/_features/ui-components/components/category-component";
+import { getCategoryOrder } from "@/app/(app)/(page)/categories/[name]/_features/ui-components/utils";
 import { SearchParamsPagination } from "@/components/elements/pagination/search-params";
 import { UIComponentLoader } from "@/components/elements/ui-components/loader";
 import { getCategoryByName } from "@/services/category/get/by-name";
 import { Params, SearchParams } from "@/types/next";
 import { parseSearchParams } from "@/utils";
 import { checkOverPage, getSkipPage } from "@/utils/pagination";
-
-const getOrder = (order: string): ComponentsOrder => {
-  if (order === "new") return "new";
-  if (order === "popular") return "popular";
-
-  return "trend";
-};
 
 function CategoryLoader() {
   return (
@@ -36,7 +29,7 @@ export default async function Page({
 
   if (!category) notFound();
 
-  const order = getOrder(search.order);
+  const order = getCategoryOrder(search.order);
 
   checkOverPage({
     total: category.count,
