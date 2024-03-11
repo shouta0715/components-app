@@ -3,7 +3,7 @@ import "@/tests/mocks/session";
 import { NextRequest } from "next/server";
 import { PATCH as updateComponentFilesHandler } from "../patch";
 import { FilesUpdateInput } from "@/lib/schema/server/files";
-import * as getServices from "@/services/components/get";
+import * as getServices from "@/services/components/get/creator";
 import * as services from "@/services/components/patch";
 import { testBaseURL } from "@/tests/mocks/setup";
 
@@ -25,7 +25,7 @@ describe("PATCH Component Files API test", () => {
         }
       );
 
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => "test-user"
       );
     });
@@ -121,7 +121,7 @@ describe("PATCH Component Files API test", () => {
     });
 
     test("if user is not creator, should return 404", async () => {
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => "other-user"
       );
 
@@ -137,7 +137,7 @@ describe("PATCH Component Files API test", () => {
     });
 
     test("Internal server error", async () => {
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => {
           throw new Error("test error");
         }

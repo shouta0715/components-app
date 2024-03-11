@@ -1,6 +1,6 @@
 import { cache } from "react";
-import { getEditComp } from "@/services/components/get";
+import { getEditComponent } from "@/services/components/get/edit";
 
-export const cacheGetCompWithFiles = cache(async (id: string) => {
-  return getEditComp(id);
+export const cacheGetEditComponent = cache(async (id: string) => {
+  return getEditComponent(id);
 });

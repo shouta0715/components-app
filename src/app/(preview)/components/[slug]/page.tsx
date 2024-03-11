@@ -4,14 +4,15 @@ import { ComponentDocument } from "@/components/elements/documents/component-doc
 import { FilePreviews } from "@/components/elements/files/file-previe";
 import { UserInfo } from "@/components/elements/users/user-info";
 import { Link } from "@/components/ui/link";
-import { getCompWithFiles } from "@/services/components/get";
+
+import { getPreviewComponent } from "@/services/components/get/previews";
 import { getFiles } from "@/services/files/get";
 import { Params } from "@/types/next";
 
 export default async function Page({ params }: Params) {
-  const component = await getCompWithFiles(params.slug, true);
+  const component = await getPreviewComponent(params.slug);
 
-  if (component.draft) notFound();
+  if (component === null || component.draft) notFound();
 
   return (
     <div className="grid gap-8">

@@ -1,5 +1,5 @@
 import { Follow } from "@prisma/client";
-import { prisma } from "@/lib/client/prisma";
+import { prisma, runPrisma } from "@/lib/client/prisma";
 
 export async function createFollow(
   followerId: string,
@@ -17,12 +17,14 @@ export async function deleteFollow(
   followerId: string,
   followingId: string
 ): Promise<void> {
-  await prisma.follow.delete({
-    where: {
-      followerId_followingId: {
-        followerId,
-        followingId,
+  await runPrisma(() =>
+    prisma.follow.delete({
+      where: {
+        followerId_followingId: {
+          followerId,
+          followingId,
+        },
       },
-    },
-  });
+    })
+  );
 }

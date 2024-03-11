@@ -2,7 +2,8 @@ import { getSessionUser } from "@/lib/auth/handlers";
 import { NotFoundError, handleApiError } from "@/lib/errors";
 import { componentUpdateSchema } from "@/lib/schema/server/component";
 import { validate } from "@/lib/validation";
-import { getComponentCreatorId } from "@/services/components/get";
+import { getComponentCreator } from "@/services/components/get/creator";
+
 import { updateComponent } from "@/services/components/patch";
 
 import { Params } from "@/types/next";
@@ -15,7 +16,7 @@ const handler = async (req: Request, { params }: Params) => {
 
     validate(body, componentUpdateSchema);
 
-    const targetId = await getComponentCreatorId(params.slug);
+    const targetId = await getComponentCreator(params.slug);
 
     if (targetId !== user.id) {
       throw new NotFoundError();

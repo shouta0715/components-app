@@ -6,7 +6,7 @@ import { CreateComponentButton } from "@/components/elements/ui-components/creat
 import { UIComponentLoader } from "@/components/elements/ui-components/loader";
 import { LangIcons } from "@/components/icons/LangIcons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getComponentsByFileType } from "@/services/components/get";
+import { getCategoryComponentsByExtension } from "@/services/components/get/by-category/filter-file";
 
 const extensions: {
   name: Extension;
@@ -46,7 +46,7 @@ const extensions: {
 ];
 
 const FileTypeComponent = async ({ type }: { type: Extension }) => {
-  const components = await getComponentsByFileType(type);
+  const components = await getCategoryComponentsByExtension(type);
 
   const hasComponents = components.length > 0;
 

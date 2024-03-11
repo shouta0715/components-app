@@ -1,7 +1,7 @@
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState, useTransition } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { SearchCategory } from "@/types/prisma";
+import { SearchCategory } from "@/services/category/get/search";
 
 type Params = {
   q: string;

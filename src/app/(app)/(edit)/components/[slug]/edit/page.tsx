@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { cacheGetCompWithFiles } from "@/app/(app)/(edit)/components/[slug]/edit/_features/common/cache";
+import { cacheGetEditComponent } from "@/app/(app)/(edit)/components/[slug]/edit/_features/common/cache";
 import { EditHeader } from "@/app/(app)/(edit)/components/[slug]/edit/_features/common/components/client/header";
 import { getEditDefaultValues } from "@/app/(app)/(edit)/components/[slug]/edit/_features/common/utils";
 import { EditDocument } from "@/app/(app)/(edit)/components/[slug]/edit/_features/pages/documents/components/server";
@@ -15,8 +15,10 @@ import { assertMine } from "@/lib/auth/handlers";
 import { Params } from "@/types/next";
 
 export default async function Page({ params }: Params) {
-  const data = await cacheGetCompWithFiles(params.slug);
-  await assertMine(data.creatorId, notFound);
+  const data = await cacheGetEditComponent(params.slug);
+  if (data === null) notFound();
+
+  await assertMine(data?.creatorId, notFound);
 
   const { files, summary, document, draft, name } = getEditDefaultValues(data);
 

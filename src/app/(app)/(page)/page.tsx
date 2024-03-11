@@ -2,12 +2,12 @@ import FileTypeComponents from "@/app/(app)/(page)/_components/file-type-compone
 import { TopHeader } from "@/app/(app)/(page)/_components/header";
 import { Categories } from "@/components/elements/category";
 import { Section } from "@/components/ui/section";
-import { getCategoriesByHome } from "@/services/category/get";
+import { getPopularCategories } from "@/services/category/get/popular";
 
 export const dynamic = "error";
 
 export default async function Home() {
-  const categories = await getCategoriesByHome(10);
+  const categories = await getPopularCategories(10);
 
   return (
     <div>

@@ -11,11 +11,11 @@ type WithCategory = Pick<Category, "name">;
 
 /*
 **************************
-Categories
+categories
 ************************** 
 */
 
-export type CategoriesByHome = {
+export type ViewCategory = {
   components: {
     id: string;
     previewUrl: string;
@@ -24,12 +24,6 @@ export type CategoriesByHome = {
     components: number;
   };
 } & Category;
-
-export type SearchCategory = Pick<Category, "name"> & {
-  _count: {
-    components: number;
-  };
-};
 
 /* 
 **************************

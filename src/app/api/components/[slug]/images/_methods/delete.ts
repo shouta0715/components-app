@@ -4,7 +4,8 @@ import { getSessionUser } from "@/lib/auth/handlers";
 import { s3 } from "@/lib/aws";
 import { PREVIEW_BUCKET_NAME } from "@/lib/constant";
 import { NotFoundError, handleApiError } from "@/lib/errors";
-import { getComponentPreview } from "@/services/components/get";
+
+import { getDeletePreviewComponent } from "@/services/components/get/previews";
 import { Params } from "@/types/next";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,12 @@ const handler = async (_: NextRequest, { params }: Params) => {
   try {
     const user = await getSessionUser();
 
-    const { creatorId, previewUrl } = await getComponentPreview(params.slug);
+    const component = await getDeletePreviewComponent(params.slug);
+
+    if (!component) throw new NotFoundError();
+
+    const { previewUrl, creatorId } = component;
+
     if (creatorId !== user.id) throw new NotFoundError();
 
     if (!previewUrl) return new Response(null, { status: 204 });
