@@ -26,3 +26,19 @@ export const getPreviewComponent = async (id: string) => {
 };
 
 export type PreviewComponent = Awaited<ReturnType<typeof getPreviewComponent>>;
+
+export const getDeletePreviewComponent = async (id: string) => {
+  const component = await runPrisma(() =>
+    prisma.component.findUnique({
+      where: { id },
+      select: { previewUrl: true, creatorId: true },
+    })
+  );
+
+  if (!component) return null;
+
+  return {
+    previewUrl: component.previewUrl,
+    creatorId: component.creatorId,
+  };
+};
