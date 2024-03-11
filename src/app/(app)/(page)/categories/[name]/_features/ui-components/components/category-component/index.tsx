@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentsOrder } from "@/app/(app)/(page)/categories/[name]/_features/common/types";
 import { UIComponent } from "@/components/elements/ui-components";
 import { CreateComponentButton } from "@/components/elements/ui-components/create-button";
-import { getCategoryComponents } from "@/services/components/get";
+import { getCategoryComponents } from "@/services/components/get/by-category/order-by";
 
 type CategoryComponentProps = {
   name: string;
