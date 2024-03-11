@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { FilePreviews } from "@/components/elements/files/file-previe";
 import { UIPreviewLoading } from "@/components/elements/files/ui-preview/client/loading";
-import { getCompWithFiles } from "@/services/components/get";
+
+import { getPreviewComponent } from "@/services/components/get/previews";
 import { getFiles } from "@/services/files/get";
 
 export const QuickViewLoader = () => {
@@ -20,9 +21,9 @@ export const QuickViewLoader = () => {
 };
 
 export async function QuickView({ slug }: { slug: string }) {
-  const component = await getCompWithFiles(slug, true);
+  const component = await getPreviewComponent(slug);
 
-  if (component.draft) notFound();
+  if (component === null || component.draft) notFound();
 
   return (
     <FilePreviews
