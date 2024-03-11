@@ -50,7 +50,7 @@ model User {
 
   // CUSTOM FIELDS
   components     Component[]
-  componentLikes ComponentLike[]
+  likes          Like[]
   followers      Follow[]        @relation("follower")
   followings     Follow[]        @relation("following")
 
@@ -102,7 +102,7 @@ model Component {
 
   // MANY FILEDS
   files File[]
-  likes ComponentLike[]
+  likes  Like[]
 
   @@index([creatorId])
   @@index([categoryName])
@@ -133,7 +133,7 @@ model File {
   @@map("files")
 }
 
-model ComponentLike {
+model Like {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
@@ -146,5 +146,5 @@ model ComponentLike {
 
   @@index([componentId])
   @@index([userId])
-  @@map("componentLikes")
+  @@map("likes")
 }
