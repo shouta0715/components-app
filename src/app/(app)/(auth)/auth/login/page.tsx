@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getComponentCount } from "@/services/components/get/counts";
-import { getUserCount } from "@/services/user/get";
+import { getUserCount } from "@/services/user/get/count";
 
 const infos = [
   {
