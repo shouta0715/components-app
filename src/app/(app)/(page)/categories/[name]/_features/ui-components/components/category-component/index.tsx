@@ -1,5 +1,6 @@
 import React from "react";
 import { ComponentsOrder } from "@/app/(app)/(page)/categories/[name]/_features/common/types";
+import { getCategoryOrder } from "@/app/(app)/(page)/categories/[name]/_features/ui-components/utils";
 import { UIComponent } from "@/components/elements/ui-components";
 import { CreateComponentButton } from "@/components/elements/ui-components/create-button";
 import { getCategoryComponents } from "@/services/components/get/by-category/order-by";
@@ -19,7 +20,7 @@ export async function CategoryComponents({
     name,
     take: 20,
     skip: skip || 0,
-    order: order === "trend" ? "popular" : order,
+    order: getCategoryOrder(order),
   });
 
   const hasComponents = components.length > 0;
@@ -29,12 +30,18 @@ export async function CategoryComponents({
       {hasComponents ? (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-y-10">
           {components.map((component) => {
+            const count =
+              "_count" in component ? component._count.likes : component.count;
+
+            const extensions =
+              "files" in component ? component.files : component.extensions;
+
             return (
               <UIComponent
                 key={component.id}
                 {...component}
-                count={component._count.likes}
-                extensions={component.files}
+                count={count}
+                extensions={extensions}
               />
             );
           })}
