@@ -1,4 +1,4 @@
-import { Component, ComponentLike, Prisma, User } from "@prisma/client";
+import { Component, Like, Prisma, User } from "@prisma/client";
 import { randomNum } from "@/utils/random";
 
 function generateComponentLikes({
@@ -7,7 +7,7 @@ function generateComponentLikes({
 }: {
   components: Component[];
   users: User[];
-}): Prisma.ComponentLikeCreateManyInput[] {
+}): Prisma.LikeCreateManyInput[] {
   const created = components.map((component) => {
     return Array.from({ length: randomNum(0, 20) }, () => ({
       componentId: component.id,
@@ -22,8 +22,8 @@ export async function seedComponentLikes(
   tx: Prisma.TransactionClient,
   components: Component[],
   users: User[]
-): Promise<ComponentLike[]> {
-  const has = await tx.componentLike.findMany();
+): Promise<Like[]> {
+  const has = await tx.like.findMany();
 
   if (has.length) {
     return has;
@@ -31,9 +31,9 @@ export async function seedComponentLikes(
 
   const created = generateComponentLikes({ components, users });
 
-  await tx.componentLike.createMany({
+  await tx.like.createMany({
     data: created,
   });
 
-  return tx.componentLike.findMany();
+  return tx.like.findMany();
 }
