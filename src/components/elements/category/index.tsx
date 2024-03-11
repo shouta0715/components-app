@@ -8,10 +8,11 @@ import {
   BentoTitle,
 } from "@/components/ui/bento-grid";
 import { Image } from "@/components/ui/image";
-import { CategoriesByHome } from "@/types/prisma";
+
+import { ViewCategory } from "@/types/prisma";
 import { getImageUrl } from "@/utils";
 
-export async function Category({ category }: { category: CategoriesByHome }) {
+export async function Category({ category }: { category: ViewCategory }) {
   const { previewUrl } = category.components;
 
   return (
@@ -50,7 +51,7 @@ export async function Category({ category }: { category: CategoriesByHome }) {
   );
 }
 
-export function Categories({ categories }: { categories: CategoriesByHome[] }) {
+export function Categories({ categories }: { categories: ViewCategory[] }) {
   return (
     <BentoGrid className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-y-10 xl:grid-cols-3">
       {categories.map((category) => (

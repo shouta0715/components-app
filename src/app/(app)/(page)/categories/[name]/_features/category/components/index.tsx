@@ -6,7 +6,7 @@ import { CreateComponentButton } from "@/components/elements/ui-components/creat
 import { AvatarLink } from "@/components/elements/users/avatar-link";
 import { BlockQuoteLogo } from "@/components/icons/blockquote";
 import { Image } from "@/components/ui/image";
-import { getCategoryByName } from "@/services/category/get";
+import { getCategoryByName } from "@/services/category/get/by-name";
 import { getImageUrl } from "@/utils";
 
 type CategoryComponentProps = {

@@ -12,7 +12,8 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SearchCategory } from "@/types/prisma";
+
+import { SearchCategory } from "@/services/category/get/search";
 import { cn } from "@/utils";
 
 function SearchingLoader({ type }: { type: "command" | "item" }) {

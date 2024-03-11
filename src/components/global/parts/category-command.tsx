@@ -13,7 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { SearchCategory } from "@/types/prisma";
+import { SearchCategory } from "@/services/category/get/search";
 
 export function CategoryCommand({
   categories,

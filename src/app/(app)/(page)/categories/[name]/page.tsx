@@ -6,7 +6,7 @@ import { ComponentsOrder } from "@/app/(app)/(page)/categories/[name]/_features/
 import { CategoryComponents } from "@/app/(app)/(page)/categories/[name]/_features/ui-components/components/category-component";
 import { SearchParamsPagination } from "@/components/elements/pagination/search-params";
 import { UIComponentLoader } from "@/components/elements/ui-components/loader";
-import { getCategoryByName } from "@/services/category/get";
+import { getCategoryByName } from "@/services/category/get/by-name";
 import { Params, SearchParams } from "@/types/next";
 import { parseSearchParams } from "@/utils";
 import { checkOverPage, getSkipPage } from "@/utils/pagination";

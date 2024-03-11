@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { coerce, number, parse } from "valibot";
 import { handleApiError } from "@/lib/errors";
-import { searchCategories } from "@/services/category/get";
+import { searchCategories } from "@/services/category/get/search";
 
 export const dynamic = "force-dynamic";
 

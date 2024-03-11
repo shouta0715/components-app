@@ -1,7 +1,7 @@
 import { Category } from "@prisma/client";
-import { CategoriesByHome } from "@/types/prisma";
+import { ViewCategory } from "@/types/prisma";
 
-type InputCategoriesByHome = {
+type InputPopularCategories = {
   components: {
     id: string;
     previewUrl: string;
@@ -11,9 +11,9 @@ type InputCategoriesByHome = {
   };
 } & Category;
 
-export function toResCategoriesByHome(
-  input: InputCategoriesByHome[]
-): CategoriesByHome[] {
+export function toResPopularCategories(
+  input: InputPopularCategories[]
+): ViewCategory[] {
   return input.map((category) => ({
     ...category,
     components: category.components[0],
