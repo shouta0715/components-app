@@ -2,7 +2,7 @@ import "@/tests/mocks/session";
 import { NextRequest } from "next/server";
 import { PATCH as updateComponentHandler } from "../patch";
 import { ComponentUpdateInput } from "@/lib/schema/server/component";
-import * as getServices from "@/services/components/get";
+import * as getServices from "@/services/components/get/creator";
 import * as services from "@/services/components/patch";
 import { testBaseURL } from "@/tests/mocks/setup";
 
@@ -24,7 +24,7 @@ describe("PATCH Component API test", () => {
         return { id: "1" };
       });
 
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => "test-user"
       );
     });
@@ -111,7 +111,7 @@ describe("PATCH Component API test", () => {
       expect(res.status).toBe(400);
     });
     test("if user is not creator, should return 404", async () => {
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => "other-user"
       );
 
@@ -125,7 +125,7 @@ describe("PATCH Component API test", () => {
     });
 
     test("Internal server error", async () => {
-      vi.spyOn(getServices, "getComponentCreatorId").mockImplementation(
+      vi.spyOn(getServices, "getComponentCreator").mockImplementation(
         async () => {
           throw new Error("test error");
         }
