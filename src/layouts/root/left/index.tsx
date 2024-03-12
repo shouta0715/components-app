@@ -5,7 +5,6 @@ import {
   HeartCrackIcon,
   HelpCircle,
   ImageIcon,
-  Tag,
   Users,
 } from "lucide-react";
 import React from "react";
@@ -105,11 +104,6 @@ const rankings = [
     name: "Component",
     href: "/rankings/component",
     icon: Code,
-  },
-  {
-    name: "Category",
-    href: "/rankings/category",
-    icon: Tag,
   },
 ];
 
