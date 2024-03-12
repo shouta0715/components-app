@@ -5,9 +5,10 @@ import Link from "next/link";
 import { CreateComponentButton } from "@/components/elements/ui-components/create-button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { buttonVariants } from "@/components/ui/button";
+import { CommandGroup, CommandItem } from "@/components/ui/command";
 import { cn } from "@/utils";
 
-type CategoryListProps = {
+export type CategoryListProps = {
   categories: (TCategory & { _count: { components: number } })[];
 };
 
@@ -71,7 +72,10 @@ function Category({
   const badgeStatus = getBadgeStatus(count, topCount, index);
 
   return (
-    <li className="relative w-full flex-1 animate-fade-in rounded-2xl border border-border shadow-lg ring-1 ring-border">
+    <CommandItem
+      className="relative block w-full flex-1 select-auto rounded-2xl border border-border p-0 shadow-lg  ring-1 ring-border   aria-selected:bg-transparent aria-selected:text-current data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+      value={name}
+    >
       <div className="mx-auto flex h-full min-h-full flex-col items-center justify-around">
         <div className="flex h-14 w-full items-center justify-center overflow-hidden rounded-t-xl bg-primary p-3 text-background">
           <h3 className="line-clamp-2 text-base font-bold capitalize">
@@ -134,26 +138,28 @@ function Category({
           </div>
         </div>
       </div>
-    </li>
+    </CommandItem>
   );
 }
 
 export function CategoryList({ categories }: CategoryListProps) {
   return (
-    <ul className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3">
-      {categories.map((category, index) => {
-        const topCount = categories[0]._count.components;
+    <CommandGroup className="p-0 text-primary">
+      <ul className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3 ">
+        {categories.map((category, index) => {
+          const topCount = categories[0]._count.components;
 
-        return (
-          <Category
-            key={category.name}
-            topCount={topCount}
-            {...category}
-            count={category._count.components}
-            index={index}
-          />
-        );
-      })}
-    </ul>
+          return (
+            <Category
+              key={category.name}
+              topCount={topCount}
+              {...category}
+              count={category._count.components}
+              index={index}
+            />
+          );
+        })}
+      </ul>
+    </CommandGroup>
   );
 }
