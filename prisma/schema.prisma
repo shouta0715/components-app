@@ -49,12 +49,25 @@ model User {
   accounts      Account[]
 
   // CUSTOM FIELDS
-  components     Component[]
-  likes          Like[]
-  followers      Follow[]        @relation("follower")
-  followings     Follow[]        @relation("following")
+  components Component[]
+  likes      Like[]
+  followers  Follow[]    @relation("follower")
+  followings Follow[]    @relation("following")
+
+  profile Profile?
 
   @@map("users")
+}
+
+model Profile {
+  userId String @id
+  user   User   @relation(fields: [userId], references: [id])
+
+  website String?
+  github  String?
+  twitter String?
+
+  @@map("profiles")
 }
 
 model Follow {
@@ -102,7 +115,7 @@ model Component {
 
   // MANY FILEDS
   files File[]
-  likes  Like[]
+  likes Like[]
 
   @@index([creatorId])
   @@index([categoryName])

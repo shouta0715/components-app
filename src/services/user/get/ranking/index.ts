@@ -18,6 +18,13 @@ export const getRankingUsers = async (take: number) => {
         id: true,
         name: true,
         image: true,
+        profile: {
+          select: {
+            website: true,
+            twitter: true,
+            github: true,
+          },
+        },
         _count: {
           select: {
             components: true,
