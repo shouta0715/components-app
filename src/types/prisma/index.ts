@@ -47,3 +47,14 @@ export type ComponentWithParent = Component & {
   category: WithCategory;
   creator: WithCreator;
 };
+
+/*
+**************************
+users
+************************** 
+*/
+
+export type RankingUser = WithCreator & {
+  likes_count: number;
+  component_count: number;
+};
