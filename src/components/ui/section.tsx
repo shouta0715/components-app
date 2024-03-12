@@ -63,6 +63,16 @@ function Root({
   return <div className={cn("grid gap-32", className)}>{children}</div>;
 }
 
+function SectionDescription({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <p className={cn("text-muted-foreground", className)}>{children}</p>;
+}
+
 function Section({
   children,
   className,
@@ -81,5 +91,6 @@ Section.Title = SectionTitle;
 Section.MoreLink = SectionMoreLink;
 Section.Content = Content;
 Section.Root = Root;
+Section.Description = SectionDescription;
 
 export { Section };

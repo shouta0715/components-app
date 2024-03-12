@@ -98,17 +98,17 @@ function IntroDuction() {
 const rankings = [
   {
     name: "Creator",
-    href: "/rankings/top-creator",
+    href: "/rankings/creator",
     icon: Users,
   },
   {
     name: "Component",
-    href: "/rankings/top-component",
+    href: "/rankings/component",
     icon: Code,
   },
   {
     name: "Category",
-    href: "/rankings/top-category",
+    href: "/rankings/category",
     icon: Tag,
   },
 ];
@@ -175,7 +175,7 @@ export async function LeftSide() {
           <IntroDuction />
         </div>
         <div>
-          <p className="mb-3 font-semibold text-primary">Top Rankings</p>
+          <p className="mb-3 font-semibold text-primary">Rankings</p>
           <Rankings />
         </div>
         <div>
