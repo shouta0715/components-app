@@ -9,6 +9,7 @@ function generateSeedUsers(): Prisma.UserCreateManyInput[] {
     return {
       name: randomString(),
       email: randomEmail(),
+      image: "https://source.unsplash.com/random",
     };
   });
 }

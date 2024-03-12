@@ -5,9 +5,9 @@ down:
 	supabase stop && docker compose down
 
 reset:
+	supabase db start
 	supabase db reset
 	docker volume rm ui-trade_minio
-	docker volume rm ui-trade_minio-test
 	rm -rf .next
 	
 
