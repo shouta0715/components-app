@@ -1,10 +1,12 @@
 import clsx from "clsx";
-import { FileCode2, Heart } from "lucide-react";
+import { FileCode2, Heart, LinkIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 import { BuildTimeBadge } from "@/components/elements/badges/build-time";
+import { GitHubIcon } from "@/components/icons/GitHub";
 import { RankingIcon } from "@/components/icons/ranking";
+import { XIcon } from "@/components/icons/x-icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -70,15 +72,61 @@ export default async function Page() {
                           <p className="text-center">
                             <Heart className="mr-2 inline-block size-6" />
                             <span className="text-sm font-semibold">
-                              {person.likes_count}
+                              <span aria-label="いいね数" className="mr-1">
+                                {person.likes_count}
+                              </span>
+                              いいね
                             </span>
                           </p>
                           <p className="text-center">
                             <FileCode2 className="mr-2 inline-block size-6" />
                             <span className="text-sm font-semibold">
-                              {person.component_count}
+                              <span aria-label="作品数" className="mr-1">
+                                {person.component_count}
+                              </span>
+                              作品
                             </span>
                           </p>
+                        </div>
+                        <div className="mt-4 flex justify-center space-x-4">
+                          {person.profile?.website && (
+                            <a
+                              href={person.profile.website}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              <span className="sr-only">
+                                {person.name}のウェブサイト
+                              </span>
+                              <LinkIcon className="inline-block size-6" />
+                            </a>
+                          )}
+
+                          {person.profile?.twitter && (
+                            <a
+                              href={`https://twitter.com/${person.profile.twitter}`}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              <span className="sr-only">
+                                {person.name}のTwitter
+                              </span>
+                              <XIcon className=" inline-block size-6" />
+                            </a>
+                          )}
+
+                          {person.profile?.github && (
+                            <a
+                              href={`https://github.com/${person.profile.github}`}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              <span className="sr-only">
+                                {person.name}のGitHub
+                              </span>
+                              <GitHubIcon className="inline-block size-6 fill-background" />
+                            </a>
+                          )}
                         </div>
                       </div>
                       <p className="z-30 flex justify-center ">

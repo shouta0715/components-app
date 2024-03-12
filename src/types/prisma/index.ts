@@ -1,4 +1,4 @@
-import { Category, Component, File, User } from "@prisma/client";
+import { Category, Component, File, Profile, User } from "@prisma/client";
 
 /*
 **************************
@@ -8,6 +8,7 @@ with Relations
 
 type WithCreator = Pick<User, "id" | "name" | "image">;
 type WithCategory = Pick<Category, "name">;
+type WithProfile = Pick<Profile, "github" | "twitter" | "website">;
 
 /*
 **************************
@@ -57,4 +58,5 @@ users
 export type RankingUser = WithCreator & {
   likes_count: number;
   component_count: number;
+  profile?: WithProfile;
 };
