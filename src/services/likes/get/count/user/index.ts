@@ -13,3 +13,15 @@ export const getLikesCountsGroupByUser = async (take: number) => {
 
   return likes;
 };
+
+export const getLikesCountsByUser = async (userId: string) => {
+  const likes = await runPrisma(() =>
+    prisma.like.count({
+      where: {
+        userId,
+      },
+    })
+  );
+
+  return likes;
+};

@@ -17,6 +17,7 @@ type UIComponentProps = {
   creator: Pick<User, "id" | "name" | "image">;
   createdAt: Date;
   extensions: { extension: Extension }[];
+  showUser?: boolean;
 };
 
 function HeaderImage({
@@ -119,6 +120,7 @@ export function UIComponent({
   creator,
   createdAt,
   extensions,
+  showUser = true,
 }: UIComponentProps) {
   const exs = useMemo(() => {
     return [...new Set(extensions.map((e) => e.extension))];
@@ -143,13 +145,30 @@ export function UIComponent({
           </Link>
         </div>
 
-        <UserInformation
-          count={count}
-          createdAt={createdAt}
-          image={creator.image}
-          name={creator.name}
-          userId={creator.id}
-        />
+        {showUser ? (
+          <UserInformation
+            count={count}
+            createdAt={createdAt}
+            image={creator.image}
+            name={creator.name}
+            userId={creator.id}
+          />
+        ) : (
+          <div className="-mb-2 mt-4 flex items-center">
+            <p className="text-xs text-muted-foreground">
+              <time
+                dateTime={createdAt.toISOString()}
+                title={createdAt.toISOString()}
+              >
+                {formatDateDistance(createdAt)}
+              </time>
+              <span className="ml-2">
+                <HeartIcon className="inline-block size-4" />
+                <span className="ml-1">{count}</span>
+              </span>
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 flex items-center justify-between">
           <Link
