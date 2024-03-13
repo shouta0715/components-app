@@ -38,7 +38,7 @@ export default async function Page({
   });
 
   return (
-    <div className="overflow-hidden">
+    <div className="animate-fade-in overflow-hidden">
       <CategoryInfo data={category} />
       <div className="mb-6 mt-12 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Components</h2>

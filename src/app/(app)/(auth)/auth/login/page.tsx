@@ -55,7 +55,7 @@ export default async function Page() {
   ]);
 
   return (
-    <div className="mx-auto grid max-w-2xl gap-12">
+    <div className="mx-auto grid max-w-2xl animate-fade-in gap-12">
       <div className="grid gap-8">
         <h1 className="mx-auto flex flex-col items-center justify-center gap-4 text-6xl font-bold text-primary sm:text-7xl">
           <Icon className="h-16 sm:h-20" />

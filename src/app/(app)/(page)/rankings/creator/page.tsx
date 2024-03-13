@@ -23,7 +23,7 @@ export default async function Page() {
   const hasPeople = people.length > 0;
 
   return (
-    <Section.Root>
+    <Section.Root className="animate-fade-in">
       <Section>
         <div>
           <Section.Title className="flex items-center justify-between">
