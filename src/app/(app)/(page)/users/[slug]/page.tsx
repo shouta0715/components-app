@@ -18,7 +18,7 @@ export default async function Page({ params }: Params) {
   const hasComponents = person.components.length > 0;
 
   return (
-    <div className="space-y-12">
+    <div className="animate-fade-in space-y-12">
       <div className="flex min-w-0 border-b border-border pb-6">
         <figure className="mr-4 shrink-0">
           <Avatar className="h-24 w-24 rounded-md sm:h-28 sm:w-28">

@@ -15,7 +15,7 @@ export default async function Page({ params }: Params) {
   if (component === null || component.draft) notFound();
 
   return (
-    <div className="grid gap-8">
+    <div className="grid animate-fade-in gap-8">
       <div>
         <p className="font-semibold leading-7 text-muted-foreground">
           <Link className="px-0 text-current sm:text-base" href="/categories">
