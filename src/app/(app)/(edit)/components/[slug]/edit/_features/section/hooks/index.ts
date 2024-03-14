@@ -120,6 +120,8 @@ export const useHydrateSection = (data: EditComp) => {
     new Map([[editStatusAtom, getInitialEditStatus(checkStatusData, section)]])
   );
 
+  useHydrateAtoms(new Map([[initialDraftAtom, data.draft]]));
+
   useHydrateAtoms(new Map([[initialDraftAtom, draft]]));
 
   return {
