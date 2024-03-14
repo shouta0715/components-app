@@ -19,6 +19,7 @@ export function TogglePublish({
       <Switch
         defaultChecked={!draft}
         disabled={!canPublish}
+        id="draft"
         onCheckedChange={(checked) => onChangeDraft(!checked)}
       />
       <Label
