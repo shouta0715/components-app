@@ -11,8 +11,8 @@ export const getTrendComponentSQL = ({
   categoryName,
 }: GetTrendComponentParams) => {
   const where = categoryName
-    ? Prisma.sql`WHERE comp."categoryName" = ${categoryName}`
-    : Prisma.sql``;
+    ? Prisma.sql`WHERE comp."categoryName" = ${categoryName} AND comp.draft = false`
+    : Prisma.sql`WHERE comp.draft = false`;
 
   return Prisma.sql`
     WITH likes_weight_data AS (
@@ -63,7 +63,7 @@ export const getTrendComponentSQL = ({
     FROM
       sorted_components AS scomp
       JOIN files AS f ON scomp.id = f."componentId"
-      JOIN users AS u ON scomp."creatorId" = u.id
+      LEFT JOIN users AS u ON scomp."creatorId" = u.id
     ORDER BY
       scomp.weight DESC,
       scomp."createdAt" DESC;
