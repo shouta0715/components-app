@@ -27,6 +27,7 @@ function DuringComponentSave({
   handleDuringSave,
 }: DuringComponentSaveProps) {
   const [initialDraft, setInitialDraft] = useAtom(initialDraftAtom);
+
   const [draft, setDraft] = useState(initialDraft);
   const { summary } = useAtomValue(editValueStatesAtom);
 
@@ -46,7 +47,7 @@ function DuringComponentSave({
       </div>
       <div className="flex items-center gap-x-4">
         <div className="flex h-full items-center justify-end">
-          <TogglePublish onChangePublish={setDraft} publish={draft} />
+          <TogglePublish draft={draft} onChangeDraft={setDraft} />
         </div>
         <div className="flex items-center justify-between">
           <Button

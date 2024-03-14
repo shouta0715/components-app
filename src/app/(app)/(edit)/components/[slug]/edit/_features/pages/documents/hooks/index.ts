@@ -35,7 +35,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
 
   const {
     setValue,
-    handleSubmit,
     reset,
     getValues,
     control,
@@ -57,35 +56,21 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     setAtomValues((prev) => ({ ...prev, document: data.document }));
   }
 
-  // toast submit function
-  const toastOnSubmit = async (data: FormEditDocumentInput) => {
-    try {
-      setEditStatus((prev) => ({
-        ...prev,
-        document: { ...prev.document, status: "LOADING" },
-      }));
-      await onSubmit({ data });
-
-      setEditStatus((prev) => ({
-        ...prev,
-        document: { status: "EDITING", dataStatus: "CREATED" },
-      }));
-    } catch (e) {
-      setEditStatus((prev) => ({
-        ...prev,
-        summary: { ...prev.summary, status: "EDITING" },
-      }));
-
-      throw e;
-    }
-  };
-
   const toastOnDuringSave = async ({ draft }: { draft?: boolean }) => {
     const data = getValues();
     const hasDocument = Boolean(data.document);
 
     if (hasDocument) {
+      setEditStatus((prev) => ({
+        ...prev,
+        document: { ...prev.document, status: "LOADING" },
+      }));
       await onSubmit({ data, draft });
+
+      setEditStatus((prev) => ({
+        ...prev,
+        document: { status: "EDITING", dataStatus: "CREATED" },
+      }));
 
       return;
     }
@@ -103,14 +88,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     });
   }
 
-  const onSubmitHandler = handleSubmit(async (data) => {
-    toast.promise(toastOnSubmit(data), {
-      loading: "変更中...",
-      success: "変更しました。",
-      error: "変更できませんでした。",
-    });
-  });
-
   const isPending = isLoading || isSubmitting;
 
   return {
@@ -118,7 +95,6 @@ export function useDocumentForm(defaultValues: EditDocumentInput) {
     isDirty,
     control,
     isPending,
-    onSubmitHandler,
     handleDuringSave,
     setValue,
     reset,

@@ -6,20 +6,21 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 export function TogglePublish({
-  onChangePublish,
-  publish,
+  onChangeDraft,
+  draft,
 }: {
-  publish: boolean;
-  onChangePublish: (value: boolean) => void;
+  draft: boolean;
+  onChangeDraft: (value: boolean) => void;
 }) {
   const canPublish = useAtomValue(canPublishAtom);
 
   return (
     <div className="flex items-center space-x-2">
       <Switch
-        defaultChecked={publish}
+        defaultChecked={!draft}
         disabled={!canPublish}
-        onCheckedChange={onChangePublish}
+        id="draft"
+        onCheckedChange={(checked) => onChangeDraft(!checked)}
       />
       <Label
         className={clsx(

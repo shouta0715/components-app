@@ -30,7 +30,6 @@ export function EditDocumentForm({
 }: EdiDocumentFormProps) {
   const {
     setValue,
-    onSubmitHandler,
     handleDuringSave,
     reset,
     getValues,
@@ -47,7 +46,7 @@ export function EditDocumentForm({
         isPending={isPending}
         name={name}
       />
-      <form className="mt-8 space-y-8" onSubmit={onSubmitHandler}>
+      <div className="mt-8 space-y-8">
         <DocumentNavigation
           control={control}
           defaultValues={defaultValues}
@@ -55,7 +54,7 @@ export function EditDocumentForm({
           reset={reset}
           setValue={setValue}
         />
-      </form>
+      </div>
     </>
   );
 }
