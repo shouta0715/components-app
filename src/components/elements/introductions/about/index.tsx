@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { ArrowDown } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 import { SamplePreviews } from "@/components/elements/introductions/about/sample-preview";
 import { LoginInfoTable } from "@/components/elements/introductions/login-info-table";
@@ -60,7 +59,7 @@ export function About({ auth = false }: { auth?: boolean }) {
               </Section.Description>
             )}
             <p className="text-center">
-              <Link
+              <a
                 className={clsx(
                   buttonVariants({
                     variant: "link",
@@ -71,7 +70,7 @@ export function About({ auth = false }: { auth?: boolean }) {
               >
                 サンプルのコンポーネントを試す
                 <ArrowDown className="ml-2 size-5" />
-              </Link>
+              </a>
             </p>
           </Section.Content>
         </Section>
