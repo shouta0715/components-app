@@ -1,8 +1,7 @@
-import React from "react";
 import { About } from "@/components/elements/introductions/about";
 
 export const dynamic = "error";
 
 export default function Page() {
-  return <About />;
+  return <About auth />;
 }
