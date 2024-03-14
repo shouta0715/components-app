@@ -21,6 +21,7 @@ export const checkOverPage = ({
   take = 20,
   pathname,
 }: CheckOverPage) => {
+  if (total === 0) return;
   const isOver = total <= ((+current || 1) - 1) * take;
 
   if (isOver) {

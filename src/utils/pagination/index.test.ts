@@ -111,5 +111,37 @@ describe("utils/pagination", () => {
 
       expect(mocks.redirect).not.toHaveBeenCalled();
     });
+
+    test("if total is 0, should not redirect", () => {
+      checkOverPage({
+        total: 0,
+        current: 1,
+        pathname: "/categories/name",
+      });
+
+      expect(mocks.redirect).not.toHaveBeenCalled();
+    });
+
+    test("if total is 0, should not redirect with custom take", () => {
+      checkOverPage({
+        total: 0,
+        current: 1,
+        take: 10,
+        pathname: "/categories/name",
+      });
+
+      expect(mocks.redirect).not.toHaveBeenCalled();
+    });
+
+    test("if take and total is same, should not redirect", () => {
+      checkOverPage({
+        total: 20,
+        current: 1,
+        take: 20,
+        pathname: "/categories/name",
+      });
+
+      expect(mocks.redirect).not.toHaveBeenCalled();
+    });
   });
 });
