@@ -63,7 +63,7 @@ export const getTrendComponentSQL = ({
     FROM
       sorted_components AS scomp
       JOIN files AS f ON scomp.id = f."componentId"
-      JOIN users AS u ON scomp."creatorId" = u.id
+      LEFT JOIN users AS u ON scomp."creatorId" = u.id
     ORDER BY
       scomp.weight DESC,
       scomp."createdAt" DESC;
