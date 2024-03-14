@@ -11,8 +11,8 @@ export const getTrendComponentSQL = ({
   categoryName,
 }: GetTrendComponentParams) => {
   const where = categoryName
-    ? Prisma.sql`WHERE comp."categoryName" = ${categoryName}`
-    : Prisma.sql``;
+    ? Prisma.sql`WHERE comp."categoryName" = ${categoryName} AND comp.draft = false`
+    : Prisma.sql`WHERE comp.draft = false`;
 
   return Prisma.sql`
     WITH likes_weight_data AS (
