@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 import { transformCode } from "@/scripts/ui-preview";
 import {
   BadCombinationExtensionsError,
-  CodeBundlerError,
   CompilerError,
   PackageError,
 } from "@/scripts/ui-preview/errors";
@@ -114,14 +113,14 @@ describe("scripts/ui-preview", () => {
       );
     });
 
-    test("CodeBundlerError from transformWithoutHTML", async () => {
+    test("BadCombinationExtensionsError from transformWithoutHTML", async () => {
       const input: RemoveNameFileObject[] = [
         { ...commonFile, extension: "ts" },
         { ...commonFile, extension: "css" },
       ];
 
       expect(transformCode(input, functionName)).rejects.toThrowError(
-        CodeBundlerError
+        BadCombinationExtensionsError
       );
     });
 

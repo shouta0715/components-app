@@ -19,7 +19,12 @@ export async function transformCode(
   const extensions = files.map((file) => file.extension);
   if (isBadCombination(extensions)) throw new BadCombinationExtensionsError();
 
-  if (functionName) return transformWithoutHTML(files, functionName);
+  const reactFiles = files.some(
+    (file) => file.extension === "tsx" || file.extension === "jsx"
+  );
+
+  if (functionName && reactFiles)
+    return transformWithoutHTML(files, functionName);
 
   const htmlFile = files.find((file) => file.extension === "html");
 
