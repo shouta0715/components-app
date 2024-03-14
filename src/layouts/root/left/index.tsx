@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import {
-  BookCheck,
   Code,
-  HeartCrackIcon,
+  Flame,
+  HandCoins,
   HelpCircle,
-  ImageIcon,
+  Rocket,
   Users,
 } from "lucide-react";
 import React from "react";
@@ -16,45 +16,32 @@ import { cn } from "@/utils";
 
 const IntroDuctions = [
   {
-    name: "Documentation",
-    icon: ImageIcon,
-    href: "/docs",
-    color:
-      "fill-yellow-500 group-hover:fill-yellow-600 dark:group-[.active]:fill-yellow-300 dark:group-hover:fill-yellow-400",
-    textClass:
-      "dark:group-[.active]:text-yellow-500 dark:group-hover:text-yellow-500",
-    boxClass:
-      "dark:group-[.active]:bg-yellow-500 dark:group-hover:bg-yellow-500",
-  },
-  {
-    name: "How to use",
-    icon: BookCheck,
+    name: "使い方",
+    icon: Flame,
     href: "/how-to-use",
     color:
-      "fill-sky-500 group-hover:fill-sky-600 dark:group-[.active]:fill-sky-300 dark:group-hover:fill-sky-400",
+      "group-hover:text-red-600 group-hover:fill-red-600 group-[.active]:text-red-600 group-[.active]:fill-red-600",
     textClass:
-      "dark:group-[.active]:text-sky-500 dark:group-hover:text-sky-500",
-    boxClass: "dark:group-[.active]:bg-sky-500 dark:group-hover:bg-sky-500",
+      "group-hover:text-red-600 group-hover:underline group-[.active]:text-red-600 group-[.active]:underline",
+    boxClass: "group-hover:border-red-600 group-[.active]:border-red-600",
   },
   {
-    name: "FAQ",
+    name: "UI Tradeについて",
+    icon: HandCoins,
+    href: "/about",
+    color: "group-hover:text-sky-600 group-[.active]:text-sky-600",
+    textClass:
+      "group-hover:text-sky-600 group-hover:underline group-[.active]:text-sky-600 group-[.active]:underline",
+    boxClass: "group-hover:border-sky-600 group-[.active]:border-sky-600",
+  },
+  {
+    name: "よくある質問",
     icon: HelpCircle,
     href: "/faq",
-    color:
-      "fill-teal-500 group-hover:fill-teal-600 dark:group-[.active]:fill-teal-300 dark:group-hover:fill-teal-400",
+    color: "group-hover:text-green-600 group-[.active]:text-green-600",
     textClass:
-      "dark:group-[.active]:text-teal-500 dark:group-hover:text-teal-500",
-    boxClass: "dark:group-[.active]:bg-teal-500 dark:group-hover:bg-teal-500",
-  },
-  {
-    name: "About",
-    icon: HeartCrackIcon,
-    href: "/about",
-    color:
-      "fill-pink-500 group-hover:fill-pink-600 dark:group-[.active]:fill-pink-300 dark:group-hover:fill-pink-400",
-    textClass:
-      "dark:group-[.active]:text-pink-500 dark:group-hover:text-pink-500",
-    boxClass: "dark:group-[.active]:bg-pink-500 dark:group-hover:bg-pink-500",
+      "group-hover:text-green-600 group-hover:underline group-[.active]:text-green-600 group-[.active]:underline",
+    boxClass: "group-hover:border-green-600 group-[.active]:border-green-600",
   },
 ];
 
@@ -64,7 +51,7 @@ function IntroDuction() {
       {IntroDuctions.map((introDuction) => (
         <ActiveLink
           key={introDuction.name}
-          activeClass="active"
+          activeClass="active pointer-events-none font-semibold"
           className={cn(
             buttonVariants({
               variant: "link",
@@ -77,13 +64,11 @@ function IntroDuction() {
         >
           <div
             className={clsx(
-              "mr-4 flex items-center justify-center  rounded-md border bg-background p-1 text-white dark:border-background dark:text-current dark:group-hover:text-white dark:group-[.active]:text-white",
+              "mr-4 flex items-center justify-center rounded-md border border-border bg-background p-1",
               introDuction.boxClass
             )}
           >
-            <introDuction.icon
-              className={clsx("h-4 w-4 dark:fill-accent", introDuction.color)}
-            />
+            <introDuction.icon className={clsx("size-4", introDuction.color)} />
           </div>
           <span className={clsx(introDuction.textClass)}>
             {introDuction.name}
@@ -96,14 +81,19 @@ function IntroDuction() {
 
 const rankings = [
   {
-    name: "Creator",
+    name: "クリエイター",
     href: "/rankings/creator",
     icon: Users,
   },
   {
-    name: "Component",
+    name: "コンポーネント",
     href: "/rankings/component",
     icon: Code,
+  },
+  {
+    name: "今日のヒット",
+    href: "/rankings/today",
+    icon: Rocket,
   },
 ];
 
@@ -113,7 +103,7 @@ function Rankings() {
       {rankings.map((ranking) => (
         <ActiveLink
           key={ranking.name}
-          activeClass="active"
+          activeClass="active pointer-events-none font-semibold"
           className={cn(
             buttonVariants({
               variant: "link",
@@ -124,10 +114,12 @@ function Rankings() {
           )}
           href={ranking.href}
         >
-          <div className="mr-4 flex items-center justify-center rounded-md border bg-background p-1 dark:border-background">
-            <ranking.icon className="h-4 w-4 dark:fill-accent" />
+          <div className="mr-4 flex items-center justify-center rounded-md border bg-background p-1">
+            <ranking.icon className="size-4 group-[.active]:text-primary" />
           </div>
-          <span>{ranking.name}</span>
+          <span className="group-hover:text-primary group-hover:underline group-[.active]:text-primary group-[.active]:underline">
+            {ranking.name}
+          </span>
         </ActiveLink>
       ))}
     </nav>
@@ -142,6 +134,7 @@ async function Categories() {
       {categories.map((category) => (
         <ActiveLink
           key={category.name}
+          activeClass="pointer-events-none font-semibold text-primary underline"
           className={cn(
             buttonVariants({
               variant: "link",
@@ -165,15 +158,15 @@ export async function LeftSide() {
     <ScrollArea className="h-[calc(100dvh-8rem)]">
       <div className="grid h-full gap-y-8">
         <div>
-          <p className="mb-3 font-semibold text-primary">Introduction</p>
+          <p className="mb-3 font-semibold text-primary">イントロダクション</p>
           <IntroDuction />
         </div>
         <div>
-          <p className="mb-3 font-semibold text-primary">Rankings</p>
+          <p className="mb-3 font-semibold text-primary">ランキング</p>
           <Rankings />
         </div>
         <div>
-          <p className="mb-3 font-semibold text-primary">Categories</p>
+          <p className="mb-3 font-semibold text-primary">カテゴリー</p>
           <Categories />
         </div>
       </div>
