@@ -91,7 +91,7 @@ export function AuthorizedAvatar({
             {links.map((link) => (
               <ActiveLink
                 key={link.name}
-                activeClass="pointer-events-none"
+                activeClass="pointer-events-none font-semibold"
                 className="group relative flex h-auto justify-start rounded-none px-4 py-3 hover:bg-accent hover:no-underline"
                 href={link.href}
                 onClick={() => setOpen(false)}
