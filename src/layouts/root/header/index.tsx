@@ -1,13 +1,15 @@
 import Link from "next/link";
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 
-import { ClientAuth } from "@/components/global/auth/client";
+import { ClientSession } from "@/components/global/auth/client";
 import { CommandPallet } from "@/components/global/server/command-pallet";
 import { NavSheet } from "@/components/global/server/nav-sheet";
 
 import { Icon } from "@/components/icons/Icon";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
+// 共通のヘッダー
 function CommonHeader({
   children,
   preview = false,
@@ -35,22 +37,29 @@ function CommonHeader({
   );
 }
 
+// ユーザーセッションを表示する PPRがproductionになったら、このコンポーネントは Server Sideに移動する
 export function AppHeader() {
   return (
-    <CommonHeader>
-      <ClientAuth />
-    </CommonHeader>
+    <SessionProvider>
+      <CommonHeader>
+        <ClientSession />
+      </CommonHeader>
+    </SessionProvider>
   );
 }
 
+// ユーザーセッションを表示する PPRがproductionになったら、このコンポーネントは Server Sideに移動する
 export function PreviewHeader() {
   return (
-    <CommonHeader preview>
-      <ClientAuth />
-    </CommonHeader>
+    <SessionProvider>
+      <CommonHeader preview>
+        <ClientSession />
+      </CommonHeader>
+    </SessionProvider>
   );
 }
 
+// 認証ボタンなどを入れていない
 export function AuthHeader() {
   return <CommonHeader />;
 }

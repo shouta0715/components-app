@@ -1,13 +1,15 @@
 "use client";
 
-import { useSession, SessionProvider } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 import { AuthLink } from "@/components/global/auth/server/atuh-link";
 import { AuthorizedAvatar } from "@/components/global/auth/server/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function Session() {
+// TODO: pprがproductionになったら、このコンポーネントは Server Sideに移動する
+
+export function ClientSession() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -15,12 +17,4 @@ function Session() {
   }
 
   return session ? <AuthorizedAvatar session={session} /> : <AuthLink />;
-}
-
-export function ClientAuth() {
-  return (
-    <SessionProvider>
-      <Session />
-    </SessionProvider>
-  );
 }

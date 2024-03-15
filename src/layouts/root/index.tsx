@@ -6,6 +6,7 @@ import { Footer } from "@/layouts/root/footer";
 import { AppHeader, AuthHeader, PreviewHeader } from "@/layouts/root/header";
 import { LeftSide } from "@/layouts/root/left";
 
+// ルートページのレイアウト
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Providers>
@@ -25,6 +26,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// プレビューページのレイアウト Side Barを表示しない
 export function PreviewLayout({ children }: { children: React.ReactNode }) {
   return (
     <Providers>
@@ -41,6 +43,7 @@ export function PreviewLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// 認証ページのレイアウト 認証ボタンなどを入れていない
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Providers>
@@ -60,6 +63,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// 編集ページのレイアウト Headerを表示しない
 export const EditLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Providers>
