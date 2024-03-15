@@ -1,5 +1,4 @@
 import { Component, Like, Prisma, User } from "@prisma/client";
-import { randomNum } from "@/utils/random";
 
 function generateComponentLikes({
   components,
@@ -9,9 +8,9 @@ function generateComponentLikes({
   users: User[];
 }): Prisma.LikeCreateManyInput[] {
   const created = components.map((component) => {
-    return Array.from({ length: randomNum(0, 20) }, () => ({
+    return Array.from({ length: users.length }, (_, j) => ({
       componentId: component.id,
-      userId: users[randomNum(0, users.length - 1)].id,
+      userId: users[j].id,
     }));
   });
 
