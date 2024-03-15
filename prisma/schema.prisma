@@ -159,5 +159,6 @@ model Like {
 
   @@index([componentId])
   @@index([userId])
+  @@unique([componentId, userId])
   @@map("likes")
 }
