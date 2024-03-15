@@ -21,7 +21,7 @@ export default async function Page({ params }: Params) {
     <div className="animate-fade-in space-y-12">
       <div className="flex min-w-0 border-b border-border pb-6">
         <figure className="mr-4 shrink-0">
-          <Avatar className="h-24 w-24 rounded-md sm:h-28 sm:w-28">
+          <Avatar className="size-32 rounded-md sm:size-40">
             <AvatarImage
               className="size-full rounded-md"
               src={person.image || ""}
