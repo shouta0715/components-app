@@ -13,21 +13,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export function SamplePreviews() {
   return (
     <Tabs className="space-y-6" defaultValue="preview">
-      <TabsList className="h-9 w-full justify-between rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
-        <div>
+      <div className="flex items-center justify-between">
+        <TabsList className="h-9 w-full justify-start rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
           <TabsTrigger
+            aria-controls="preview"
             className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
+            role="tab"
             value="preview"
           >
             Preview
           </TabsTrigger>
           <TabsTrigger
+            aria-controls="code"
             className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
+            role="tab"
             value="code"
           >
             Code
           </TabsTrigger>
-        </div>
+        </TabsList>
         <div className="relative">
           <MultipleCopyButton
             items={sampleObject.map((object) => ({
@@ -36,8 +40,9 @@ export function SamplePreviews() {
             }))}
           />
         </div>
-      </TabsList>
-      <TabsContent value="preview">
+      </div>
+
+      <TabsContent role="tabpanel" value="preview">
         <ErrorBoundary FallbackComponent={UIPreviewError}>
           <Suspense fallback={<UIPreviewLoading name="Sample Preview" />}>
             <UIPreview
@@ -48,7 +53,7 @@ export function SamplePreviews() {
           </Suspense>
         </ErrorBoundary>
       </TabsContent>
-      <TabsContent value="code">
+      <TabsContent role="tabpanel" value="code">
         <MultipleSyntaxCode objects={sampleObject} />
       </TabsContent>
     </Tabs>

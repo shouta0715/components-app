@@ -23,7 +23,12 @@ export function PreviewResizeGroup({
       <ResizablePanel className="min-w-64" defaultSize={100} minSize={30}>
         <PreviewIframe inputData={data} name={name} title={tittle} />
       </ResizablePanel>
-      <ResizableHandle className="w-0" withHandle />
+      <ResizableHandle
+        aria-label="Resize"
+        aria-labelledby="Resize"
+        className="w-0"
+        withHandle
+      />
       <ResizablePanel defaultSize={0} />
     </ResizablePanelGroup>
   );

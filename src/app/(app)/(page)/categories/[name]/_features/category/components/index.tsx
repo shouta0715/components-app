@@ -35,7 +35,7 @@ function ComponentImage({
       />
 
       <Image
-        alt={`${name}の1番人気のコンポーネント`}
+        alt={`${name}の画像`}
         fill
         priority
         sizes="(min-width: 640px) 240px, 160px"
