@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/handlers";
 import { InternalServerError, UnauthorizedError } from "@/lib/errors";
 import { ActionResult } from "@/lib/next/actions";
@@ -44,4 +45,12 @@ export const createDraftComp = async (
       status,
     };
   }
+};
+
+export const createDraftComponentWithRedirect = async () => {
+  const { user } = await getSession();
+  assertUser(user);
+  const component = await createDraftComponent(user.id);
+
+  redirect(`/components/${component.id}/edit`);
 };

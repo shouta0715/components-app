@@ -35,7 +35,7 @@ export async function EditHeader() {
           <div className="flex items-center gap-x-4">
             <ThemeToggle />
             <Suspense>
-              <ServerAuth />
+              <ServerAuth form={false} />
             </Suspense>
           </div>
         </div>

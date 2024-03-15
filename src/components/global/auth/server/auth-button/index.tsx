@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 
 import { signInGitHub, signInGoogle, signOutOauth } from "@/lib/auth/actions";
 
-export function SignOutButton() {
+export function SignOutButton({ className }: { className?: string }) {
   return (
-    <form action={signOutOauth}>
+    <form action={signOutOauth} className={className}>
       <button
         className="flex w-full items-center gap-x-2 text-sm"
         type="submit"
