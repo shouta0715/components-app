@@ -73,7 +73,7 @@ export function MultipleCopyButton({ items }: MultipleCopyButtonProps) {
         <span className="sr-only">Open Copy File Menu</span>
       </button>
       <div
-        aria-hidden={!open ? true : undefined} // aria-hiddenの適切な使用
+        aria-hidden={!open ? true : undefined}
         className={`absolute right-0 z-20 grid w-32 rounded-md border border-input bg-popover p-2 transition-opacity ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
