@@ -11,7 +11,7 @@ export const dynamic = "error";
 
 export default async function Page() {
   const components = await getTrendComponents({
-    limit: 50,
+    limit: 30,
     offset: 0,
   });
 
