@@ -24,7 +24,7 @@ export async function TopHeader() {
       </div>
       <div className="flex flex-col gap-4 sm:flex-row">
         <Button asChild className="font-bold">
-          <Link href="/components/popular">
+          <Link href="/rankings/trend">
             人気のコンポーネントを見る
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
           </Link>

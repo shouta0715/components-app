@@ -26,9 +26,15 @@ export default async function Home() {
       <TopHeader />
       <Section.Root>
         <Section>
-          <Section.Title className="flex items-center justify-between">
-            Trend Components <BuildTimeBadge date={buildDate} />
-          </Section.Title>
+          <div>
+            <Section.Title className="flex items-center justify-between">
+              トレンド <BuildTimeBadge date={buildDate} />
+            </Section.Title>
+            <Section.Description className="mt-2 text-sm">
+              Quick
+              Viewをクリックすると、モーダルでコンポーネントの詳細を見ることができます。
+            </Section.Description>
+          </div>
           <Section.Content>
             <TrendComponents components={components} />
           </Section.Content>
@@ -38,7 +44,12 @@ export default async function Home() {
         </Section>
 
         <Section>
-          <Section.Title>Popular Categories</Section.Title>
+          <div>
+            <Section.Title>人気のカテゴリー</Section.Title>
+            <Section.Description className="mt-2 text-sm">
+              投稿が多いカテゴリーです。
+            </Section.Description>
+          </div>
           <Section.Content>
             <Categories categories={categories} />
           </Section.Content>
@@ -48,7 +59,13 @@ export default async function Home() {
         </Section>
 
         <Section>
-          <Section.Title>Files Types</Section.Title>
+          <div>
+            <Section.Title>ファイルごとのコンポーネント</Section.Title>
+            <Section.Description className="mt-2 text-sm">
+              Quick
+              Viewをクリックすると、モーダルでコンポーネントの詳細を見ることができます。
+            </Section.Description>
+          </div>
           <Section.Content>
             <FileTypeComponents />
           </Section.Content>
