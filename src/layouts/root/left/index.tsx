@@ -81,6 +81,11 @@ function IntroDuction() {
 
 const rankings = [
   {
+    name: "トレンド",
+    href: "/rankings/trend",
+    icon: Rocket,
+  },
+  {
     name: "クリエイター",
     href: "/rankings/creator",
     icon: Users,
@@ -89,11 +94,6 @@ const rankings = [
     name: "コンポーネント",
     href: "/rankings/component",
     icon: Code,
-  },
-  {
-    name: "今日のヒット",
-    href: "/rankings/today",
-    icon: Rocket,
   },
 ];
 

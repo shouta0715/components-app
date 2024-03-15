@@ -32,6 +32,9 @@ export default async function Home() {
           <Section.Content>
             <TrendComponents components={components} />
           </Section.Content>
+          <Section.MoreLink href="/rankings/trend">
+            トレンドをもっと見る
+          </Section.MoreLink>
         </Section>
 
         <Section>
