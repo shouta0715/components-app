@@ -1,4 +1,4 @@
-import { AuthLink } from "@/components/global/auth/server/atuh-link";
+import { AuthLink } from "@/components/global/auth/server/auth-link";
 import { AuthorizedAvatar } from "@/components/global/auth/server/avatar";
 import { auth } from "@/lib/auth";
 import "server-only";
