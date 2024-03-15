@@ -7,7 +7,7 @@ import React from "react";
 import { Icon } from "@/components/icons/Icon";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { LeftSide } from "@/layouts/root/left";
+import { MobileLeftSide } from "@/layouts/root/left";
 
 export function NavSheet({ preview = false }: { preview?: boolean }) {
   return (
@@ -27,7 +27,7 @@ export function NavSheet({ preview = false }: { preview?: boolean }) {
             </h2>
           </Link>
         </SheetTrigger>
-        <LeftSide />
+        <MobileLeftSide />
       </SheetContent>
     </Sheet>
   );
