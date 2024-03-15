@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import React from "react";
 
+import { AuthorizedAvatar } from "@/components/global/auth/client/avatar";
 import { AuthLink } from "@/components/global/auth/server/auth-link";
-import { AuthorizedAvatar } from "@/components/global/auth/server/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // TODO: pprがproductionになったら、このコンポーネントは Server Sideに移動する
