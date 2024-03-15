@@ -63,6 +63,7 @@ export function AuthorizedAvatar({
           >
             <Avatar className="bg-none">
               <AvatarImage
+                alt={session.user?.name ?? "ユーザーのアバター"}
                 className="object-cover"
                 src={session.user?.image ?? ""}
               />
