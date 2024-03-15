@@ -1,10 +1,8 @@
-import { LinkIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 import { ServerSideFollowButton } from "@/components/elements/follow/follow-button/server";
 import { UIComponent } from "@/components/elements/ui-components";
-import { GitHubIcon } from "@/components/icons/GitHub";
-import { XIcon } from "@/components/icons/x-icon";
+import { ProfileButton } from "@/components/elements/users/profile-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Section } from "@/components/ui/section";
 import { getUserPageData } from "@/services/user/get";
@@ -71,64 +69,7 @@ export default async function Page({ params }: Params) {
               </p>
             </div>
             <div className="mt-1 space-x-2">
-              {person.profile?.website && (
-                <a
-                  className="text-sm"
-                  href={person.profile?.website}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <LinkIcon
-                    aria-label={`${person.name}のウェブサイト`}
-                    className="mr-2 inline-block size-5"
-                  />
-                  <span
-                    aria-label={`${person.name}のウェブサイト`}
-                    className="sr-only"
-                  >
-                    {person.profile?.website}
-                  </span>
-                </a>
-              )}
-
-              {person.profile?.github && (
-                <a
-                  className="text-sm"
-                  href={`https://github.com/${person.profile.github}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <GitHubIcon
-                    aria-label={`${person.name}のGitHub`}
-                    className="mr-2 inline-block size-5"
-                  />
-                  <span
-                    aria-label={`${person.name}のGitHub`}
-                    className="sr-only"
-                  >
-                    {person.profile?.github}
-                  </span>
-                </a>
-              )}
-              {person.profile?.twitter && (
-                <a
-                  className="text-sm"
-                  href={`https://twitter.com/${person.profile?.twitter}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <XIcon
-                    aria-label={`${person.name}のTwitter`}
-                    className="mr-2 inline-block size-5"
-                  />
-                  <span
-                    aria-label={`${person.name}のTwitter`}
-                    className="sr-only"
-                  >
-                    {person.profile?.twitter}
-                  </span>
-                </a>
-              )}
+              <ProfileButton name={person.name} profile={person.profile} />
             </div>
           </div>
         </div>

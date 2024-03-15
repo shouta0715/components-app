@@ -6,11 +6,17 @@ export const getPreviewComponent = async (id: string) => {
       where: { id },
       include: {
         files: true,
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
         creator: {
           select: {
             name: true,
             image: true,
             id: true,
+            profile: true,
           },
         },
         category: {
