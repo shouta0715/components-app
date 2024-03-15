@@ -5,7 +5,7 @@ import React from "react";
 import { ClientSession } from "@/components/global/auth/client";
 import { CommandPallet } from "@/components/global/command";
 
-import { ThemeToggle } from "@/components/global/theme/theme-toggle";
+import { ThemeToggle } from "@/components/global/theme";
 import { Icon } from "@/components/icons/Icon";
 import { NavSheet } from "@/layouts/root/nav-sheet";
 

@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 
 import { ServerAuth } from "@/components/global/auth/server";
-import { NavSheet } from "@/components/global/server/nav-sheet";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { ThemeToggle } from "@/components/global/theme";
 import { Skeleton } from "@/components/ui/skeleton";
+import { NavSheet } from "@/layouts/root/nav-sheet";
 
 const DynamicComponentBreadcrumbs = dynamic(
   () =>
