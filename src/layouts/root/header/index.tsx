@@ -3,11 +3,11 @@ import { SessionProvider } from "next-auth/react";
 import React from "react";
 
 import { ClientSession } from "@/components/global/auth/client";
-import { CommandPallet } from "@/components/global/server/command-pallet";
-import { NavSheet } from "@/components/global/server/nav-sheet";
+import { CommandPallet } from "@/components/global/command";
 
+import { ThemeToggle } from "@/components/global/theme/theme-toggle";
 import { Icon } from "@/components/icons/Icon";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { NavSheet } from "@/layouts/root/nav-sheet";
 
 // 共通のヘッダー
 function CommonHeader({
