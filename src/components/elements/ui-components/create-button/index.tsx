@@ -46,10 +46,10 @@ export function CreateComponentButton({
         type="submit"
       >
         {children || (
-          <span>
+          <>
             作成する
             <ChevronRightIcon className="ml-2 hidden h-5 w-5 sm:inline-block" />
-          </span>
+          </>
         )}
       </button>
     </AuthForm>
