@@ -1,7 +1,7 @@
 import "server-only";
 
 import React from "react";
-import { CategoryCommand } from "@/components/global/parts/category-command";
+import { CategoryCommandModal } from "@/components/global/command/modal";
 import { searchCategories } from "@/services/category/get/search";
 
 export async function CommandPallet() {
@@ -9,7 +9,7 @@ export async function CommandPallet() {
 
   return (
     <div className="flex items-center gap-x-2">
-      <CategoryCommand categories={categories} />
+      <CategoryCommandModal categories={categories} />
     </div>
   );
 }

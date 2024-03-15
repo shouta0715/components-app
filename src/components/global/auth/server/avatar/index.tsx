@@ -29,7 +29,7 @@ export function AuthorizedAvatar({ session }: { session: Session }) {
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="z-30 flex w-60 flex-col gap-y-2 bg-popover"
+        className="z-50 flex w-60 flex-col gap-y-2 bg-popover"
         sideOffset={4}
       >
         <div className="grid gap-y-4">

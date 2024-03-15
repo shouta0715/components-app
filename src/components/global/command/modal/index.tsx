@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/command";
 import { SearchCategory } from "@/services/category/get/search";
 
-export function CategoryCommand({
+export function CategoryCommandModal({
   categories,
 }: {
   categories: SearchCategory[];
@@ -71,6 +71,7 @@ export function CategoryCommand({
                 <Link
                   className="flex h-full flex-1 justify-between px-1.5 py-3 font-normal capitalize"
                   href={`/categories/${category.name}`}
+                  onClick={() => setOpen(false)}
                   prefetch={false}
                 >
                   <span>{category.name}</span>
@@ -89,6 +90,7 @@ export function CategoryCommand({
               className: "w-full",
             })}
             href="/categories"
+            onClick={() => setOpen(false)}
           >
             もっと見る
           </Link>

@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/react";
 import "../src/style/tailwind.css";
 import { Providers } from "@/layouts/providers";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { ThemeToggle } from "@/components/global/theme";
 import { Toaster } from "@/components/ui/sonner";
 
 const preview: Preview = {
