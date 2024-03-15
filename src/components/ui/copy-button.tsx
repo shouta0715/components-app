@@ -45,6 +45,7 @@ export function CopyButton({
       }}
       type="button"
     >
+      <span className="sr-only">{copied ? "Copied" : "Copy to clipboard"}</span>
       {copied ? (
         <Check className="size-3 text-green-400 sm:size-4" />
       ) : (

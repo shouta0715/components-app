@@ -21,8 +21,12 @@ const BentoGrid = ({
   return <div className={cn(className)}>{children}</div>;
 };
 
-const BentoAnchor = ({ href }: { href: string }) => {
-  return <Link className="absolute inset-0 z-20" href={href} />;
+const BentoAnchor = ({ href, name }: { href: string; name: string }) => {
+  return (
+    <Link className="absolute inset-0 z-20" href={href}>
+      <span className="sr-only">{name}の詳細を見る</span>
+    </Link>
+  );
 };
 
 const BentoBackground = ({ children }: { children: ReactNode }) => {
@@ -104,7 +108,7 @@ const BentoCard = ({
         className
       )}
     >
-      {asLink && <BentoAnchor href={href} />}
+      {asLink && <BentoAnchor href={href} name={name} />}
       {children}
       <CardContent className="p-0">
         <div

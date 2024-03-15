@@ -46,7 +46,11 @@ export function AvatarLink({
       href={`/users/${id}`}
     >
       <Avatar className={Sizes[size]}>
-        <AvatarImage className={classNames?.image} src={image ?? ""} />
+        <AvatarImage
+          alt={`${name}のアバター`}
+          className={classNames?.image}
+          src={image ?? ""}
+        />
         <AvatarFallback className={classNames?.fallback}>
           {name?.slice(0, 2) ?? "UK"}
         </AvatarFallback>

@@ -82,7 +82,11 @@ function UserInformation({
     <div className="mt-2 flex items-center">
       <Link className="flex items-center gap-2" href={`/users/${userId}`}>
         <Avatar className="rounded-md">
-          <AvatarImage className="rounded-md" src={image ?? ""} />
+          <AvatarImage
+            alt={name ?? "ユーザーのアバター"}
+            className="rounded-md"
+            src={image ?? ""}
+          />
           <AvatarFallback className="rounded-md">
             {name?.slice(0, 2) ?? "UK"}
           </AvatarFallback>

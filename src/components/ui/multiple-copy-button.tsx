@@ -1,9 +1,8 @@
 "use client";
 
-import clsx from "clsx";
 import copy from "copy-to-clipboard";
 import { Files } from "lucide-react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useId, useState } from "react";
 import { toast } from "sonner";
 
 type Item = {
@@ -30,6 +29,8 @@ function MultipleCopyButtonItem({
         });
         setOpen(false);
       }}
+      role="menuitem"
+      tabIndex={-1}
       type="button"
     >
       {label}
@@ -39,6 +40,7 @@ function MultipleCopyButtonItem({
 
 export function MultipleCopyButton({ items }: MultipleCopyButtonProps) {
   const [open, setOpen] = useState(false);
+  const id = useId();
 
   const onOutSideClick = useCallback(
     (event: MouseEvent) => {
@@ -51,22 +53,32 @@ export function MultipleCopyButton({ items }: MultipleCopyButtonProps) {
   );
 
   useEffect(() => {
-    window.addEventListener("click", onOutSideClick);
+    window.addEventListener("mousedown", onOutSideClick);
 
-    return () => window.removeEventListener("click", onOutSideClick);
+    return () => window.removeEventListener("mousedown", onOutSideClick);
   }, [onOutSideClick]);
 
   return (
-    <div className=" relative" id="pop-wrapper">
-      <button onClick={() => setOpen(!open)} type="button">
+    <div className="relative" id="pop-wrapper">
+      <button
+        aria-controls={id}
+        aria-expanded={open}
+        aria-haspopup="true"
+        aria-label="Open Copy File Menu"
+        id={id}
+        onClick={() => setOpen(!open)}
+        type="button"
+      >
         <Files size={16} />
         <span className="sr-only">Open Copy File Menu</span>
       </button>
       <div
-        className={clsx(
-          "absolute right-0 z-20 grid w-32 rounded-md border border-input bg-popover p-2 transition-opacity",
+        aria-hidden={!open ? true : undefined} // aria-hiddenの適切な使用
+        className={`absolute right-0 z-20 grid w-32 rounded-md border border-input bg-popover p-2 transition-opacity ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
-        )}
+        }`}
+        id={id}
+        role="menu"
       >
         {items.map((item) => {
           return (

@@ -30,21 +30,25 @@ export async function FilePreviews({
 
   return (
     <NavigateTabs className="space-y-6" defaultValue="preview">
-      <TabsList className="h-9 w-full justify-between rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
-        <div>
+      <div className="flex items-center justify-between">
+        <TabsList className="h-9 w-full justify-start rounded-none border-b bg-transparent p-0 dark:border-b-gray-700">
           <NavigateTabsTrigger
+            aria-controls="preview"
             className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
+            role="tab"
             value="preview"
           >
             Preview
           </NavigateTabsTrigger>
           <NavigateTabsTrigger
+            aria-controls="code"
             className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent transition-none data-[state=active]:border-b-primary"
+            role="tab"
             value="code"
           >
             Code
           </NavigateTabsTrigger>
-        </div>
+        </TabsList>
         <div className="relative">
           <MultipleCopyButton
             items={objects.map((object) => ({
@@ -53,8 +57,8 @@ export async function FilePreviews({
             }))}
           />
         </div>
-      </TabsList>
-      <TabsContent value="preview">
+      </div>
+      <TabsContent role="tabpanel" value="preview">
         <ErrorBoundary FallbackComponent={UIPreviewError}>
           <Suspense fallback={<UIPreviewLoading name={name} />}>
             <UIPreview
@@ -65,7 +69,7 @@ export async function FilePreviews({
           </Suspense>
         </ErrorBoundary>
       </TabsContent>
-      <TabsContent value="code">
+      <TabsContent role="tabpanel" value="code">
         <MultipleSyntaxCode objects={objects} />
       </TabsContent>
     </NavigateTabs>

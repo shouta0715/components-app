@@ -14,6 +14,7 @@ export function NavSheet({ preview = false }: { preview?: boolean }) {
     <Sheet>
       <SheetTrigger asChild className={clsx(preview ? "" : "lg:hidden")}>
         <Button size="icon" variant="ghost">
+          <span className="sr-only">Open Menu</span>
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
