@@ -1,24 +1,21 @@
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils";
 
-function SectionTitle({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <h2
-      className={cn("text-2xl font-bold text-primary sm:text-3xl", className)}
-    >
-      {children}
-    </h2>
-  );
-}
+const SectionTitle = React.forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(({ children, className, ...props }, ref) => (
+  <h2
+    ref={ref}
+    className={cn("text-2xl font-bold text-primary sm:text-3xl", className)}
+    {...props}
+  >
+    {children}
+  </h2>
+));
 
 function SectionMoreLink({
   children,
