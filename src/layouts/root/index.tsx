@@ -4,7 +4,7 @@ import { Pattern } from "@/components/ui/pattern";
 import { Providers } from "@/layouts/providers";
 import { Footer } from "@/layouts/root/footer";
 import { AppHeader, AuthHeader, PreviewHeader } from "@/layouts/root/header";
-import { LeftSide } from "@/layouts/root/left";
+import { DesktopLeftSide } from "@/layouts/root/left";
 
 // ルートページのレイアウト
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
@@ -16,7 +16,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="mx-auto flex h-full w-full max-w-7xl flex-1 items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
           <aside className="sticky top-20 hidden h-full w-52 shrink-0 rounded-md p-2 lg:block">
-            <LeftSide />
+            <DesktopLeftSide />
           </aside>
           <main className="min-w-0 flex-1">{children}</main>
         </div>
@@ -53,7 +53,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="mx-auto flex h-full w-full max-w-7xl flex-1 items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
           <aside className="sticky top-20 hidden h-full w-52 shrink-0 rounded-md p-2 lg:block">
-            <LeftSide />
+            <DesktopLeftSide />
           </aside>
           <main className="flex-1">{children}</main>
         </div>
