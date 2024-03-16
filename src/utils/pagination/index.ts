@@ -11,7 +11,7 @@ export const getSkipPage = (
 
 type CheckOverPage = {
   total: number;
-  current: string | number;
+  current?: string | number;
   take?: number;
   pathname: string;
 };
@@ -21,8 +21,10 @@ export const checkOverPage = ({
   take = 20,
   pathname,
 }: CheckOverPage) => {
+  if (total === 0 && current && +current > 1) redirect(pathname);
   if (total === 0) return;
-  const isOver = total <= ((+current || 1) - 1) * take;
+
+  const isOver = total <= ((+(current ?? 1) || 1) - 1) * take;
 
   if (isOver) {
     const lastPage = Math.ceil(total / take);
