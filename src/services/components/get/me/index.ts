@@ -2,10 +2,8 @@ import { prisma, runPrisma } from "@/lib/client/prisma";
 
 type GetMeComponentsProps = {
   userId: string;
-  take: number;
-  skip?: number;
 };
-export const getMeComponents = ({ userId, ...props }: GetMeComponentsProps) => {
+export const getMeComponents = ({ userId }: GetMeComponentsProps) => {
   return runPrisma(() =>
     prisma.component.findMany({
       where: {
@@ -17,6 +15,7 @@ export const getMeComponents = ({ userId, ...props }: GetMeComponentsProps) => {
         previewUrl: true,
         draft: true,
         updatedAt: true,
+        categoryName: true,
         description: true,
         files: {
           select: {
@@ -32,7 +31,6 @@ export const getMeComponents = ({ userId, ...props }: GetMeComponentsProps) => {
       orderBy: {
         createdAt: "desc",
       },
-      ...props,
     })
   );
 };
