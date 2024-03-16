@@ -78,7 +78,7 @@ function Section({
   className?: string;
 }) {
   return (
-    <section className={cn("grid gap-8 relative", className)}>
+    <section className={cn("space-y-8 relative", className)}>
       {children}
     </section>
   );
