@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Eye, Heart, ImageIcon, Lock, LockOpen, Pencil } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { MeComponentsCommandItem } from "@/app/(app)/(page)/accounts/components/_components/command";
 import { BlockQuoteLogo } from "@/components/icons/blockquote";
 import { LangIcons } from "@/components/icons/LangIcons";
 import { buttonVariants } from "@/components/ui/button";
@@ -19,6 +20,7 @@ type MeComponentProps = {
   draft: boolean;
   count: number;
   description: string | null;
+  categoryName: string;
 };
 
 export function MeComponent({
@@ -30,19 +32,24 @@ export function MeComponent({
   updatedAt,
   draft,
   count,
+  categoryName,
 }: MeComponentProps) {
   return (
-    <div className="rounded-lg border border-border">
+    <MeComponentsCommandItem
+      className="rounded-lg border border-border"
+      keywords={[categoryName]}
+      value={name ?? "Untitled"}
+    >
       <div className="p-4">
         <div className="flex min-w-0 overflow-hidden">
-          <div className="size-40 shrink-0 overflow-hidden rounded-lg border  border-border">
+          <div className="size-40 shrink-0 overflow-hidden rounded-lg border border-border  sm:size-48">
             {previewUrl ? (
               <Image
                 alt={`Image for ${name || "Untitled"}`}
                 className="size-full object-cover object-center"
-                height={160}
+                height={192}
                 src={getImageUrl(previewUrl)}
-                width={160}
+                width={192}
               />
             ) : (
               <div className="flex size-full items-center justify-center bg-secondary text-muted-foreground">
@@ -53,7 +60,8 @@ export function MeComponent({
 
           <div className="relative ml-6 flex flex-1 flex-col">
             <BlockQuoteLogo className="-top-2 w-24 sm:w-32" />
-            <h3 className="line-clamp-1 break-words text-lg font-semibold sm:text-xl">
+            <span className=" text-sm capitalize">{categoryName}</span>
+            <h3 className="mt-1 line-clamp-1 break-words text-lg font-semibold sm:text-xl">
               {name || "Untitled"}
             </h3>
             <p className="mt-1">
@@ -68,7 +76,6 @@ export function MeComponent({
               )}
             </p>
             <BlockQuoteLogo className="-bottom-2 right-0 w-24 rotate-180 sm:w-32" />
-
             <p className="mt-2 flex items-center text-sm text-muted-foreground">
               <time dateTime={updatedAt.toISOString()}>
                 {formatDateDistance(updatedAt)}に更新
@@ -143,6 +150,6 @@ export function MeComponent({
           })}
         </div>
       </div>
-    </div>
+    </MeComponentsCommandItem>
   );
 }
