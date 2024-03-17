@@ -10,6 +10,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -132,17 +133,19 @@ function Categories({
         )}
       </CommandEmpty>
 
-      <CommandGroup className="p-2">
-        {categories.map((category) => (
-          <CategoryItem
-            key={category.name}
-            category={category}
-            setCategory={setCategory}
-            setOpen={setOpen}
-            value={value}
-          />
-        ))}
-      </CommandGroup>
+      <CommandList className="max-h-none overflow-auto">
+        <CommandGroup className="p-2">
+          {categories.map((category) => (
+            <CategoryItem
+              key={category.name}
+              category={category}
+              setCategory={setCategory}
+              setOpen={setOpen}
+              value={value}
+            />
+          ))}
+        </CommandGroup>
+      </CommandList>
       {hasMore && (
         <div className="mb-2 border-t border-border px-2 pt-6">
           <Button
