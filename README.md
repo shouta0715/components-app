@@ -20,8 +20,9 @@
 
 の3つのリポジトリで構成されています。
 
-### デモ
+### デモ動画
 
 使用されている画像はChatGPTにより生成されてい開発用の画像です。
 
-https://github.com/shouta0715/ui-trade/assets/99630778/08d88d57-df4f-4b05-8de8-d7a1a0f69470
+https://github.com/shouta0715/ui-trade/assets/99630778/0ba07548-1686-4074-975c-ff8cf86a2156
+
