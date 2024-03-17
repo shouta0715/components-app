@@ -41,7 +41,7 @@ export default async function Page() {
           />
 
           <MeComponentsCommandList>
-            <MeComponentsCommandGroup className="peer">
+            <MeComponentsCommandGroup>
               <div className="mt-8 space-y-8">
                 {components.map((component) => {
                   return (

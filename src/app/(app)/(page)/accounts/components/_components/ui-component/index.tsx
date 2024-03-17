@@ -4,10 +4,13 @@ import { Eye, Heart, ImageIcon, Lock, LockOpen, Pencil } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { MeComponentsCommandItem } from "@/app/(app)/(page)/accounts/components/_components/command";
+import { DeleteComponentButton } from "@/app/(app)/(page)/accounts/components/_components/delete-button";
 import { BlockQuoteLogo } from "@/components/icons/blockquote";
 import { LangIcons } from "@/components/icons/LangIcons";
 import { buttonVariants } from "@/components/ui/button";
+
 import { Image } from "@/components/ui/image";
+
 import { cn, getImageUrl } from "@/utils";
 import { formatDateDistance } from "@/utils/time";
 
@@ -121,13 +124,15 @@ export function MeComponent({
 
       <div className="flex items-center border-t border-border p-4 text-sm">
         <Link
-          className={buttonVariants({
-            size: "sm",
-            className: "font-semibold mr-4",
-          })}
+          className={cn(
+            buttonVariants({
+              size: "sm",
+              className: "font-semibold mr-4",
+            })
+          )}
           href={draft ? `/components/${id}/preview` : `/components/${id}`}
         >
-          <span>詳細を見る</span>
+          <span className="inline">詳細を見る</span>
         </Link>
         <Link
           className={cn(
@@ -138,17 +143,18 @@ export function MeComponent({
           )}
           href={`/components/${id}/edit`}
         >
-          <Pencil className="mr-2 size-4" />
+          <Pencil className="mx-auto mr-2 size-4" />
           <span>編集する</span>
         </Link>
 
-        <div className="ml-auto flex items-center">
+        <div className="ml-auto flex items-center space-x-1">
           {extensions.map(({ extension }) => {
             const Icon = LangIcons[extension];
 
             return <Icon key={extension} className="size-6" />;
           })}
         </div>
+        <DeleteComponentButton id={id} name={name} />
       </div>
     </MeComponentsCommandItem>
   );
