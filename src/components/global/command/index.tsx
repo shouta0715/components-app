@@ -2,10 +2,10 @@ import "server-only";
 
 import React from "react";
 import { CategoryCommandModal } from "@/components/global/command/modal";
-import { searchCategories } from "@/services/category/get/search";
+import { getCommandPaletteCategories } from "@/services/category/get";
 
 export async function CommandPallet() {
-  const categories = await searchCategories(null, 20);
+  const categories = await getCommandPaletteCategories(10);
 
   return (
     <div className="flex items-center gap-x-2">

@@ -1,26 +1,20 @@
 "use client";
 
 import { Search } from "lucide-react";
-import Link from "next/link";
 import * as React from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { SearchCategory } from "@/services/category/get/search";
+import { CategoryCommandModalContent } from "@/components/global/command/modal/content";
+import { Button } from "@/components/ui/button";
+import { CommandDialog } from "@/components/ui/command";
+import { CommandPaletteCategory } from "@/services/category/get";
 
 export function CategoryCommandModal({
   categories,
 }: {
-  categories: SearchCategory[];
+  categories: CommandPaletteCategory[];
 }) {
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(categories[0].name);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -61,40 +55,20 @@ export function CategoryCommandModal({
           <span className="text-xs">⌘</span>K
         </kbd>
       </button>
-      <CommandDialog onOpenChange={setOpen} open={open}>
-        <CommandInput placeholder="Search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Categories">
-            {categories.map((category) => (
-              <CommandItem key={category.name} className="!p-0">
-                <Link
-                  className="flex h-full flex-1 justify-between px-1.5 py-3 font-normal capitalize"
-                  href={`/categories/${category.name}`}
-                  onClick={() => setOpen(false)}
-                  prefetch={false}
-                >
-                  <span>{category.name}</span>
-                  <span className="text-muted-foreground">
-                    {category._count.components}種類
-                  </span>
-                </Link>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-
-        <div className="mt-6 ">
-          <Link
-            className={buttonVariants({
-              className: "w-full",
-            })}
-            href="/categories"
-            onClick={() => setOpen(false)}
-          >
-            もっと見る
-          </Link>
-        </div>
+      <CommandDialog
+        commandProps={{
+          value,
+          onValueChange: setValue,
+        }}
+        contentClassName="max-w-3xl p-0 [&_[cmdk-group]]:px-0 [&_[cmdk-item]]:py-0  [&_[cmdk-item]]:px-0"
+        onOpenChange={setOpen}
+        open={open}
+      >
+        <CategoryCommandModalContent
+          categories={categories}
+          setOpen={setOpen}
+          value={value}
+        />
       </CommandDialog>
     </>
   );
