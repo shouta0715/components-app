@@ -73,7 +73,7 @@ function Category({
 
   return (
     <CommandItem
-      className="relative block w-full flex-1 select-auto rounded-2xl border border-border p-0 shadow-lg  ring-1 ring-border   aria-selected:bg-transparent aria-selected:text-current data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+      className="relative block w-full flex-1 select-auto rounded-2xl border border-border p-0 shadow-lg  ring-1 ring-border   aria-selected:bg-transparent aria-selected:text-current"
       value={name}
     >
       <div className="mx-auto flex h-full min-h-full flex-col items-center justify-around">
