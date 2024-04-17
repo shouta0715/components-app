@@ -25,4 +25,3 @@
 使用されている画像はChatGPTにより生成されてい開発用の画像です。
 
 https://github.com/shouta0715/ui-trade/assets/99630778/0ba07548-1686-4074-975c-ff8cf86a2156
-
