@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { PREVIEW_URL } from "@/lib/constant";
 import { Extension } from "@/types/file";
 
 export function cn(...inputs: ClassValue[]) {
@@ -25,9 +26,7 @@ export const getContentType = (type: Extension): ContentType => {
 };
 
 export const getImageUrl = (id: string) => {
-  const endpoint = `${process.env.NEXT_PUBLIC_STORAGE_URL}/images`;
-
-  return `${endpoint}/${id}`;
+  return `${PREVIEW_URL}/${id}`;
 };
 
 export const getOGImageUrl = (url: string) => {
