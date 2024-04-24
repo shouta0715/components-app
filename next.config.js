@@ -9,9 +9,12 @@ const nextConfig = {
     serverComponentsExternalPackages: ['esbuild'],
   },
   images: {
-    domains: ['127.0.0.1'],
-    loader: "custom",
-    loaderFile:"./image-loader.ts"
+    remotePatterns: [{
+      protocol: "http",
+      hostname: "127.0.0.1",
+      port: "9000",
+      pathname: "/ui-trade-preview/*",
+    }],
   },
 };
 
